@@ -1,0 +1,129 @@
+/* Hebrew-friendly fonts (must precede other rules).
+   - Frank Ruhl Libre: elegant Hebrew serif (title)
+   - Heebo: clean, delicate Hebrew sans-serif (instruction / body) */
+@import url("https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Heebo:wght@200;300;400;500;700&display=swap");
+@import "tailwindcss";
+
+/*
+  Design tokens. Tailwind v4 reads these CSS variables to generate utilities
+  (e.g. bg-cream, text-gold, font-display).
+*/
+@theme {
+  --color-ink: #1c1410;
+  --color-cream: #f3ead8;
+  --color-cream-deep: #ece0c8;
+  --color-parchment: #efe3cf;
+  --color-gold: #c5a069; /* antique gold — primary text/accent */
+  --color-gold-soft: #d8bd8e;
+  --color-gold-deep: #a37f4a;
+
+  --font-display: "Frank Ruhl Libre", ui-serif, Georgia, serif;
+  --font-body: "Heebo", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ---- Hard reset: no frames, no safe-area gaps, full-bleed everywhere ---- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-gold);
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+  /* Light cream paper with subtle specks, edge-to-edge. */
+  background-color: var(--color-cream);
+  background-image:
+    radial-gradient(circle at 20% 25%, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0) 40%),
+    radial-gradient(circle at 80% 75%, rgba(163, 127, 74, 0.06), rgba(163, 127, 74, 0) 45%);
+}
+
+/* Reusable cream-paper texture (with specks) for full-bleed surfaces. */
+.paper-bg {
+  background-color: var(--color-cream);
+  background-image:
+    radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0) 42%),
+    radial-gradient(circle at 82% 78%, rgba(163, 127, 74, 0.07), rgba(163, 127, 74, 0) 48%),
+    /* fine paper specks */
+    radial-gradient(rgba(120, 90, 50, 0.10) 0.6px, transparent 0.7px),
+    radial-gradient(rgba(120, 90, 50, 0.07) 0.6px, transparent 0.7px);
+  background-size: 100% 100%, 100% 100%, 9px 9px, 13px 13px;
+  background-position: 0 0, 0 0, 0 0, 4px 6px;
+}
+
+/* Lock the landing experience to the dynamic viewport (no scroll, no gaps). */
+.stage-locked {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+/*
+  High-fidelity paper texture surface (the real envelope photo texture).
+  The image is set via the `--tex` custom property so the same class can be
+  reused for the flaps and the invitation card. A faint warm gradient is
+  layered on top to deepen the cream and unify it with the gold palette.
+*/
+.texture-bg {
+  background-color: var(--color-cream);
+  background-image:
+    linear-gradient(rgba(243, 234, 216, 0.18), rgba(236, 224, 200, 0.32)),
+    var(--tex);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/*
+  One envelope flap. Its triangular silhouette is applied per-flap via an
+  inline SVG clip-path (rounded corners). The shared texture + soft seam
+  shadow give each fold subtle depth. `transform`/`opacity` only, for buttery
+  hardware-accelerated motion on mobile.
+*/
+.flap {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+  /* Soft fold shadow traced around the (clipped) triangle edges. */
+  filter: drop-shadow(0 0 6px rgba(120, 90, 50, 0.18));
+  backface-visibility: hidden;
+}
+
+/* Fold seams + soft vignette overlay, drawn above the closed flaps. */
+.seam-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  /* gentle vignette so the center (under the seal) feels recessed/folded */
+  background: radial-gradient(
+    120% 90% at 50% 50%,
+    rgba(120, 90, 50, 0) 55%,
+    rgba(120, 90, 50, 0.1) 100%
+  );
+}
+
+/* Delicate inner sheen along the flap so the closed envelope reads as folded. */
+.flap::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    rgba(163, 127, 74, 0.16) 0%,
+    rgba(163, 127, 74, 0) 38%
+  );
+  pointer-events: none;
+}
