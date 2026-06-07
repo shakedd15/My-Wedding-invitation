@@ -242,7 +242,7 @@ export default function Envelope({ copy, onSealTap }) {
       <div
         ref={arrowRef}
         aria-hidden="true"
-        className="pointer-events-none absolute bottom-20 left-1/2 z-40 -translate-x-1/2"
+        className="pointer-events-none absolute bottom-14 left-1/2 z-40 -translate-x-1/2"
         style={{ opacity: 0, willChange: "transform, opacity" }}
       >
         <svg
