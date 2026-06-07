@@ -1,6 +1,7 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import Envelope from "./components/Envelope.jsx";
 import AudioToggle from "./components/AudioToggle.jsx";
+import WelcomeSection from "./components/WelcomeSection.jsx";
 import DateSection from "./components/DateSection.jsx";
 import CountdownSection from "./components/CountdownSection.jsx";
 import LetterSection from "./components/LetterSection.jsx";
@@ -55,7 +56,10 @@ export default function App() {
       {/* ── Stage 1: Full-viewport envelope (100dvh, overflow hidden) ── */}
       <Envelope copy={copy} onSealTap={startMusic} />
 
-      {/* ── Stage 2: The Date ── */}
+      {/* ── Stage 2: Welcome message + flowers ── */}
+      <WelcomeSection />
+
+      {/* ── Stage 3: The Date ── */}
       <DateSection copy={copy} />
 
       {/* ── Stage 2.5: Countdown Timer ── */}
