@@ -2,6 +2,7 @@ import { useRef, useState, useCallback, useEffect } from "react";
 import Envelope from "./components/Envelope.jsx";
 import AudioToggle from "./components/AudioToggle.jsx";
 import DateSection from "./components/DateSection.jsx";
+import CountdownSection from "./components/CountdownSection.jsx";
 import LetterSection from "./components/LetterSection.jsx";
 import { useLanguage } from "./hooks/useLanguage.js";
 import { ASSETS } from "./constants/config.js";
@@ -56,6 +57,9 @@ export default function App() {
 
       {/* ── Stage 2: The Date ── */}
       <DateSection copy={copy} />
+
+      {/* ── Stage 2.5: Countdown Timer ── */}
+      <CountdownSection />
 
       {/* ── Stage 3: The Letter ── */}
       <LetterSection copy={copy} />
