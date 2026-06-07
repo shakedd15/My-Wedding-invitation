@@ -131,9 +131,9 @@ export default function DateSection({ copy }) {
 
         <p
           className="ds-decor-label font-body text-sm font-medium uppercase tracking-[0.22em]"
-          style={{ color: "var(--color-blue-soft)", opacity: 0 }}
+          style={{ color: "#1c1410", opacity: 0 }}
         >
-          {decorLine}
+          Save the Date
         </p>
       </div>
 
