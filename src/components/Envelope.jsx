@@ -76,6 +76,7 @@ export default function Envelope({ copy, onSealTap }) {
   const seamRef = useRef(null);
   const instructionRef = useRef(null);
   const cardRef = useRef(null);
+  const arrowRef = useRef(null);
   const tlRef = useRef(null);
 
   const setFlap = (key) => (el) => {
@@ -130,6 +131,24 @@ export default function Envelope({ copy, onSealTap }) {
         cardRef.current,
         { scale: 1, duration: ANIMATION.flapOpen * k, ease: "power2.out" },
         openAt
+      );
+
+      // Phase 3 — after reveal: fade in the scroll arrow, then loop its bounce.
+      gsap.set(arrowRef.current, { autoAlpha: 0, y: 0 });
+      tl.to(
+        arrowRef.current,
+        { autoAlpha: 1, duration: 0.5, ease: "power1.in" },
+        `>` // immediately after previous step
+      ).to(
+        arrowRef.current,
+        {
+          y: 10,
+          duration: 0.7,
+          ease: "sine.inOut",
+          yoyo: true,
+          repeat: -1,
+        },
+        `<` // start bounce at same time as fade-in
       );
 
       tlRef.current = tl;
@@ -216,6 +235,34 @@ export default function Envelope({ copy, onSealTap }) {
             <line x1="100" y1="99.4" x2="50.6" y2="50" />
             <line x1="0" y1="99.4" x2="49.4" y2="50" />
           </g>
+        </svg>
+      </div>
+
+      {/* ===== Scroll hint arrow (fades in + bounces after envelope opens) ===== */}
+      <div
+        ref={arrowRef}
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-8 left-1/2 z-40 -translate-x-1/2"
+        style={{ opacity: 0, willChange: "transform, opacity" }}
+      >
+        <svg
+          width="36"
+          height="36"
+          viewBox="0 0 36 36"
+          fill="none"
+          aria-hidden="true"
+        >
+          {/* Outer gold circle */}
+          <circle cx="18" cy="18" r="17" stroke="rgba(197,160,105,0.55)" strokeWidth="1.2" />
+          {/* Chevron pointing down */}
+          <polyline
+            points="11,14 18,22 25,14"
+            stroke="#c5a069"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            fill="none"
+          />
         </svg>
       </div>
 

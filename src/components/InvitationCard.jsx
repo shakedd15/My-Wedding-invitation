@@ -28,6 +28,18 @@ const InvitationCard = forwardRef(function InvitationCard({ copy }, ref) {
 
       <Birds />
       <Petals />
+
+      {/* Bottom gradient fade — white at bottom, transparent going up.
+          Creates a seamless transition into Section 2. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute bottom-0 left-0 right-0 z-10"
+        style={{
+          height: "30%",
+          background:
+            "linear-gradient(to top, rgba(255,255,255,0.92) 0%, rgba(255,255,255,0.60) 35%, transparent 100%)",
+        }}
+      />
     </article>
   );
 });

@@ -1,6 +1,8 @@
 import { useRef, useState, useCallback, useEffect } from "react";
 import Envelope from "./components/Envelope.jsx";
 import AudioToggle from "./components/AudioToggle.jsx";
+import DateSection from "./components/DateSection.jsx";
+import LetterSection from "./components/LetterSection.jsx";
 import { useLanguage } from "./hooks/useLanguage.js";
 import { ASSETS } from "./constants/config.js";
 
@@ -48,8 +50,15 @@ export default function App() {
   }, []);
 
   return (
-    <main className="stage-locked">
+    <main className="page-wrapper">
+      {/* ── Stage 1: Full-viewport envelope (100dvh, overflow hidden) ── */}
       <Envelope copy={copy} onSealTap={startMusic} />
+
+      {/* ── Stage 2: The Date ── */}
+      <DateSection copy={copy} />
+
+      {/* ── Stage 3: The Letter ── */}
+      <LetterSection copy={copy} />
 
       {/* Native HTML5 audio. `autoPlay` is attempted; see useEffect above. */}
       <audio
@@ -63,6 +72,7 @@ export default function App() {
         onPause={() => setIsOn(false)}
       />
 
+      {/* Fixed floating music toggle — survives all scroll. */}
       <AudioToggle isOn={isOn} onToggle={toggleSound} labels={copy.audio} />
     </main>
   );

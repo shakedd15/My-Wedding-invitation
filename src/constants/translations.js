@@ -71,6 +71,24 @@ export const TRANSLATIONS = {
       play: "הפעלת מוזיקה",
       pause: "השתקת מוזיקה",
     },
+
+    // ---- Section 2: The Date ----
+    dateSection: {
+      title: "מועד החתונה",
+      decorLine: "שמרו את התאריך",
+      units: [
+        { value: "03", label: "יום" },
+        { value: "11", label: "חודש" },
+        { value: "2026", label: "שנה" },
+      ],
+      dayName: "יום שלישי",
+    },
+
+    // ---- Section 3: The Letter ----
+    letterSection: {
+      title: "מכתב ההזמנה",
+      placeholder: "בקרוב יופיע כאן נוסח ההזמנה הרשמי…",
+    },
   },
 
   // Placeholder for a future language. Mirror the `he` structure.
@@ -103,6 +121,20 @@ export const TRANSLATIONS = {
       footer: "",
     },
     audio: { play: "Play music", pause: "Mute music" },
+    dateSection: {
+      title: "Wedding Date",
+      decorLine: "Save the Date",
+      units: [
+        { value: "03", label: "Day" },
+        { value: "11", label: "Month" },
+        { value: "2026", label: "Year" },
+      ],
+      dayName: "Tuesday",
+    },
+    letterSection: {
+      title: "The Invitation",
+      placeholder: "The formal invitation wording will appear here soon…",
+    },
   },
 };
 
