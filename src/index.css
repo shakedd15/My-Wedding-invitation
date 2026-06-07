@@ -159,6 +159,8 @@ body {
 /* ---- Section 2 (The Date) ---- */
 .date-section {
   background: linear-gradient(165deg, #f8f5ef 0%, #edf5fa 100%);
+  /* Compact height — just enough for the content, not a full screen. */
+  min-height: unset;
 }
 
 /* Individual date unit card. Border and text share --color-blue. */

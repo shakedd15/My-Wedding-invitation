@@ -108,7 +108,7 @@ export default function DateSection({ copy }) {
     <section
       ref={sectionRef}
       dir={copy.meta.dir}
-      className="scroll-section date-section gap-10 px-6 py-20"
+      className="date-section flex flex-col items-center justify-center gap-8 px-6 py-12"
     >
       {/* ── Header ─────────────────────────────────────────── */}
       <div className="flex flex-col items-center gap-3">
