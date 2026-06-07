@@ -16,7 +16,7 @@ export const ASSETS = {
   envelopeTexture: "/images/paper.jpg",
 
   // The full revealed invitation scene (rose arch + view + names baked in).
-  sceneImg: "/images/scene.PNG",
+  sceneImg: "/images/scene.jpg",
 
   // Transparent floral wax-seal sticker (trimmed + optimized PNG).
   sealImg: "/images/wax-seal.png",
