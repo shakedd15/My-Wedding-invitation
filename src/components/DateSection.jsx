@@ -139,9 +139,9 @@ export default function DateSection({ copy }) {
 
       {/* ── Date cards row ──────────────────────────────────── */}
       {/* Displayed right→left (RTL): יום 03 | חודש 11 | שנה 2026 */}
-      {/* dir="ltr" + reversed array → 2026 on left, 03 on right (Hebrew right→left reading) */}
+      {/* dir="ltr" forces left→right: 03 (יום) | 11 (חודש) | 2026 (שנה) */}
       <div className="flex items-center gap-4" dir="ltr">
-        {[...units].reverse().map((unit) => (
+        {units.map((unit) => (
           <div
             key={unit.label}
             className="date-card ds-card"
