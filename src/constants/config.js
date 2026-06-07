@@ -15,10 +15,8 @@ export const ASSETS = {
   // bright off-white reference envelope).
   envelopeTexture: "/images/paper.jpg",
 
-  // Optional couple photo shown inside the revealed invitation's arch frame.
-  // Drop a portrait at public/images/couple.jpg to enable it (falls back to a
-  // soft placeholder arch when missing).
-  couplePhoto: "/images/couple.jpg",
+  // The full revealed invitation scene (rose arch + view + names baked in).
+  sceneImg: "/images/scene.PNG",
 
   // Transparent floral wax-seal sticker (trimmed + optimized PNG).
   sealImg: "/images/wax-seal.png",
