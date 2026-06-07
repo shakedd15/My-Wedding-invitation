@@ -52,22 +52,26 @@ export default function WelcomeSection() {
     <section
       ref={sectionRef}
       dir="rtl"
-      className="relative flex flex-col items-center overflow-hidden"
+      className="relative flex flex-col items-center"
       style={{
-        background: "linear-gradient(180deg, #ffffff 0%, #edf5fa 40%, #e8f2f8 100%)",
+        background: "linear-gradient(180deg, transparent 0%, #ffffff 18%, #edf5fa 55%, #e8f2f8 100%)",
+        /* Pull the whole section up so the flowers overlap the stage above */
+        marginTop: "-22vw",
+        zIndex: 5,
       }}
     >
-      {/* ── Flower image — bleeds upward into the invitation photo above ── */}
+      {/* ── Flower image — top half overlaps the invitation photo, bottom half
+           opens section 2. Full viewport width, no height cap. ── */}
       <div
-        className="wc-flowers relative w-full"
-        style={{ marginTop: "-18%", opacity: 0 }}
+        className="wc-flowers w-full"
+        style={{ opacity: 0 }}
       >
         <img
           src="/images/flowers.png"
           alt=""
           draggable="false"
-          className="w-full select-none object-contain"
-          style={{ maxHeight: "60vw" }}
+          className="w-full select-none"
+          style={{ display: "block", objectFit: "contain" }}
         />
       </div>
 
