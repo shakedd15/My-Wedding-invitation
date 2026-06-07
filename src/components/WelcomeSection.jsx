@@ -54,9 +54,10 @@ export default function WelcomeSection() {
       dir="rtl"
       className="relative flex flex-col items-center"
       style={{
-        background: "linear-gradient(180deg, transparent 0%, #ffffff 18%, #edf5fa 55%, #e8f2f8 100%)",
-        /* Pull the whole section up so the flowers overlap the stage above */
-        marginTop: "-22vw",
+        /* Top is fully transparent so flowers sit directly on the invitation image.
+           The white/blue background only begins below the flower area. */
+        background: "linear-gradient(180deg, transparent 0%, transparent 42%, #f5f9fc 60%, #edf5fa 100%)",
+        marginTop: "-32vw",   /* pull up so ~half the flowers overlap the photo */
         zIndex: 5,
       }}
     >
