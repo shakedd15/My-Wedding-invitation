@@ -138,16 +138,24 @@ export default function DateSection({ copy }) {
       </div>
 
       {/* ── Date cards row ──────────────────────────────────── */}
-      {/* RTL note: Hebrew reads right→left, so the row is reversed in RTL to
-          show  יום (03) | חודש (11) | שנה (2026)  in natural reading order. */}
-      <div className="flex items-end gap-4">
-        {units.map((unit) => (
-          <div key={unit.label} className="date-card ds-card" style={{ opacity: 0 }}>
+      {/* Displayed right→left (RTL): יום 03 | חודש 11 | שנה 2026 */}
+      {/* dir="ltr" + reversed array → 2026 on left, 03 on right (Hebrew right→left reading) */}
+      <div className="flex items-center gap-4" dir="ltr">
+        {[...units].reverse().map((unit) => (
+          <div
+            key={unit.label}
+            className="date-card ds-card"
+            style={{
+              opacity: 0,
+              width: "90px",
+              height: "110px",
+            }}
+          >
             <span
               className="font-display leading-none"
               style={{
                 color: "var(--color-blue)",
-                fontSize: unit.value.length > 2 ? "2.4rem" : "3.2rem",
+                fontSize: "2.6rem",
                 fontWeight: 300,
                 letterSpacing: "-0.02em",
               }}
