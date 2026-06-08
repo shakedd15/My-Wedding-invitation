@@ -124,14 +124,14 @@ export default function DateSection({ copy }) {
 
         <h2
           className="ds-title font-display text-4xl font-light tracking-widest"
-          style={{ color: "rgb(217, 234, 245)", opacity: 0 }}
+          style={{ color: "var(--color-blue)", opacity: 0 }}
         >
           {title}
         </h2>
 
         <p
           className="ds-decor-label font-body text-sm font-medium uppercase tracking-[0.22em]"
-          style={{ color: "rgb(217, 234, 245)", opacity: 0 }}
+          style={{ color: "var(--color-blue)", opacity: 0 }}
         >
           Save the Date
         </p>
@@ -154,7 +154,7 @@ export default function DateSection({ copy }) {
             <span
               className="font-display leading-none"
               style={{
-                color: "rgb(217, 234, 245)",
+                color: "var(--color-blue)",
                 fontSize: "2.6rem",
                 fontWeight: 300,
                 letterSpacing: "-0.02em",
@@ -164,7 +164,7 @@ export default function DateSection({ copy }) {
             </span>
             <span
               className="font-body text-xs font-semibold uppercase tracking-widest"
-              style={{ color: "rgb(217, 234, 245)", marginTop: "8px" }}
+              style={{ color: "var(--color-blue)", marginTop: "8px" }}
             >
               {unit.label}
             </span>
@@ -175,7 +175,7 @@ export default function DateSection({ copy }) {
       {/* ── Day name ────────────────────────────────────────── */}
       <p
         className="ds-dayname font-display text-xl font-light tracking-widest"
-        style={{ color: "rgb(217, 234, 245)", opacity: 0 }}
+        style={{ color: "var(--color-blue)", opacity: 0 }}
       >
         {dayName}
       </p>
