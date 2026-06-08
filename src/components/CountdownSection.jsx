@@ -16,7 +16,10 @@ function calcTimeLeft() {
   return { days, hours, minutes, seconds };
 }
 
-/* SVG torn-paper mountain ridge — reused at top & bottom */
+/* The torn shapes are filled with the surrounding page color so they
+   appear to "bite" jagged edges into the blue countdown area. */
+const PAGE_COLOR = "rgb(246, 245, 240)";
+
 const TopTear = () => (
   <svg
     viewBox="0 0 375 64"
@@ -33,7 +36,7 @@ const TopTear = () => (
          Q185,0 175,12 Q165,22 155,8 Q145,0 135,14
          Q125,28 115,12 Q105,0 95,16 Q85,28 75,12
          Q65,0 55,14 Q45,26 35,10 Q25,0 15,12 L0,0 Z"
-      fill="rgb(217,234,245)"
+      fill={PAGE_COLOR}
     />
   </svg>
 );
@@ -53,7 +56,7 @@ const BottomTear = () => (
          Q210,38 198,54 Q186,64 172,50 Q160,38 148,54
          Q136,64 122,52 Q110,42 98,56 Q86,64 72,50
          Q60,38 48,54 Q36,64 22,52 Q10,42 0,64 Z"
-      fill="rgb(217,234,245)"
+      fill={PAGE_COLOR}
     />
   </svg>
 );
@@ -81,7 +84,7 @@ export default function CountdownSection() {
       {/* ── Cream content area ── */}
       <div
         style={{
-          background: "#f8f3eb",
+          background: "rgb(217, 234, 245)",
           padding: "36px 24px 40px",
           textAlign: "center",
         }}
