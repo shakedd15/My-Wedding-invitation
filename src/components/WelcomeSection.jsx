@@ -56,7 +56,7 @@ export default function WelcomeSection() {
       style={{
         /* Top is fully transparent so flowers sit directly on the invitation image.
            The white/blue background only begins below the flower area. */
-        background: "linear-gradient(180deg, transparent 0%, transparent 42%, #f5f9fc 60%, #edf5fa 100%)",
+        background: "linear-gradient(180deg, transparent 0%, transparent 42%, rgb(217,234,245) 65%, rgb(217,234,245) 100%)",
         marginTop: "-30vw",   /* pull up so ~half the flowers overlap the photo */
         zIndex: 5,
       }}
@@ -97,7 +97,7 @@ export default function WelcomeSection() {
           className="wc-line1 font-display font-light leading-snug"
           style={{
             opacity: 0,
-            color: "var(--color-blue-deep)",
+            color: "#1a4a6e",
             fontSize: "clamp(1.8rem, 7vw, 2.8rem)",
             letterSpacing: "0.04em",
           }}
@@ -110,7 +110,7 @@ export default function WelcomeSection() {
           className="wc-line2 font-display font-light leading-relaxed"
           style={{
             opacity: 0,
-            color: "var(--color-ink)",
+            color: "#2a3a4a",
             fontSize: "clamp(1.1rem, 4.5vw, 1.5rem)",
             maxWidth: "34ch",
             letterSpacing: "0.02em",

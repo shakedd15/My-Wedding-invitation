@@ -1,154 +1,162 @@
-import { useState, useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { useGSAP } from "@gsap/react";
+import { useState, useEffect } from "react";
 
-gsap.registerPlugin(ScrollTrigger, useGSAP);
-
-// Wedding date: 03/11/2026 at 18:00 (adjust hour to taste)
+// Wedding date: 03/11/2026 at 18:00
 const WEDDING = new Date("2026-11-03T18:00:00");
 
 function calcTimeLeft() {
   const now = new Date();
   const diff = WEDDING - now;
+  if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
 
-  if (diff <= 0) return { months: 0, days: 0, hours: 0, minutes: 0, seconds: 0 };
-
-  // Calendar-accurate months
-  let months =
-    (WEDDING.getFullYear() - now.getFullYear()) * 12 +
-    (WEDDING.getMonth() - now.getMonth());
-
-  // If the day-of-month hasn't arrived yet this month, subtract 1
-  const pivot = new Date(
-    now.getFullYear(),
-    now.getMonth() + months,
-    now.getDate(),
-    now.getHours(),
-    now.getMinutes(),
-    now.getSeconds()
-  );
-  if (pivot > WEDDING) months -= 1;
-
-  // Remaining ms after stripping full months
-  const afterMonths = new Date(
-    now.getFullYear(),
-    now.getMonth() + months,
-    now.getDate(),
-    now.getHours(),
-    now.getMinutes(),
-    now.getSeconds()
-  );
-  const rem = Math.floor((WEDDING - afterMonths) / 1000); // total remaining seconds
-
-  const days    = Math.floor(rem / 86400);
-  const hours   = Math.floor((rem % 86400) / 3600);
-  const minutes = Math.floor((rem % 3600) / 60);
-  const seconds = rem % 60;
-
-  return { months, days, hours, minutes, seconds };
+  const totalSeconds = Math.floor(diff / 1000);
+  const days    = Math.floor(totalSeconds / 86400);
+  const hours   = Math.floor((totalSeconds % 86400) / 3600);
+  const minutes = Math.floor((totalSeconds % 3600) / 60);
+  const seconds = totalSeconds % 60;
+  return { days, hours, minutes, seconds };
 }
 
+/* SVG torn-paper mountain ridge — reused at top & bottom */
+const TopTear = () => (
+  <svg
+    viewBox="0 0 375 64"
+    preserveAspectRatio="none"
+    xmlns="http://www.w3.org/2000/svg"
+    style={{ display: "block", width: "100%", height: "clamp(40px,11vw,70px)" }}
+    aria-hidden="true"
+  >
+    <path
+      d="M0,0 L0,64 L375,64 L375,0
+         Q365,12 355,4 Q345,0 335,10 Q325,20 315,8
+         Q305,0 295,12 Q285,22 275,8 Q265,0 255,14
+         Q245,26 235,10 Q225,0 215,14 Q205,26 195,10
+         Q185,0 175,12 Q165,22 155,8 Q145,0 135,14
+         Q125,28 115,12 Q105,0 95,16 Q85,28 75,12
+         Q65,0 55,14 Q45,26 35,10 Q25,0 15,12 L0,0 Z"
+      fill="#6B0C2A"
+    />
+  </svg>
+);
+
+const BottomTear = () => (
+  <svg
+    viewBox="0 0 375 64"
+    preserveAspectRatio="none"
+    xmlns="http://www.w3.org/2000/svg"
+    style={{ display: "block", width: "100%", height: "clamp(40px,11vw,70px)" }}
+    aria-hidden="true"
+  >
+    <path
+      d="M0,64 L0,0 L375,0 L375,64
+         Q360,50 348,58 Q336,64 322,52 Q310,42 298,56
+         Q286,64 272,52 Q260,42 248,56 Q236,64 222,50
+         Q210,38 198,54 Q186,64 172,50 Q160,38 148,54
+         Q136,64 122,52 Q110,42 98,56 Q86,64 72,50
+         Q60,38 48,54 Q36,64 22,52 Q10,42 0,64 Z"
+      fill="#6B0C2A"
+    />
+  </svg>
+);
+
 const UNITS = [
-  { key: "months",  label: "חודשים" },
-  { key: "days",    label: "ימים"   },
-  { key: "hours",   label: "שעות"   },
-  { key: "minutes", label: "דקות"   },
-  { key: "seconds", label: "שניות"  },
+  { key: "days",    he: "ימים",  en: "Days"    },
+  { key: "hours",   he: "שעות",  en: "Hours"   },
+  { key: "minutes", he: "דקות",  en: "Minutes" },
+  { key: "seconds", he: "שניות", en: "Seconds" },
 ];
 
 export default function CountdownSection() {
   const [time, setTime] = useState(calcTimeLeft);
-  const sectionRef = useRef(null);
 
-  // Tick every second
   useEffect(() => {
     const id = setInterval(() => setTime(calcTimeLeft()), 1000);
     return () => clearInterval(id);
   }, []);
 
-  // Fade-in on scroll
-  useGSAP(
-    () => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-
-      gsap.fromTo(
-        ".cd-title",
-        { autoAlpha: 0, y: 28 },
-        {
-          autoAlpha: 1, y: 0, duration: 0.8, ease: "power2.out",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 78%", once: true },
-        }
-      );
-
-      gsap.fromTo(
-        ".cd-card",
-        { autoAlpha: 0, y: 40, scale: 0.88 },
-        {
-          autoAlpha: 1, y: 0, scale: 1,
-          duration: 0.6, stagger: 0.1, ease: "back.out(1.4)",
-          delay: 0.2,
-          scrollTrigger: { trigger: sectionRef.current, start: "top 72%", once: true },
-        }
-      );
-    },
-    { scope: sectionRef }
-  );
-
   return (
-    <section
-      ref={sectionRef}
-      dir="rtl"
-      className="flex flex-col items-center justify-center gap-8 px-6 py-12"
-      style={{ background: "linear-gradient(165deg, #edf5fa 0%, #f0f7f0 100%)" }}
-    >
-      {/* Title */}
-      <div className="cd-title flex flex-col items-center gap-2" style={{ opacity: 0 }}>
-        <div className="flex items-center gap-3">
-          <div className="h-px w-12" style={{ background: "var(--color-blue)", opacity: 0.45 }} />
-          <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
-            <circle cx="6" cy="6" r="2.5" fill="var(--color-blue)" opacity="0.65" />
-            <circle cx="6" cy="6" r="5.2" stroke="var(--color-blue)" strokeWidth="1" opacity="0.3" />
-          </svg>
-          <div className="h-px w-12" style={{ background: "var(--color-blue)", opacity: 0.45 }} />
-        </div>
-        <h2
-          className="font-display text-3xl font-light tracking-widest"
-          style={{ color: "var(--color-blue)" }}
+    <section style={{ background: "#6B0C2A", position: "relative" }}>
+      {/* ── Top torn border ── */}
+      <TopTear />
+
+      {/* ── Cream content area ── */}
+      <div
+        style={{
+          background: "#f8f3eb",
+          padding: "36px 24px 40px",
+          textAlign: "center",
+        }}
+      >
+        {/* Script title */}
+        <p
+          className="font-display"
+          style={{
+            color: "#2a2a2a",
+            fontSize: "clamp(1.5rem, 6vw, 2.2rem)",
+            fontWeight: 300,
+            fontStyle: "italic",
+            marginBottom: "28px",
+            letterSpacing: "0.01em",
+          }}
         >
-          נשאר עוד…
-        </h2>
+          The Celebration Begins In
+        </p>
+
+        {/* Number row */}
+        <div
+          className="flex items-end justify-center gap-2"
+          style={{ direction: "ltr" }}
+        >
+          {UNITS.map(({ key, he }, i) => (
+            <div key={key} className="flex items-end">
+              <div className="flex flex-col items-center">
+                <span
+                  className="font-display tabular-nums"
+                  style={{
+                    fontSize: "clamp(2.6rem, 10vw, 4rem)",
+                    fontWeight: 300,
+                    color: "#2a2a2a",
+                    lineHeight: 1,
+                    letterSpacing: "-0.02em",
+                  }}
+                >
+                  {String(time[key]).padStart(2, "0")}
+                </span>
+                <span
+                  className="font-body"
+                  style={{
+                    fontSize: "clamp(0.62rem, 2.4vw, 0.85rem)",
+                    color: "#5a5a5a",
+                    letterSpacing: "0.12em",
+                    textTransform: "uppercase",
+                    marginTop: "6px",
+                  }}
+                >
+                  {he}
+                </span>
+              </div>
+              {/* Colon separator (not after last item) */}
+              {i < UNITS.length - 1 && (
+                <span
+                  className="font-display"
+                  style={{
+                    fontSize: "clamp(2rem, 8vw, 3.2rem)",
+                    color: "#6B0C2A",
+                    lineHeight: 1,
+                    paddingBottom: "22px",
+                    margin: "0 4px",
+                    opacity: 0.7,
+                  }}
+                >
+                  :
+                </span>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
 
-      {/* Countdown cards */}
-      <div className="flex items-center gap-3" dir="ltr">
-        {UNITS.map(({ key, label }) => (
-          <div
-            key={key}
-            className="cd-card flex flex-col items-center justify-center rounded-xl"
-            style={{
-              opacity: 0,
-              width: "60px",
-              height: "72px",
-              border: "2px solid var(--color-blue)",
-              color: "var(--color-blue)",
-            }}
-          >
-            <span
-              className="font-display leading-none tabular-nums"
-              style={{ fontSize: "1.9rem", fontWeight: 300 }}
-            >
-              {String(time[key]).padStart(2, "0")}
-            </span>
-            <span
-              className="font-body text-[10px] font-semibold uppercase tracking-wider"
-              style={{ color: "var(--color-blue-soft)", marginTop: "5px" }}
-            >
-              {label}
-            </span>
-          </div>
-        ))}
-      </div>
+      {/* ── Bottom torn border ── */}
+      <BottomTear />
     </section>
   );
 }

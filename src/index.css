@@ -158,20 +158,19 @@ body {
 
 /* ---- Section 2 (The Date) ---- */
 .date-section {
-  background: linear-gradient(165deg, #f8f5ef 0%, #edf5fa 100%);
-  /* Compact height — just enough for the content, not a full screen. */
+  background: rgb(217, 234, 245);
   min-height: unset;
 }
 
-/* Individual date unit card. Border and text share --color-blue. */
+/* Individual date unit card. */
 .date-card {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   border-radius: 16px;
-  border: 2px solid var(--color-blue);
-  color: var(--color-blue);
+  border: 2px solid #1a4a6e;
+  color: #1a4a6e;
   padding: 24px 20px 20px;
   min-width: 84px;
   will-change: opacity, transform;
