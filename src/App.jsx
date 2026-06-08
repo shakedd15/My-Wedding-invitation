@@ -70,7 +70,7 @@ export default function App() {
       <CountdownSection />
 
       {/* ── Divider: Countdown → Letter ── */}
-      <WaveDivider from="rgb(217, 234, 245)" to="#edf5fa" flip />
+      <WaveDivider from="rgb(217, 234, 245)" to="#edf5fa" />
 
       {/* ── Stage 3: The Letter ── */}
       <LetterSection copy={copy} />
