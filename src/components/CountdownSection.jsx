@@ -162,8 +162,7 @@ export default function CountdownSection() {
         </div>
       </div>
 
-      {/* ── Bottom torn border ── */}
-      <BottomTear />
+      {/* Bottom transition handled by WaveDivider in App.jsx */}
     </section>
   );
 }
