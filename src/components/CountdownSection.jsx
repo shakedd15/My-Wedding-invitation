@@ -28,7 +28,7 @@ const TopTear = () => (
     viewBox="0 0 375 64"
     preserveAspectRatio="none"
     xmlns="http://www.w3.org/2000/svg"
-    style={{ display: "block", width: "100%", height: "clamp(40px,11vw,70px)", transform: "scaleY(-1)" }}
+    style={{ display: "block", width: "100%", height: "clamp(22px,6vw,40px)", transform: "scaleY(-1)" }}
     aria-hidden="true"
   >
     <path
@@ -50,7 +50,7 @@ const BottomTear = () => (
     viewBox="0 0 375 64"
     preserveAspectRatio="none"
     xmlns="http://www.w3.org/2000/svg"
-    style={{ display: "block", width: "100%", height: "clamp(40px,11vw,70px)", transform: "scaleY(-1)" }}
+    style={{ display: "block", width: "100%", height: "clamp(22px,6vw,40px)", transform: "scaleY(-1)" }}
     aria-hidden="true"
   >
     <path
@@ -89,7 +89,7 @@ export default function CountdownSection() {
       <div
         style={{
           background: "rgb(217, 234, 245)",
-          padding: "36px 24px 40px",
+          padding: "16px 24px 20px",
           textAlign: "center",
         }}
       >
