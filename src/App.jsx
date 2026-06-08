@@ -5,7 +5,7 @@ import WelcomeSection from "./components/WelcomeSection.jsx";
 import DateSection from "./components/DateSection.jsx";
 import WaveDivider from "./components/WaveDivider.jsx";
 import CountdownSection from "./components/CountdownSection.jsx";
-import LetterSection from "./components/LetterSection.jsx";
+import ScheduleSection from "./components/ScheduleSection.jsx";
 import { useLanguage } from "./hooks/useLanguage.js";
 import { ASSETS } from "./constants/config.js";
 
@@ -72,8 +72,8 @@ export default function App() {
       {/* ── Divider: Countdown → Letter ── */}
       <WaveDivider from="rgb(217, 234, 245)" to="#edf5fa" />
 
-      {/* ── Stage 3: The Letter ── */}
-      <LetterSection copy={copy} />
+      {/* ── Stage 3: Schedule of Events ── */}
+      <ScheduleSection />
 
       {/* Native HTML5 audio. `autoPlay` is attempted; see useEffect above. */}
       <audio
