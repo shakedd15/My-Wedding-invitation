@@ -20,12 +20,15 @@ function calcTimeLeft() {
    appear to "bite" jagged edges into the blue countdown area. */
 const PAGE_COLOR = "rgb(246, 245, 240)";
 
+const BLUE = "rgb(217, 234, 245)";
+
+/* Top: blue peaks protrude UPWARD into the cream section above */
 const TopTear = () => (
   <svg
     viewBox="0 0 375 64"
     preserveAspectRatio="none"
     xmlns="http://www.w3.org/2000/svg"
-    style={{ display: "block", width: "100%", height: "clamp(40px,11vw,70px)" }}
+    style={{ display: "block", width: "100%", height: "clamp(40px,11vw,70px)", transform: "scaleY(-1)" }}
     aria-hidden="true"
   >
     <path
@@ -36,17 +39,18 @@ const TopTear = () => (
          Q185,0 175,12 Q165,22 155,8 Q145,0 135,14
          Q125,28 115,12 Q105,0 95,16 Q85,28 75,12
          Q65,0 55,14 Q45,26 35,10 Q25,0 15,12 L0,0 Z"
-      fill={PAGE_COLOR}
+      fill={BLUE}
     />
   </svg>
 );
 
+/* Bottom: blue peaks protrude DOWNWARD into the cream section below */
 const BottomTear = () => (
   <svg
     viewBox="0 0 375 64"
     preserveAspectRatio="none"
     xmlns="http://www.w3.org/2000/svg"
-    style={{ display: "block", width: "100%", height: "clamp(40px,11vw,70px)" }}
+    style={{ display: "block", width: "100%", height: "clamp(40px,11vw,70px)", transform: "scaleY(-1)" }}
     aria-hidden="true"
   >
     <path
@@ -56,7 +60,7 @@ const BottomTear = () => (
          Q210,38 198,54 Q186,64 172,50 Q160,38 148,54
          Q136,64 122,52 Q110,42 98,56 Q86,64 72,50
          Q60,38 48,54 Q36,64 22,52 Q10,42 0,64 Z"
-      fill={PAGE_COLOR}
+      fill={BLUE}
     />
   </svg>
 );
