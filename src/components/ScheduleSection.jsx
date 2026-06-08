@@ -87,8 +87,8 @@ export default function ScheduleSection() {
         תוכניית הערב
       </h2>
 
-      {/* Timeline */}
-      <div className="relative mx-auto" style={{ maxWidth: "380px" }}>
+      {/* Timeline — fixed width centered, never wider than screen */}
+      <div className="relative mx-auto" style={{ width: "min(300px, 78vw)" }}>
 
         {/* Vertical line */}
         <div
