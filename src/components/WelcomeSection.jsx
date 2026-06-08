@@ -78,7 +78,7 @@ export default function WelcomeSection() {
 
       {/* ── Text panel ── */}
       <div
-        className="flex w-full flex-col items-center gap-6 px-8 pb-16 pt-4 text-center"
+        className="flex w-full flex-col items-center gap-6 px-8 pb-28 pt-4 text-center"
       >
         {/* Decorative dot-rule */}
         <div
