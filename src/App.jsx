@@ -3,6 +3,7 @@ import Envelope from "./components/Envelope.jsx";
 import AudioToggle from "./components/AudioToggle.jsx";
 import WelcomeSection from "./components/WelcomeSection.jsx";
 import DateSection from "./components/DateSection.jsx";
+import WaveDivider from "./components/WaveDivider.jsx";
 import CountdownSection from "./components/CountdownSection.jsx";
 import LetterSection from "./components/LetterSection.jsx";
 import { useLanguage } from "./hooks/useLanguage.js";
@@ -61,6 +62,9 @@ export default function App() {
 
       {/* ── Stage 3: The Date ── */}
       <DateSection copy={copy} />
+
+      {/* ── Divider: Date → Countdown ── */}
+      <WaveDivider />
 
       {/* ── Stage 2.5: Countdown Timer ── */}
       <CountdownSection />
