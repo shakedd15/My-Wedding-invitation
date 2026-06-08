@@ -97,7 +97,7 @@ export default function WelcomeSection() {
           className="wc-line1 font-display font-light leading-snug"
           style={{
             opacity: 0,
-            color: "#1a4a6e",
+            color: "rgb(217, 234, 245)",
             fontSize: "clamp(1.8rem, 7vw, 2.8rem)",
             letterSpacing: "0.04em",
           }}
@@ -110,7 +110,7 @@ export default function WelcomeSection() {
           className="wc-line2 font-display font-light leading-relaxed"
           style={{
             opacity: 0,
-            color: "#2a3a4a",
+            color: "rgb(217, 234, 245)",
             fontSize: "clamp(1.1rem, 4.5vw, 1.5rem)",
             maxWidth: "34ch",
             letterSpacing: "0.02em",

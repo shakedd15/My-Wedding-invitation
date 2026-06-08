@@ -169,8 +169,8 @@ body {
   align-items: center;
   justify-content: center;
   border-radius: 16px;
-  border: 2px solid #1a4a6e;
-  color: #1a4a6e;
+  border: 2px solid rgb(217, 234, 245);
+  color: rgb(217, 234, 245);
   padding: 24px 20px 20px;
   min-width: 84px;
   will-change: opacity, transform;
