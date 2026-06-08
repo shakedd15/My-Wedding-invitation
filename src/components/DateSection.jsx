@@ -113,7 +113,7 @@ export default function DateSection({ copy }) {
       {/* ── Header ─────────────────────────────────────────── */}
       <div className="flex flex-col items-center gap-3">
         {/* Decorative horizontal rule */}
-        <div className="ds-decor flex items-center gap-3" style={{ opacity: 0 }}>
+        <div className="ds-decor flex items-center gap-3" style={{ opacity: 0, margin: "10px 0" }}>
           <div className="h-px w-14" style={{ background: "var(--color-blue)", opacity: 0.5 }} />
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
             <circle cx="7" cy="7" r="3" fill="var(--color-blue)" opacity="0.7" />
