@@ -82,8 +82,7 @@ export default function CountdownSection() {
 
   return (
     <section style={{ background: "rgb(217,234,245)", position: "relative" }}>
-      {/* ── Top torn border ── */}
-      <TopTear />
+      {/* Top transition handled by WaveDivider in App.jsx */}
 
       {/* ── Cream content area ── */}
       <div

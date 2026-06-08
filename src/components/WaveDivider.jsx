@@ -25,7 +25,7 @@ export default function WaveDivider({
         viewBox="0 0 375 80"
         preserveAspectRatio="none"
         xmlns="http://www.w3.org/2000/svg"
-        style={{ display: "block", width: "100%", height: "clamp(24px, 6vw, 42px)" }}
+        style={{ display: "block", width: "100%", height: "clamp(48px, 13vw, 88px)" }}
       >
         {/* Back wave — semi-transparent "to" colour for depth */}
         <path
