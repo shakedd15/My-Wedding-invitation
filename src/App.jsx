@@ -69,6 +69,9 @@ export default function App() {
       {/* ── Stage 2.5: Countdown Timer ── */}
       <CountdownSection />
 
+      {/* ── Divider: Countdown → Letter ── */}
+      <WaveDivider from="rgb(217, 234, 245)" to="#edf5fa" flip />
+
       {/* ── Stage 3: The Letter ── */}
       <LetterSection copy={copy} />
 
