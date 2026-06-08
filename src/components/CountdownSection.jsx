@@ -105,7 +105,7 @@ export default function CountdownSection() {
             letterSpacing: "0.01em",
           }}
         >
-          The Celebration Begins In
+          החגיגות יתחילו בעוד...
         </p>
 
         {/* Number row */}
