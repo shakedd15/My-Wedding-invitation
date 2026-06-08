@@ -47,7 +47,10 @@ body {
   font-family: var(--font-body);
   color: var(--color-gold);
   -webkit-tap-highlight-color: transparent;
-  overscroll-behavior: none;
+  /* Allow natural page scroll; only prevent rubber-band overscroll at ends */
+  overscroll-behavior-x: none;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: auto;
   /* Light cream paper with subtle specks, edge-to-edge. */
   background-color: var(--color-cream);
   background-image:
