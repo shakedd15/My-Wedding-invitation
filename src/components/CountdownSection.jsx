@@ -33,7 +33,7 @@ const TopTear = () => (
          Q185,0 175,12 Q165,22 155,8 Q145,0 135,14
          Q125,28 115,12 Q105,0 95,16 Q85,28 75,12
          Q65,0 55,14 Q45,26 35,10 Q25,0 15,12 L0,0 Z"
-      fill="#6B0C2A"
+      fill="rgb(217,234,245)"
     />
   </svg>
 );
@@ -53,7 +53,7 @@ const BottomTear = () => (
          Q210,38 198,54 Q186,64 172,50 Q160,38 148,54
          Q136,64 122,52 Q110,42 98,56 Q86,64 72,50
          Q60,38 48,54 Q36,64 22,52 Q10,42 0,64 Z"
-      fill="#6B0C2A"
+      fill="rgb(217,234,245)"
     />
   </svg>
 );
@@ -74,7 +74,7 @@ export default function CountdownSection() {
   }, []);
 
   return (
-    <section style={{ background: "#6B0C2A", position: "relative" }}>
+    <section style={{ background: "rgb(217,234,245)", position: "relative" }}>
       {/* ── Top torn border ── */}
       <TopTear />
 
@@ -140,7 +140,7 @@ export default function CountdownSection() {
                   className="font-display"
                   style={{
                     fontSize: "clamp(2rem, 8vw, 3.2rem)",
-                    color: "#6B0C2A",
+                    color: "#1a4a6e",
                     lineHeight: 1,
                     paddingBottom: "22px",
                     margin: "0 4px",
