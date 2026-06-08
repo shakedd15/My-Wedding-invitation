@@ -70,7 +70,7 @@ export default function ScheduleSection() {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full px-4 py-16"
+      className="relative w-full flex flex-col items-center px-4 py-16"
       style={{ background: "rgb(246, 245, 240)" }}
     >
       {/* Title */}
