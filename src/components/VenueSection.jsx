@@ -207,11 +207,9 @@ export default function VenueSection() {
         animated apart by the GSAP pin timeline above.
       */}
       {/*
-        mix-blend-mode lives on the CONTAINER, not on the individual imgs.
-        The container's z-index would create its own stacking context and
-        break screen-blending if applied to the children — moving it here
-        makes the whole curtain blend against the section's cream background,
-        so pure-black areas become invisible.
+        Cloud curtain — Photoroom PNGs have transparent backgrounds so no
+        blend-mode tricks are needed. Each cloud is 200vw wide so it fully
+        covers the viewport with plenty of overlap at the centre seam.
       */}
       <div
         aria-hidden="true"
@@ -221,36 +219,37 @@ export default function VenueSection() {
           pointerEvents: "none",
           zIndex: 20,
           overflow: "hidden",
-          mixBlendMode: "screen",
         }}
       >
-        {/* Left cloud — starts at centre-left, exits to the left */}
+        {/* Left cloud — anchored to the left, exits left on scroll */}
         <img
           ref={cloudLRef}
-          src="/images/cloud1.png"
+          src="/images/claude1-Photoroom.png"
           alt=""
           style={{
             position: "absolute",
             top: "50%",
-            left: "-5vw",
-            transform: "translateY(-55%)",
-            width: "140vw",
+            left: "-30vw",
+            transform: "translateY(-50%)",
+            width: "200vw",
             userSelect: "none",
+            draggable: "false",
           }}
         />
 
-        {/* Right cloud — starts at centre-right, exits to the right */}
+        {/* Right cloud — anchored to the right, exits right on scroll */}
         <img
           ref={cloudRRef}
-          src="/images/cloud2.png"
+          src="/images/claude2-Photoroom.png"
           alt=""
           style={{
             position: "absolute",
             top: "50%",
-            right: "-5vw",
-            transform: "translateY(-45%)",
-            width: "140vw",
+            right: "-30vw",
+            transform: "translateY(-50%)",
+            width: "200vw",
             userSelect: "none",
+            draggable: "false",
           }}
         />
       </div>
