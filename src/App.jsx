@@ -1,4 +1,4 @@
-import { useRef, useState, useCallback, useEffect } from "react";
+import { useRef, useState, useCallback, useEffect, useMemo } from "react";
 import Envelope from "./components/Envelope.jsx";
 import AudioToggle from "./components/AudioToggle.jsx";
 import WelcomeSection from "./components/WelcomeSection.jsx";
@@ -8,13 +8,24 @@ import CountdownSection from "./components/CountdownSection.jsx";
 import ScheduleSection from "./components/ScheduleSection.jsx";
 import { useLanguage } from "./hooks/useLanguage.js";
 import { ASSETS } from "./constants/config.js";
+import MenuSection from "./components/MenuSection.jsx";
+
+function useUrlParams() {
+  return useMemo(() => {
+    const params = new URLSearchParams(window.location.search);
+    return {
+      guestId: params.get("id"),
+      page: params.get("page"),
+    };
+  }, []);
+}
 
 export default function App() {
-  // Language selector lives here; defaults to Hebrew ('he').
   const { copy } = useLanguage("he");
+  const { guestId, page } = useUrlParams();
 
   const audioRef = useRef(null);
-  const [isOn, setIsOn] = useState(false); // is the music currently audible?
+  const [isOn, setIsOn] = useState(false);
 
   // Attempt autoplay on mount. Most browsers block unmuted autoplay until the
   // user interacts — that's expected; the wax-seal tap (startMusic) guarantees
@@ -25,7 +36,7 @@ export default function App() {
     audio
       .play()
       .then(() => setIsOn(true))
-      .catch(() => setIsOn(false)); // blocked — wait for a user gesture
+      .catch(() => setIsOn(false));
   }, []);
 
   // Fired on the wax-seal tap (a real user gesture) so mobile browsers allow it.
@@ -52,43 +63,61 @@ export default function App() {
     }
   }, []);
 
+  const showMenu = page === "menu";
+
   return (
-    <main className="page-wrapper">
-      {/* ── Stage 1: Full-viewport envelope (100dvh, overflow hidden) ── */}
-      <Envelope copy={copy} onSealTap={startMusic} />
+    <>
+      {/* ── Menu section — visible only when ?page=menu is present ── */}
+      {showMenu ? (
+        <div id="menu-section">
+          <MenuSection />
+        </div>
+      ) : (
+        /* ── Landing page — shown for all visitors, including those with ?id= ── */
+        <main className="page-wrapper">
+          {/* ── Stage 1: Full-viewport envelope (100dvh, overflow hidden) ── */}
+          <Envelope copy={copy} onSealTap={startMusic} />
 
-      {/* ── Stage 2: Welcome message + flowers ── */}
-      <WelcomeSection />
+          {/* ── Stage 2: Welcome message + flowers ── */}
+          <WelcomeSection />
 
-      {/* ── Stage 3: The Date ── */}
-      <DateSection copy={copy} />
+          {/* ── Stage 3: The Date ── */}
+          <DateSection copy={copy} />
 
-      {/* ── Divider: Date → Countdown ── */}
-      <WaveDivider />
+          {/* ── Divider: Date → Countdown ── */}
+          <WaveDivider />
 
-      {/* ── Stage 2.5: Countdown Timer ── */}
-      <CountdownSection />
+          {/* ── Stage 2.5: Countdown Timer ── */}
+          <CountdownSection />
 
-      {/* ── Divider: Countdown → Letter ── */}
-      <WaveDivider from="rgb(217, 234, 245)" to="#edf5fa" />
+          {/* ── Divider: Countdown → Letter ── */}
+          <WaveDivider from="rgb(217, 234, 245)" to="#edf5fa" />
 
-      {/* ── Stage 3: Schedule of Events ── */}
-      <ScheduleSection />
+          {/* ── Stage 3: Schedule of Events ── */}
+          <ScheduleSection />
 
-      {/* Native HTML5 audio. `autoPlay` is attempted; see useEffect above. */}
-      <audio
-        ref={audioRef}
-        src={ASSETS.audioSrc}
-        autoPlay
-        loop
-        preload="auto"
-        playsInline
-        onPlay={() => setIsOn(true)}
-        onPause={() => setIsOn(false)}
-      />
+          {/*
+            RSVP form placeholder — rendered (hidden) when ?id= is present.
+            guestId is available here whenever you're ready to add the form.
+          */}
+          <div id="rsvp-section" style={{ display: guestId ? "block" : "none" }} />
 
-      {/* Fixed floating music toggle — survives all scroll. */}
-      <AudioToggle isOn={isOn} onToggle={toggleSound} labels={copy.audio} />
-    </main>
+          {/* Native HTML5 audio. `autoPlay` is attempted; see useEffect above. */}
+          <audio
+            ref={audioRef}
+            src={ASSETS.audioSrc}
+            autoPlay
+            loop
+            preload="auto"
+            playsInline
+            onPlay={() => setIsOn(true)}
+            onPause={() => setIsOn(false)}
+          />
+
+          {/* Fixed floating music toggle — survives all scroll. */}
+          <AudioToggle isOn={isOn} onToggle={toggleSound} labels={copy.audio} />
+        </main>
+      )}
+    </>
   );
 }
