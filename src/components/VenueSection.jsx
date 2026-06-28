@@ -206,6 +206,13 @@ export default function VenueSection() {
         phones held in landscape.  They start overlapping in the centre and are
         animated apart by the GSAP pin timeline above.
       */}
+      {/*
+        mix-blend-mode lives on the CONTAINER, not on the individual imgs.
+        The container's z-index would create its own stacking context and
+        break screen-blending if applied to the children — moving it here
+        makes the whole curtain blend against the section's cream background,
+        so pure-black areas become invisible.
+      */}
       <div
         aria-hidden="true"
         style={{
@@ -214,6 +221,7 @@ export default function VenueSection() {
           pointerEvents: "none",
           zIndex: 20,
           overflow: "hidden",
+          mixBlendMode: "screen",
         }}
       >
         {/* Left cloud — starts at centre-left, exits to the left */}
@@ -224,11 +232,9 @@ export default function VenueSection() {
           style={{
             position: "absolute",
             top: "50%",
-            /* –5vw so the right edge sits past the midpoint → full overlap */
             left: "-5vw",
             transform: "translateY(-55%)",
             width: "140vw",
-            mixBlendMode: "screen",
             userSelect: "none",
           }}
         />
@@ -244,7 +250,6 @@ export default function VenueSection() {
             right: "-5vw",
             transform: "translateY(-45%)",
             width: "140vw",
-            mixBlendMode: "screen",
             userSelect: "none",
           }}
         />
