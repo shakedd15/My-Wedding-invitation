@@ -70,9 +70,10 @@ export default function VenueSection() {
         },
       });
 
-      // Left cloud slides off to the left, right cloud to the right
-      tl.to(cloudLRef.current,  { x: "-130vw", ease: "power1.inOut" }, 0)
-        .to(cloudRRef.current,  { x:  "130vw", ease: "power1.inOut" }, 0);
+      // Left cloud slides off to the left, right cloud to the right.
+      // Travel distance must exceed the overlap at centre (~300vw each side).
+      tl.to(cloudLRef.current,  { x: "-400vw", ease: "power1.inOut" }, 0)
+        .to(cloudRRef.current,  { x:  "400vw", ease: "power1.inOut" }, 0);
     },
     { scope: sectionRef }
   );
@@ -229,9 +230,9 @@ export default function VenueSection() {
           style={{
             position: "absolute",
             top: "50%",
-            left: "-30vw",
+            left: "-250vw",
             transform: "translateY(-50%)",
-            width: "200vw",
+            width: "800vw",
             userSelect: "none",
             draggable: "false",
           }}
@@ -245,9 +246,9 @@ export default function VenueSection() {
           style={{
             position: "absolute",
             top: "50%",
-            right: "-30vw",
+            right: "-250vw",
             transform: "translateY(-50%)",
-            width: "200vw",
+            width: "800vw",
             userSelect: "none",
             draggable: "false",
           }}
