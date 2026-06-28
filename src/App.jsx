@@ -6,6 +6,7 @@ import DateSection from "./components/DateSection.jsx";
 import WaveDivider from "./components/WaveDivider.jsx";
 import CountdownSection from "./components/CountdownSection.jsx";
 import ScheduleSection from "./components/ScheduleSection.jsx";
+import VenueSection from "./components/VenueSection.jsx";
 import { useLanguage } from "./hooks/useLanguage.js";
 import { ASSETS } from "./constants/config.js";
 import MenuSection from "./components/MenuSection.jsx";
@@ -95,6 +96,9 @@ export default function App() {
 
           {/* ── Stage 3: Schedule of Events ── */}
           <ScheduleSection />
+
+          {/* ── Stage 4: Venue / Location ── */}
+          <VenueSection />
 
           {/*
             RSVP form placeholder — rendered (hidden) when ?id= is present.
