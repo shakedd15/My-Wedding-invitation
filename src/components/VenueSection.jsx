@@ -30,52 +30,49 @@ function MapPin({ size = 30 }) {
 
 export default function VenueSection() {
   const sectionRef = useRef(null);
+  const cloudLRef  = useRef(null);
+  const cloudRRef  = useRef(null);
+  const titleRef   = useRef(null);
 
   useGSAP(
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      /* ── Title + card fade-in ── */
+      /* ── Title fades in after clouds are gone ──
+         Delay = 0.5 so it only starts once clouds are mostly open */
       gsap.fromTo(
-        ".venue-title",
-        { autoAlpha: 0, y: 22 },
+        titleRef.current,
+        { autoAlpha: 0, y: 20 },
         {
           autoAlpha: 1,
           y: 0,
-          duration: 0.9,
+          duration: 1,
           ease: "power2.out",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 78%", once: true },
+          scrollTrigger: {
+            trigger: sectionRef.current,
+            start: "top 40%",   // fires late — well into the pin phase
+            once: true,
+          },
         }
       );
 
-      gsap.fromTo(
-        ".venue-card",
-        { autoAlpha: 0, y: 48, scale: 0.97 },
-        {
-          autoAlpha: 1,
-          y: 0,
-          scale: 1,
-          duration: 1.15,
-          ease: "power2.out",
-          scrollTrigger: { trigger: sectionRef.current, start: "top 72%", once: true },
-        }
-      );
-
-      /* ── Cloud curtain: splits open as the section scrolls into view ── */
+      /* ── Cloud curtain: pin the section; clouds drift apart on scroll ──
+         end: "+=1200"  →  user must scroll 1 200 px before clouds fully open,
+         giving plenty of time to appreciate them. */
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: sectionRef.current,
-          // Start when the section top hits 90% down the viewport,
-          // finish when it's at 15% — plenty of scroll travel for a smooth scrub.
-          start: "top 90%",
-          end: "top 10%",
-          scrub: 1.4,
+          start: "top top",      // section reaches the very top of viewport
+          end: "+=1200",         // 1 200 px of scroll travel
+          pin: true,             // freeze the section in place during animation
+          pinSpacing: true,      // reserve the extra scroll space below
+          scrub: 2,              // higher = lazier / more cinematic follow
         },
       });
 
-      // Left cloud flies out to the left, right cloud to the right — simultaneously.
-      tl.to(".cloud-l", { x: "-130%", ease: "power1.inOut" }, 0)
-        .to(".cloud-r", { x: "130%", ease: "power1.inOut" }, 0);
+      // Left cloud slides off to the left, right cloud to the right
+      tl.to(cloudLRef.current,  { x: "-130vw", ease: "power1.inOut" }, 0)
+        .to(cloudRRef.current,  { x:  "130vw", ease: "power1.inOut" }, 0);
     },
     { scope: sectionRef }
   );
@@ -85,16 +82,23 @@ export default function VenueSection() {
       ref={sectionRef}
       style={{
         background: CREAM,
-        padding: "3rem 1.5rem 4.5rem",
         direction: "rtl",
         position: "relative",
-        /* overflow hidden clips the clouds cleanly as they fly out */
+        /* Fill the viewport so the pinned section looks full-screen */
+        minHeight: "100dvh",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "3rem 1.5rem 4.5rem",
+        /* Clips clouds cleanly as they fly off the edges */
         overflow: "hidden",
       }}
     >
-      {/* ── Section title ── */}
+      {/* ── Section title (starts hidden; fades in mid-pin) ── */}
       <h2
-        className="venue-title font-display text-center"
+        ref={titleRef}
+        className="font-display text-center"
         style={{
           opacity: 0,
           color: "var(--color-ink)",
@@ -103,6 +107,8 @@ export default function VenueSection() {
           fontWeight: 300,
           letterSpacing: "0.02em",
           marginBottom: "1.75rem",
+          position: "relative",
+          zIndex: 1,
         }}
       >
         המיקום
@@ -110,12 +116,11 @@ export default function VenueSection() {
 
       {/* ── Venue card ── */}
       <div
-        className="venue-card"
         style={{
-          opacity: 0,
           position: "relative",
+          zIndex: 1,
           maxWidth: "400px",
-          margin: "0 auto",
+          width: "100%",
           borderRadius: "28px",
           overflow: "hidden",
           boxShadow: "0 12px 48px rgba(0,0,0,0.2), 0 2px 8px rgba(0,0,0,0.08)",
@@ -133,7 +138,7 @@ export default function VenueSection() {
           }}
         />
 
-        {/* Top fade — cream bleeds into the photo */}
+        {/* Top cream-to-transparent fade */}
         <div
           aria-hidden="true"
           style={{
@@ -194,9 +199,12 @@ export default function VenueSection() {
 
       {/*
         ── Cloud curtain ──
-        mix-blend-mode: screen makes the pure-black background invisible against
-        the cream section, leaving only the cloud shapes visible.
-        Both clouds start stacked at centre and are animated apart by GSAP.
+        mix-blend-mode: screen  →  pure black background vanishes against the
+        cream section colour; only the luminous cloud shapes remain visible.
+
+        Each cloud is 140vw wide so it covers the full viewport even on wide
+        phones held in landscape.  They start overlapping in the centre and are
+        animated apart by the GSAP pin timeline above.
       */}
       <div
         aria-hidden="true"
@@ -204,41 +212,40 @@ export default function VenueSection() {
           position: "absolute",
           inset: 0,
           pointerEvents: "none",
-          zIndex: 10,
+          zIndex: 20,
           overflow: "hidden",
         }}
       >
-        {/* Left cloud (realistic blue-white) — flies to the left */}
+        {/* Left cloud — starts at centre-left, exits to the left */}
         <img
-          className="cloud-l"
+          ref={cloudLRef}
           src="/images/cloud1.png"
           alt=""
           style={{
             position: "absolute",
             top: "50%",
-            left: "-20%",
-            transform: "translateY(-50%)",
-            width: "75%",
+            /* –5vw so the right edge sits past the midpoint → full overlap */
+            left: "-5vw",
+            transform: "translateY(-55%)",
+            width: "140vw",
             mixBlendMode: "screen",
             userSelect: "none",
-            draggable: "false",
           }}
         />
 
-        {/* Right cloud (pastel pink-purple) — flies to the right */}
+        {/* Right cloud — starts at centre-right, exits to the right */}
         <img
-          className="cloud-r"
+          ref={cloudRRef}
           src="/images/cloud2.png"
           alt=""
           style={{
             position: "absolute",
             top: "50%",
-            right: "-20%",
-            transform: "translateY(-50%)",
-            width: "75%",
+            right: "-5vw",
+            transform: "translateY(-45%)",
+            width: "140vw",
             mixBlendMode: "screen",
             userSelect: "none",
-            draggable: "false",
           }}
         />
       </div>
