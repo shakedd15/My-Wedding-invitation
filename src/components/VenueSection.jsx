@@ -70,10 +70,11 @@ export default function VenueSection() {
         },
       });
 
-      // Left cloud slides off to the left, right cloud to the right.
-      // Travel distance must exceed the overlap at centre (~300vw each side).
-      tl.to(cloudLRef.current,  { x: "-400vw", ease: "power1.inOut" }, 0)
-        .to(cloudRRef.current,  { x:  "400vw", ease: "power1.inOut" }, 0);
+      // Left cloud slides off left, right cloud slides off right.
+      // Each needs to travel ~500vw to push its visible right/left edge
+      // past the viewport boundary so it fully disappears.
+      tl.to(cloudLRef.current,  { x: "-600vw", ease: "power1.inOut" }, 0)
+        .to(cloudRRef.current,  { x:  "600vw", ease: "power1.inOut" }, 0);
     },
     { scope: sectionRef }
   );
@@ -222,7 +223,12 @@ export default function VenueSection() {
           overflow: "hidden",
         }}
       >
-        {/* Left cloud — anchored to the left, exits left on scroll */}
+        {/*
+          Left cloud:  left: -400vw → image spans -400vw … 400vw,
+                       centre lands at 0vw (left edge of viewport).
+                       Right half (0 → 400vw) is fully visible; overflow:hidden
+                       clips the invisible left half.
+        */}
         <img
           ref={cloudLRef}
           src="/images/claude1-Photoroom.png"
@@ -230,7 +236,7 @@ export default function VenueSection() {
           style={{
             position: "absolute",
             top: "50%",
-            left: "-250vw",
+            left: "-400vw",
             transform: "translateY(-50%)",
             width: "800vw",
             userSelect: "none",
@@ -238,7 +244,12 @@ export default function VenueSection() {
           }}
         />
 
-        {/* Right cloud — anchored to the right, exits right on scroll */}
+        {/*
+          Right cloud: right: -400vw → image spans -300vw … 500vw
+                       (right edge sits 400vw off-screen right),
+                       centre lands at 100vw (right edge of viewport).
+                       Left half (-300 → 100vw) is fully visible.
+        */}
         <img
           ref={cloudRRef}
           src="/images/claude2-Photoroom.png"
@@ -246,7 +257,7 @@ export default function VenueSection() {
           style={{
             position: "absolute",
             top: "50%",
-            right: "-250vw",
+            right: "-400vw",
             transform: "translateY(-50%)",
             width: "800vw",
             userSelect: "none",
