@@ -35,6 +35,7 @@ export default function VenueSection() {
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
+      /* ── Title + card fade-in ── */
       gsap.fromTo(
         ".venue-title",
         { autoAlpha: 0, y: 22 },
@@ -59,6 +60,22 @@ export default function VenueSection() {
           scrollTrigger: { trigger: sectionRef.current, start: "top 72%", once: true },
         }
       );
+
+      /* ── Cloud curtain: splits open as the section scrolls into view ── */
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          // Start when the section top hits 90% down the viewport,
+          // finish when it's at 15% — plenty of scroll travel for a smooth scrub.
+          start: "top 90%",
+          end: "top 10%",
+          scrub: 1.4,
+        },
+      });
+
+      // Left cloud flies out to the left, right cloud to the right — simultaneously.
+      tl.to(".cloud-l", { x: "-130%", ease: "power1.inOut" }, 0)
+        .to(".cloud-r", { x: "130%", ease: "power1.inOut" }, 0);
     },
     { scope: sectionRef }
   );
@@ -70,9 +87,12 @@ export default function VenueSection() {
         background: CREAM,
         padding: "3rem 1.5rem 4.5rem",
         direction: "rtl",
+        position: "relative",
+        /* overflow hidden clips the clouds cleanly as they fly out */
+        overflow: "hidden",
       }}
     >
-      {/* Section title */}
+      {/* ── Section title ── */}
       <h2
         className="venue-title font-display text-center"
         style={{
@@ -88,7 +108,7 @@ export default function VenueSection() {
         המיקום
       </h2>
 
-      {/* Card */}
+      {/* ── Venue card ── */}
       <div
         className="venue-card"
         style={{
@@ -101,7 +121,6 @@ export default function VenueSection() {
           boxShadow: "0 12px 48px rgba(0,0,0,0.2), 0 2px 8px rgba(0,0,0,0.08)",
         }}
       >
-        {/* Venue photo */}
         <img
           src="/images/tel-aviv.jpeg"
           alt="East TLV — מיטב 13 תל אביב"
@@ -114,7 +133,7 @@ export default function VenueSection() {
           }}
         />
 
-        {/* Top fade — cream bleeds into the photo so the section feels continuous */}
+        {/* Top fade — cream bleeds into the photo */}
         <div
           aria-hidden="true"
           style={{
@@ -131,7 +150,7 @@ export default function VenueSection() {
           }}
         />
 
-        {/* Location info overlaid on the fade */}
+        {/* Location info */}
         <div
           style={{
             position: "absolute",
@@ -171,6 +190,57 @@ export default function VenueSection() {
             </p>
           </div>
         </div>
+      </div>
+
+      {/*
+        ── Cloud curtain ──
+        mix-blend-mode: screen makes the pure-black background invisible against
+        the cream section, leaving only the cloud shapes visible.
+        Both clouds start stacked at centre and are animated apart by GSAP.
+      */}
+      <div
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          inset: 0,
+          pointerEvents: "none",
+          zIndex: 10,
+          overflow: "hidden",
+        }}
+      >
+        {/* Left cloud (realistic blue-white) — flies to the left */}
+        <img
+          className="cloud-l"
+          src="/images/cloud1.png"
+          alt=""
+          style={{
+            position: "absolute",
+            top: "50%",
+            left: "-20%",
+            transform: "translateY(-50%)",
+            width: "75%",
+            mixBlendMode: "screen",
+            userSelect: "none",
+            draggable: "false",
+          }}
+        />
+
+        {/* Right cloud (pastel pink-purple) — flies to the right */}
+        <img
+          className="cloud-r"
+          src="/images/cloud2.png"
+          alt=""
+          style={{
+            position: "absolute",
+            top: "50%",
+            right: "-20%",
+            transform: "translateY(-50%)",
+            width: "75%",
+            mixBlendMode: "screen",
+            userSelect: "none",
+            draggable: "false",
+          }}
+        />
       </div>
     </section>
   );
