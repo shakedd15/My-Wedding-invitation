@@ -1,69 +1,30 @@
 import { useRef } from "react";
-import { Heart, Leaf, Sparkles } from "lucide-react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const BLUE = "var(--color-blue)";
-const BLUE_HEX = "#7BAEC7";
-const GOLD_HEX = "#c5a069";
+/* ── Design tokens (exact spec values) ─────────────── */
+const C_BLUE      = "#8FB7D3";   // greeting, title, "יום שלישי", card border
+const C_BLUE_DARK = "#79A9CC";   // card number + label
+const C_SAVE      = "#7EAED2";   // SAVE THE DATE
+const C_BODY      = "#2F2F2F";   // second text
+const BG          = "#FAF8F5";   // section background
 
-/* ── Reusable icon shorthands ───────────────────────── */
-const iconProps = (size = 12, color = BLUE_HEX, sw = 1.3) => ({
-  size,
-  color,
-  strokeWidth: sw,
-  style: { flexShrink: 0 },
-});
-
-/* Thin horizontal rule with a centered decorative cluster */
-function OrnamentDivider({ showGold = false }) {
+/* ── Thin line · circle · thin line divider ─────────── */
+function LineDivider({ lineWidth = 120 }) {
+  const halfLine = (lineWidth - 20) / 2; // subtract circle + gaps
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "8px",
-        width: "min(260px, 72vw)",
-        opacity: 0.75,
-      }}
-    >
-      {/* left line */}
-      <div style={{ flex: 1, height: "0.7px", background: BLUE_HEX, opacity: 0.45 }} />
-
-      {/* left decoration */}
-      <Leaf {...iconProps(11, BLUE_HEX, 1.3)} style={{ transform: "rotate(130deg)", flexShrink: 0 }} />
-
-      {/* center heart */}
-      <Heart
-        {...iconProps(13, showGold ? GOLD_HEX : BLUE_HEX, 1.4)}
-        fill={showGold ? GOLD_HEX : BLUE_HEX}
-        style={{ opacity: 0.7, flexShrink: 0 }}
-      />
-
-      {/* right decoration */}
-      <Leaf {...iconProps(11, BLUE_HEX, 1.3)} style={{ transform: "rotate(-50deg)", flexShrink: 0 }} />
-
-      {/* right line */}
-      <div style={{ flex: 1, height: "0.7px", background: BLUE_HEX, opacity: 0.45 }} />
+    <div style={{ display: "flex", alignItems: "center", gap: "8px", opacity: 0.4 }}>
+      <div style={{ width: halfLine, height: "1px", background: C_BLUE }} />
+      <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: C_BLUE, flexShrink: 0 }} />
+      <div style={{ width: halfLine, height: "1px", background: C_BLUE }} />
     </div>
   );
 }
 
-/* Simple dot divider */
-function DotDivider() {
-  return (
-    <div style={{ display: "flex", alignItems: "center", gap: "8px", width: "min(200px, 60vw)", opacity: 0.65 }}>
-      <div style={{ flex: 1, height: "0.7px", background: BLUE_HEX, opacity: 0.45 }} />
-      <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: BLUE_HEX, opacity: 0.55 }} />
-      <div style={{ flex: 1, height: "0.7px", background: BLUE_HEX, opacity: 0.45 }} />
-    </div>
-  );
-}
-
-/* ── Main component ──────────────────────────────────── */
+/* ── Component ───────────────────────────────────────── */
 export default function DateSection({ copy }) {
   const sectionRef = useRef(null);
   const { greeting, greetingSubtitle, title, decorLine, units, dayName } = copy.dateSection;
@@ -114,100 +75,167 @@ export default function DateSection({ copy }) {
     <section
       ref={sectionRef}
       dir={copy.meta.dir}
-      className="date-section flex flex-col items-center gap-5 px-6 py-14 mt-10"
+      style={{
+        background: BG,
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        paddingBottom: "0",
+        marginTop: "10px",
+      }}
     >
-      {/* ── Top ornament ── */}
-      <div className="ds-ornament" style={{ opacity: 0 }}>
-        <OrnamentDivider />
-      </div>
-
-      {/* ── Greeting ── */}
-      <p
-        className="ds-greeting font-display text-center"
-        style={{ opacity: 0, color: BLUE, fontSize: "clamp(1.05rem, 4.2vw, 1.25rem)", fontWeight: 500 }}
-      >
-        {greeting}
-      </p>
-
-      <p
-        className="ds-greeting-sub font-body text-center"
-        style={{ opacity: 0, color: BLUE, fontSize: "clamp(0.82rem, 3.2vw, 0.95rem)", fontWeight: 300, marginTop: "-8px" }}
-      >
-        {greetingSubtitle}
-      </p>
-
-      {/* ── Center divider (branches + heart) ── */}
-      <div className="ds-divider" style={{ opacity: 0, marginTop: "2px" }}>
-        <OrnamentDivider showGold />
-      </div>
-
-      {/* ── Main title ── */}
-      <h2
-        className="ds-title font-display text-center"
+      <div
         style={{
-          opacity: 0,
-          color: BLUE,
-          fontSize: "clamp(2.6rem, 10vw, 3.8rem)",
-          fontWeight: 700,
-          lineHeight: 1.1,
-          letterSpacing: "0.01em",
-          marginTop: "4px",
+          width: "90%",
+          maxWidth: "640px",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          textAlign: "center",
         }}
       >
-        {title}
-      </h2>
+        {/* ── Top decoration ── */}
+        <div className="ds-ornament" style={{ opacity: 0, marginTop: "20px" }}>
+          <LineDivider lineWidth={120} />
+        </div>
 
-      {/* ── Save the Date row ── */}
-      <div
-        className="ds-save-date flex items-center gap-3"
-        style={{ opacity: 0, marginTop: "-4px" }}
-      >
-        <Sparkles {...iconProps(13, GOLD_HEX, 1.3)} />
+        {/* ── Greeting ── */}
         <p
-          className="font-body"
-          style={{ color: BLUE, fontSize: "clamp(0.72rem, 2.8vw, 0.85rem)", fontWeight: 500, letterSpacing: "0.22em", textTransform: "uppercase" }}
+          className="ds-greeting font-body"
+          style={{
+            opacity: 0,
+            marginTop: "32px",
+            fontSize: "18px",
+            fontWeight: 300,
+            color: C_BLUE,
+            letterSpacing: "0.5px",
+            lineHeight: 1.5,
+          }}
+        >
+          {greeting}
+        </p>
+
+        {/* ── Second text ── */}
+        <p
+          className="ds-greeting-sub font-body"
+          style={{
+            opacity: 0,
+            marginTop: "28px",
+            fontSize: "24px",
+            fontWeight: 400,
+            color: C_BODY,
+            lineHeight: 1.6,
+            letterSpacing: "0.2px",
+          }}
+        >
+          {greetingSubtitle}
+        </p>
+
+        {/* ── Small divider ── */}
+        <div className="ds-divider" style={{ opacity: 0, margin: "32px 0" }}>
+          <LineDivider lineWidth={180} />
+        </div>
+
+        {/* ── Main title ── */}
+        <h2
+          className="ds-title font-display"
+          style={{
+            opacity: 0,
+            marginTop: "0",
+            fontSize: "54px",
+            fontWeight: 300,
+            color: C_BLUE,
+            letterSpacing: "1px",
+            lineHeight: 1.15,
+          }}
+        >
+          {title}
+        </h2>
+
+        {/* ── Save the Date ── */}
+        <p
+          className="ds-save-date font-body"
+          style={{
+            opacity: 0,
+            marginTop: "18px",
+            fontSize: "18px",
+            fontWeight: 500,
+            letterSpacing: "6px",
+            color: C_SAVE,
+            textTransform: "uppercase",
+          }}
         >
           {decorLine}
         </p>
-        <Sparkles {...iconProps(13, GOLD_HEX, 1.3)} />
-      </div>
 
-      {/* Heart below Save the Date */}
-      <div className="ds-save-date" style={{ opacity: 0, marginTop: "-8px" }}>
-        <Heart {...iconProps(13, BLUE_HEX, 1.4)} fill={BLUE_HEX} style={{ opacity: 0.5 }} />
-      </div>
-
-      {/* ── Date cards row ── */}
-      <div className="flex items-center gap-4 mt-1" dir="ltr">
-        {units.map((unit) => (
-          <div key={unit.label} className="date-card ds-card" style={{ opacity: 0 }}>
-            <span
-              className="font-display leading-none"
-              style={{ color: BLUE, fontSize: "clamp(2.2rem, 8.5vw, 2.8rem)", fontWeight: 400, letterSpacing: "-0.02em" }}
+        {/* ── Date cards ── */}
+        <div
+          className="flex items-center"
+          dir="ltr"
+          style={{ gap: "20px", marginTop: "32px" }}
+        >
+          {units.map((unit) => (
+            <div
+              key={unit.label}
+              className="ds-card"
+              style={{
+                opacity: 0,
+                width: "120px",
+                height: "150px",
+                borderRadius: "28px",
+                border: `2px solid ${C_BLUE}`,
+                background: "rgba(255,255,255,0.45)",
+                boxShadow: "0 10px 30px rgba(80,120,170,0.08)",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "6px",
+                flexShrink: 0,
+              }}
             >
-              {unit.value}
-            </span>
-            {/* Gold accent line */}
-            <div style={{ width: "22px", height: "1.5px", background: GOLD_HEX, opacity: 0.8, margin: "8px 0 7px", borderRadius: "1px" }} />
-            <span
-              className="font-body"
-              style={{ color: BLUE, fontSize: "clamp(0.72rem, 2.6vw, 0.82rem)", fontWeight: 500, letterSpacing: "0.12em" }}
-            >
-              {unit.label}
-            </span>
-          </div>
-        ))}
-      </div>
+              <span
+                className="font-display"
+                style={{
+                  fontSize: "56px",
+                  fontWeight: 300,
+                  color: C_BLUE_DARK,
+                  lineHeight: 1,
+                  letterSpacing: "-1px",
+                }}
+              >
+                {unit.value}
+              </span>
+              <span
+                className="font-body"
+                style={{
+                  fontSize: "18px",
+                  fontWeight: 600,
+                  color: C_BLUE_DARK,
+                  letterSpacing: "0.5px",
+                }}
+              >
+                {unit.label}
+              </span>
+            </div>
+          ))}
+        </div>
 
-      {/* ── Day name ── */}
-      <div className="ds-dayname flex flex-col items-center gap-2" style={{ opacity: 0, marginTop: "4px" }}>
+        {/* ── Bottom text ── */}
         <p
-          className="font-display text-center"
-          style={{ color: BLUE, fontSize: "clamp(1rem, 3.8vw, 1.2rem)", fontWeight: 300, letterSpacing: "0.28em" }}
+          className="ds-dayname font-display"
+          style={{
+            opacity: 0,
+            marginTop: "36px",
+            marginBottom: "50px",
+            fontSize: "22px",
+            fontWeight: 300,
+            color: C_BLUE,
+            letterSpacing: "0.5px",
+          }}
         >
           {dayName}
         </p>
-        <Heart {...iconProps(12, BLUE_HEX, 1.4)} fill={BLUE_HEX} style={{ opacity: 0.5 }} />
       </div>
     </section>
   );
