@@ -11,14 +11,52 @@ const C_BLUE_DARK = "#79A9CC";   // card number + label
 const C_BODY      = "#2F2F2F";   // second text
 const BG          = "transparent";   // inherit page-wrapper background
 
-/* ── Thin line · circle · thin line divider ─────────── */
-function LineDivider({ lineWidth = 120 }) {
-  const halfLine = (lineWidth - 20) / 2; // subtract circle + gaps
+/* ── Line · leaf · heart · leaf · line divider ───────── */
+function LineDivider({ heartSize = 16, lineWidth = 50 }) {
+  const leafH = heartSize * 4.4;
+  const leafW = heartSize * 3.2;
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "8px", opacity: 0.4 }}>
-      <div style={{ width: halfLine, height: "1px", background: C_BLUE }} />
-      <div style={{ width: "5px", height: "5px", borderRadius: "50%", background: C_BLUE, flexShrink: 0 }} />
-      <div style={{ width: halfLine, height: "1px", background: C_BLUE }} />
+    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+      {/* Left line */}
+      <div style={{ width: lineWidth, height: "1px", background: C_BLUE, opacity: 0.5, flexShrink: 0 }} />
+      {/* Left leaf (mirrored — tip points toward heart) */}
+      <img
+        src="/images/branch.png"
+        alt=""
+        aria-hidden="true"
+        style={{
+          width: leafW,
+          height: leafH,
+          objectFit: "contain",
+          transform: "scaleX(-1)",
+          flexShrink: 0,
+        }}
+      />
+      {/* Heart */}
+      <svg
+        width={heartSize}
+        height={heartSize}
+        viewBox="0 0 24 24"
+        fill={C_BLUE}
+        style={{ flexShrink: 0 }}
+        aria-hidden="true"
+      >
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+      </svg>
+      {/* Right leaf */}
+      <img
+        src="/images/branch.png"
+        alt=""
+        aria-hidden="true"
+        style={{
+          width: leafW,
+          height: leafH,
+          objectFit: "contain",
+          flexShrink: 0,
+        }}
+      />
+      {/* Right line */}
+      <div style={{ width: lineWidth, height: "1px", background: C_BLUE, opacity: 0.5, flexShrink: 0 }} />
     </div>
   );
 }
@@ -91,7 +129,7 @@ export default function DateSection({ copy }) {
       >
         {/* ── Top decoration ── */}
         <div className="ds-ornament" style={{ opacity: 0, marginTop: "20px" }}>
-          <LineDivider lineWidth={120} />
+          <LineDivider heartSize={14} lineWidth={40} />
         </div>
 
         {/* ── Greeting ── */}
@@ -128,7 +166,7 @@ export default function DateSection({ copy }) {
 
         {/* ── Small divider ── */}
         <div className="ds-divider" style={{ opacity: 0, margin: "32px 0" }}>
-          <LineDivider lineWidth={180} />
+          <LineDivider heartSize={16} lineWidth={50} />
         </div>
 
         {/* ── Main title ── */}
