@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 const C_BLUE      = "#8FB7D3";   // greeting, title, "יום שלישי", card border
 const C_BLUE_DARK = "#79A9CC";   // card number + label
 const C_BODY      = "#2F2F2F";   // second text
-const BG          = "#FAF8F5";   // section background
+const BG          = "var(--color-cream)";   // section background — matches main
 
 /* ── Thin line · circle · thin line divider ─────────── */
 function LineDivider({ lineWidth = 120 }) {
