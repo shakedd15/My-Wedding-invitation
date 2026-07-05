@@ -243,11 +243,22 @@ export default function Envelope({ copy, onSealTap }) {
         ref={arrowRef}
         aria-hidden="true"
         className="pointer-events-none absolute bottom-14 left-1/2 z-40 -translate-x-1/2"
-        style={{ opacity: 0, willChange: "transform, opacity" }}
+        style={{ opacity: 0, willChange: "transform, opacity", display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}
       >
+        <span
+          className="font-body text-ink"
+          style={{
+            fontSize: "14px",
+            fontWeight: 300,
+            letterSpacing: "1px",
+            whiteSpace: "nowrap",
+          }}
+        >
+          גללו מטה
+        </span>
         <svg
-          width="36"
-          height="36"
+          width="72"
+          height="72"
           viewBox="0 0 36 36"
           fill="none"
           aria-hidden="true"

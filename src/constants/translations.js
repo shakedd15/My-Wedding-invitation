@@ -79,7 +79,7 @@ export const TRANSLATIONS = {
       title: "מועד החתונה",
       decorLine: "SAVE THE DATE",
       units: [
-        { value: "03", label: "יום" },
+        { value: "10", label: "יום" },
         { value: "11", label: "חודש" },
         { value: "2026", label: "שנה" },
       ],
@@ -129,7 +129,7 @@ export const TRANSLATIONS = {
       title: "Wedding Date",
       decorLine: "SAVE THE DATE",
       units: [
-        { value: "03", label: "Day" },
+        { value: "10", label: "Day" },
         { value: "11", label: "Month" },
         { value: "2026", label: "Year" },
       ],

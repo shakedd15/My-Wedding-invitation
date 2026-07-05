@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
-// Wedding date: 03/11/2026 at 18:00
-const WEDDING = new Date("2026-11-03T18:00:00");
+// Wedding date: 10/11/2026 at 18:00
+const WEDDING = new Date("2026-11-10T18:00:00");
 
 function calcTimeLeft() {
   const now = new Date();
