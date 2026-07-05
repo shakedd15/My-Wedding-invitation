@@ -38,7 +38,7 @@ export default function WelcomeSection() {
       style={{
         /* Top is fully transparent so flowers sit directly on the invitation image.
            The white/blue background only begins below the flower area. */
-        background: "linear-gradient(180deg, transparent 0%, transparent 42%, #FFFFFF 65%, #FFFFFF 100%)",
+        background: "linear-gradient(180deg, transparent 0%, transparent 42%, rgb(246,245,240) 65%, rgb(246,245,240) 100%)",
         marginTop: "-30vw",   /* pull up so ~half the flowers overlap the photo */
         zIndex: 5,
       }}

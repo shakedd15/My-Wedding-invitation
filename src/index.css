@@ -145,6 +145,7 @@ body {
 .page-wrapper {
   width: 100%;
   position: relative;
+  background: rgb(246, 245, 240);
 }
 
 /* Full-height scroll section baseline. */
