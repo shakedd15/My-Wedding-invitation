@@ -26,24 +26,6 @@ export default function WelcomeSection() {
         { autoAlpha: 0, y: 30, scale: 0.96 },
         { autoAlpha: 1, y: 0, scale: 1, duration: 1.1, ease: "power2.out", scrollTrigger: trigger }
       );
-
-      gsap.fromTo(
-        ".wc-line1",
-        { autoAlpha: 0, y: 40 },
-        { autoAlpha: 1, y: 0, duration: 0.9, ease: "power2.out", delay: 0.35, scrollTrigger: trigger }
-      );
-
-      gsap.fromTo(
-        ".wc-line2",
-        { autoAlpha: 0, y: 30 },
-        { autoAlpha: 1, y: 0, duration: 0.9, ease: "power2.out", delay: 0.6, scrollTrigger: trigger }
-      );
-
-      gsap.fromTo(
-        ".wc-divider",
-        { scaleX: 0, autoAlpha: 0 },
-        { scaleX: 1, autoAlpha: 1, duration: 0.7, ease: "power2.out", delay: 0.85, scrollTrigger: trigger }
-      );
     },
     { scope: sectionRef }
   );
@@ -76,49 +58,6 @@ export default function WelcomeSection() {
         />
       </div>
 
-      {/* ── Text panel ── */}
-      <div
-        className="flex w-full flex-col items-center gap-6 px-8 pb-28 pt-4 text-center"
-      >
-        {/* Decorative dot-rule */}
-        <div
-          className="wc-divider flex items-center gap-3"
-          style={{ opacity: 0, transformOrigin: "center" }}
-        >
-          <div className="h-px w-16" style={{ background: "var(--color-blue)", opacity: 0.4 }} />
-          <svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true">
-            <circle cx="4" cy="4" r="3" fill="var(--color-blue)" opacity="0.6" />
-          </svg>
-          <div className="h-px w-16" style={{ background: "var(--color-blue)", opacity: 0.4 }} />
-        </div>
-
-        {/* Line 1 — large, display serif */}
-        <h2
-          className="wc-line1 font-display font-light leading-snug"
-          style={{
-            opacity: 0,
-            color: "var(--color-blue)",
-            fontSize: "clamp(1.8rem, 7vw, 2.8rem)",
-            letterSpacing: "0.04em",
-          }}
-        >
-          משפחה וחברים יקרים,
-        </h2>
-
-        {/* Line 2 — slightly smaller, same family */}
-        <p
-          className="wc-line2 font-display font-light leading-relaxed"
-          style={{
-            opacity: 0,
-            color: "var(--color-ink)",
-            fontSize: "clamp(1.1rem, 4.5vw, 1.5rem)",
-            maxWidth: "34ch",
-            letterSpacing: "0.02em",
-          }}
-        >
-          אנחנו נכבדים ומתרגשים להזמינכם לחתונתנו
-        </p>
-      </div>
     </section>
   );
 }
