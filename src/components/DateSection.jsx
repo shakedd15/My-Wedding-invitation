@@ -41,10 +41,34 @@ function TopOrnament() {
 function CenterDivider() {
   const c = "var(--color-blue)";
   return (
-    <svg width="200" height="10" viewBox="0 0 200 10" fill="none" aria-hidden="true">
-      <line x1="0" y1="5" x2="88" y2="5" stroke={c} strokeOpacity="0.35" strokeWidth="0.8"/>
-      <circle cx="100" cy="5" r="2.5" fill={c} opacity="0.4"/>
-      <line x1="112" y1="5" x2="200" y2="5" stroke={c} strokeOpacity="0.35" strokeWidth="0.8"/>
+    <svg width="220" height="28" viewBox="0 0 220 28" fill="none" aria-hidden="true">
+      {/* left line */}
+      <line x1="0" y1="14" x2="72" y2="14" stroke={c} strokeOpacity="0.38" strokeWidth="0.8"/>
+      {/* left sprig */}
+      <line x1="78" y1="18" x2="78" y2="8"   stroke={c} strokeOpacity="0.5" strokeWidth="0.9"/>
+      <line x1="78" y1="14" x2="72" y2="8"   stroke={c} strokeOpacity="0.45" strokeWidth="0.8"/>
+      <line x1="78" y1="11" x2="84" y2="5"   stroke={c} strokeOpacity="0.4" strokeWidth="0.8"/>
+      <line x1="78" y1="9"  x2="74" y2="4"   stroke={c} strokeOpacity="0.38" strokeWidth="0.8"/>
+      <circle cx="72" cy="8"  r="2" fill={c} opacity="0.48"/>
+      <circle cx="84" cy="5"  r="1.8" fill={c} opacity="0.42"/>
+      <circle cx="74" cy="4"  r="1.6" fill={c} opacity="0.38"/>
+      <circle cx="78" cy="8"  r="1.8" fill={c} opacity="0.5"/>
+      {/* heart */}
+      <path
+        d="M110 20C110 20 99 13 99 8C99 5.2 101 3.5 103.5 3.5C105.8 3.5 108.2 5 110 8C111.8 5 114.2 3.5 116.5 3.5C119 3.5 121 5.2 121 8C121 13 110 20 110 20Z"
+        fill={c} opacity="0.55"
+      />
+      {/* right sprig (mirror) */}
+      <line x1="142" y1="18" x2="142" y2="8"  stroke={c} strokeOpacity="0.5" strokeWidth="0.9"/>
+      <line x1="142" y1="14" x2="148" y2="8"  stroke={c} strokeOpacity="0.45" strokeWidth="0.8"/>
+      <line x1="142" y1="11" x2="136" y2="5"  stroke={c} strokeOpacity="0.4" strokeWidth="0.8"/>
+      <line x1="142" y1="9"  x2="146" y2="4"  stroke={c} strokeOpacity="0.38" strokeWidth="0.8"/>
+      <circle cx="148" cy="8"  r="2" fill={c} opacity="0.48"/>
+      <circle cx="136" cy="5"  r="1.8" fill={c} opacity="0.42"/>
+      <circle cx="146" cy="4"  r="1.6" fill={c} opacity="0.38"/>
+      <circle cx="142" cy="8"  r="1.8" fill={c} opacity="0.5"/>
+      {/* right line */}
+      <line x1="148" y1="14" x2="220" y2="14" stroke={c} strokeOpacity="0.38" strokeWidth="0.8"/>
     </svg>
   );
 }
