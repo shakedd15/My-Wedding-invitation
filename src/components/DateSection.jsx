@@ -8,7 +8,6 @@ gsap.registerPlugin(ScrollTrigger, useGSAP);
 /* ── Design tokens (exact spec values) ─────────────── */
 const C_BLUE      = "#8FB7D3";   // greeting, title, "יום שלישי", card border
 const C_BLUE_DARK = "#79A9CC";   // card number + label
-const C_SAVE      = "#7EAED2";   // SAVE THE DATE
 const C_BODY      = "#2F2F2F";   // second text
 const BG          = "#FAF8F5";   // section background
 
@@ -54,10 +53,6 @@ export default function DateSection({ copy }) {
       gsap.fromTo(".ds-title",
         { autoAlpha: 0, y: 36 },
         { autoAlpha: 1, y: 0, duration: 0.85, ease: "power2.out", delay: 0.4, scrollTrigger: trigger }
-      );
-      gsap.fromTo(".ds-save-date",
-        { autoAlpha: 0, y: 18 },
-        { autoAlpha: 1, y: 0, duration: 0.65, ease: "power2.out", delay: 0.54, scrollTrigger: trigger }
       );
       gsap.fromTo(".ds-card",
         { autoAlpha: 0, y: 44, scale: 0.88 },
@@ -151,22 +146,6 @@ export default function DateSection({ copy }) {
         >
           {title}
         </h2>
-
-        {/* ── Save the Date ── */}
-        <p
-          className="ds-save-date font-body"
-          style={{
-            opacity: 0,
-            marginTop: "18px",
-            fontSize: "18px",
-            fontWeight: 500,
-            letterSpacing: "6px",
-            color: C_SAVE,
-            textTransform: "uppercase",
-          }}
-        >
-          {decorLine}
-        </p>
 
         {/* ── Date cards ── */}
         <div
