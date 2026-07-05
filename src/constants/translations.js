@@ -74,8 +74,10 @@ export const TRANSLATIONS = {
 
     // ---- Section 2: The Date ----
     dateSection: {
+      greeting: "משפחה וחברים יקרים,",
+      greetingSubtitle: "אנחנו נכבדים ומתרגשים להזמינכם לחגוג איתנו",
       title: "מועד החתונה",
-      decorLine: "שמרו את התאריך",
+      decorLine: "SAVE THE DATE",
       units: [
         { value: "03", label: "יום" },
         { value: "11", label: "חודש" },
@@ -122,8 +124,10 @@ export const TRANSLATIONS = {
     },
     audio: { play: "Play music", pause: "Mute music" },
     dateSection: {
+      greeting: "Dear family and friends,",
+      greetingSubtitle: "We are honored and excited to invite you to celebrate with us",
       title: "Wedding Date",
-      decorLine: "Save the Date",
+      decorLine: "SAVE THE DATE",
       units: [
         { value: "03", label: "Day" },
         { value: "11", label: "Month" },
