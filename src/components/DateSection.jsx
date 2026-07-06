@@ -129,39 +129,47 @@ export default function DateSection({ copy }) {
     () => {
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-      const trigger = { trigger: sectionRef.current, start: "top 78%", once: true };
+      const st = (el) => ({ trigger: el, start: "top 88%", once: true });
 
       gsap.fromTo(".ds-ornament",
         { autoAlpha: 0, scaleX: 0 },
-        { autoAlpha: 1, scaleX: 1, duration: 1, ease: "power2.out", transformOrigin: "center", scrollTrigger: trigger }
+        { autoAlpha: 1, scaleX: 1, duration: 1, ease: "power2.out", transformOrigin: "center",
+          scrollTrigger: st(".ds-ornament") }
       );
       gsap.fromTo(".ds-greeting",
-        { autoAlpha: 0, y: 20 },
-        { autoAlpha: 1, y: 0, duration: 0.7, ease: "power2.out", delay: 0.12, scrollTrigger: trigger }
+        { autoAlpha: 0, y: 40 },
+        { autoAlpha: 1, y: 0, duration: 0.9, ease: "power3.out",
+          scrollTrigger: st(".ds-greeting") }
       );
       gsap.fromTo(".ds-greeting-sub",
-        { autoAlpha: 0, y: 16 },
-        { autoAlpha: 1, y: 0, duration: 0.7, ease: "power2.out", delay: 0.24, scrollTrigger: trigger }
+        { autoAlpha: 0, y: 35 },
+        { autoAlpha: 1, y: 0, duration: 0.9, ease: "power3.out",
+          scrollTrigger: st(".ds-greeting-sub") }
       );
       gsap.fromTo(".ds-divider",
         { autoAlpha: 0, scaleX: 0 },
-        { autoAlpha: 1, scaleX: 1, duration: 0.8, ease: "power2.out", transformOrigin: "center", delay: 0.32, scrollTrigger: trigger }
+        { autoAlpha: 1, scaleX: 1, duration: 0.9, ease: "power2.out", transformOrigin: "center",
+          scrollTrigger: st(".ds-divider") }
       );
       gsap.fromTo(".ds-title",
-        { autoAlpha: 0, y: 36 },
-        { autoAlpha: 1, y: 0, duration: 0.85, ease: "power2.out", delay: 0.4, scrollTrigger: trigger }
+        { autoAlpha: 0, y: 50 },
+        { autoAlpha: 1, y: 0, duration: 1, ease: "power3.out",
+          scrollTrigger: st(".ds-title") }
       );
       gsap.fromTo(".ds-gold-divider",
         { autoAlpha: 0, scaleX: 0 },
-        { autoAlpha: 1, scaleX: 1, duration: 0.6, ease: "power2.out", transformOrigin: "center", delay: 0.52, scrollTrigger: trigger }
+        { autoAlpha: 1, scaleX: 1, duration: 0.8, ease: "power2.out", transformOrigin: "center",
+          scrollTrigger: st(".ds-gold-divider") }
       );
       gsap.fromTo(".ds-card",
-        { autoAlpha: 0, y: 44, scale: 0.88 },
-        { autoAlpha: 1, y: 0, scale: 1, duration: 0.65, stagger: 0.13, ease: "back.out(1.4)", delay: 0.64, scrollTrigger: trigger }
+        { autoAlpha: 0, y: 60, scale: 0.85 },
+        { autoAlpha: 1, y: 0, scale: 1, duration: 0.8, stagger: 0.15, ease: "back.out(1.6)",
+          scrollTrigger: st(".ds-card") }
       );
       gsap.fromTo(".ds-dayname",
-        { autoAlpha: 0, y: 14 },
-        { autoAlpha: 1, y: 0, duration: 0.6, ease: "power1.out", delay: 1.02, scrollTrigger: trigger }
+        { autoAlpha: 0, y: 30 },
+        { autoAlpha: 1, y: 0, duration: 0.8, ease: "power2.out",
+          scrollTrigger: st(".ds-dayname") }
       );
     },
     { scope: sectionRef }

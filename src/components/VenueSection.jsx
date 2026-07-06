@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -32,6 +32,26 @@ export default function VenueSection() {
   const sectionRef = useRef(null);
   const titleRef   = useRef(null);
   const cardRef    = useRef(null);
+  const videoRef   = useRef(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
 
   useGSAP(
     () => {
@@ -96,9 +116,13 @@ export default function VenueSection() {
           boxShadow: "0 12px 48px rgba(0,0,0,0.2), 0 2px 8px rgba(0,0,0,0.08)",
         }}
       >
-        <img
-          src="/images/tel-aviv.jpeg"
-          alt="East TLV — מיטב 13 תל אביב"
+        <video
+          ref={videoRef}
+          src="/video/east-video.mp4"
+          muted
+          loop
+          playsInline
+          preload="metadata"
           style={{
             width: "100%",
             display: "block",
@@ -116,9 +140,9 @@ export default function VenueSection() {
             inset: 0,
             background: `linear-gradient(
               to bottom,
-              ${CREAM} 0%,
-              rgba(246,245,240,0.82) 18%,
-              rgba(246,245,240,0.35) 42%,
+              rgba(246,245,240,0.75) 0%,
+              rgba(246,245,240,0.45) 18%,
+              rgba(246,245,240,0.12) 42%,
               transparent 62%
             )`,
             pointerEvents: "none",
