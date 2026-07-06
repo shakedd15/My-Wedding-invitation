@@ -1,4 +1,4 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState, useCallback } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -32,7 +32,8 @@ export default function VenueSection() {
   const sectionRef = useRef(null);
   const titleRef   = useRef(null);
   const cardRef    = useRef(null);
-  const videoRef   = useRef(null);
+  const videoRef        = useRef(null);
+  const [paused, setPaused] = useState(false);
 
   useEffect(() => {
     const video = videoRef.current;
@@ -42,6 +43,7 @@ export default function VenueSection() {
       ([entry]) => {
         if (entry.isIntersecting) {
           video.play().catch(() => {});
+          setPaused(false);
         } else {
           video.pause();
         }
@@ -51,6 +53,18 @@ export default function VenueSection() {
 
     observer.observe(video);
     return () => observer.disconnect();
+  }, []);
+
+  const handleVideoClick = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      video.play().catch(() => {});
+      setPaused(false);
+    } else {
+      video.pause();
+      setPaused(true);
+    }
   }, []);
 
   useGSAP(
@@ -98,11 +112,19 @@ export default function VenueSection() {
           fontStyle: "italic",
           fontWeight: 300,
           letterSpacing: "0.02em",
-          marginBottom: "1.75rem",
+          marginBottom: "0.75rem",
         }}
       >
         המיקום
       </h2>
+
+      <div style={{ display: "flex", alignItems: "center", gap: "6px", justifyContent: "center", marginBottom: "1.25rem" }}>
+        <div style={{ width: "60px", height: "1px", background: "rgb(197, 160, 105)" }} />
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="#c5a069" aria-hidden="true">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+        </svg>
+        <div style={{ width: "60px", height: "1px", background: "rgb(197, 160, 105)" }} />
+      </div>
 
       <div
         ref={cardRef}
@@ -123,14 +145,47 @@ export default function VenueSection() {
           loop
           playsInline
           preload="metadata"
+          onClick={handleVideoClick}
           style={{
             width: "100%",
             display: "block",
             aspectRatio: "3 / 4",
             objectFit: "cover",
             objectPosition: "center",
+            cursor: "pointer",
           }}
         />
+
+        {/* Pause / play indicator */}
+        {paused && (
+          <div
+            aria-hidden="true"
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              pointerEvents: "none",
+            }}
+          >
+            <div
+              style={{
+                width: "60px",
+                height: "60px",
+                borderRadius: "50%",
+                background: "rgba(0,0,0,0.45)",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </div>
+          </div>
+        )}
 
         {/* Top cream-to-transparent fade */}
         <div
@@ -140,10 +195,10 @@ export default function VenueSection() {
             inset: 0,
             background: `linear-gradient(
               to bottom,
-              rgba(246,245,240,0.75) 0%,
-              rgba(246,245,240,0.45) 18%,
-              rgba(246,245,240,0.12) 42%,
-              transparent 62%
+              ${CREAM} 0%,
+              rgba(246,245,240,0.85) 12%,
+              rgba(246,245,240,0.2) 28%,
+              transparent 40%
             )`,
             pointerEvents: "none",
           }}
