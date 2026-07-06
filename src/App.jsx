@@ -10,6 +10,7 @@ import VenueSection from "./components/VenueSection.jsx";
 import { useLanguage } from "./hooks/useLanguage.js";
 import { ASSETS } from "./constants/config.js";
 import MenuSection from "./components/MenuSection.jsx";
+import RsvpSection from "./components/RsvpSection.jsx";
 
 function useUrlParams() {
   return useMemo(() => {
@@ -100,11 +101,8 @@ export default function App() {
           {/* ── Stage 4: Venue / Location ── */}
           <VenueSection />
 
-          {/*
-            RSVP form placeholder — rendered (hidden) when ?id= is present.
-            guestId is available here whenever you're ready to add the form.
-          */}
-          <div id="rsvp-section" style={{ display: guestId ? "block" : "none" }} />
+          {/* ── Stage 5: RSVP ── */}
+          <RsvpSection />
 
           {/* Native HTML5 audio. `autoPlay` is attempted; see useEffect above. */}
           <audio
