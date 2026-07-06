@@ -30,7 +30,7 @@ function GoldHeartDivider({ lineWidth = 40, heartSize = 11 }) {
         <span
           className="font-display"
           style={{
-            fontSize: "13px",
+            fontSize: "20px",
             fontWeight: 300,
             color: C_GOLD,
             letterSpacing: "2px",
@@ -201,7 +201,7 @@ export default function DateSection({ copy }) {
           style={{
             opacity: 0,
             marginTop: "32px",
-            fontSize: "26px",
+            fontSize: "39px",
             fontWeight: 300,
             color: C_BLUE,
             letterSpacing: "0.5px",
@@ -217,7 +217,7 @@ export default function DateSection({ copy }) {
           style={{
             opacity: 0,
             marginTop: "28px",
-            fontSize: "15px",
+            fontSize: "23px",
             fontWeight: 300,
             color: C_BODY,
             lineHeight: 1.6,
@@ -238,7 +238,7 @@ export default function DateSection({ copy }) {
           style={{
             opacity: 0,
             marginTop: "0",
-            fontSize: "54px",
+            fontSize: "60px",
             fontWeight: 300,
             color: C_BLUE,
             letterSpacing: "1px",
@@ -268,7 +268,7 @@ export default function DateSection({ copy }) {
                   style={{
                     opacity: 0,
                     fontFamily: "var(--font-serif)",
-                    fontSize: "40px",
+                    fontSize: "60px",
                     color: C_BLUE_DARK,
                     lineHeight: 1,
                     paddingBottom: "24px",
@@ -294,7 +294,7 @@ export default function DateSection({ copy }) {
                 <span
                   style={{
                     fontFamily: "var(--font-serif)",
-                    fontSize: "56px",
+                    fontSize: "60px",
                     fontWeight: 300,
                     color: C_BLUE_DARK,
                     lineHeight: 1,
@@ -306,7 +306,7 @@ export default function DateSection({ copy }) {
                 <span
                   style={{
                     fontFamily: "var(--font-serif)",
-                    fontSize: "16px",
+                    fontSize: "24px",
                     fontWeight: 400,
                     color: C_BLUE_DARK,
                     letterSpacing: "0.5px",
@@ -326,7 +326,7 @@ export default function DateSection({ copy }) {
             opacity: 0,
             marginTop: "36px",
             marginBottom: "50px",
-            fontSize: "22px",
+            fontSize: "29px",
             fontWeight: 300,
             color: C_BLUE,
             letterSpacing: "0.5px",
