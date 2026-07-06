@@ -6,12 +6,11 @@ import { useGSAP } from "@gsap/react";
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const EVENTS = [
-  { time: "16:30", label: "פתיחת\nהשערים",    side: "right" },
-  { time: "17:00", label: "טקס",               side: "left"  },
-  { time: "18:00", label: "קוקטייל\nוריקודים", side: "right" },
-  { time: "20:00", label: "ארוחת ערב",         side: "left"  },
-  { time: "21:00", label: "מסיבה\nובר פתוח",   side: "right" },
-  { time: "23:00", label: "סיום החגיגות",      side: "left"  },
+  { time: "19:30", label: "קבלת פנים",          side: "right" },
+  { time: "20:30", label: "חופה\nוקידושין",      side: "left"  },
+  { time: "21:00", label: "ארוחה עיקרית",        side: "right" },
+  { time: "22:30", label: "מסיבה\nובר פתוח",     side: "left"  },
+  { time: "01:00", label: "סיום החגיגות",        side: "right" },
 ];
 
 const BLUE = "var(--color-blue)";
