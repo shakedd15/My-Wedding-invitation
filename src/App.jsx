@@ -131,7 +131,7 @@ export default function App() {
             guestName={guest?.full_name ?? null}
             gender={guest?.gender ?? "F"}
             maxGuests={guest?.guests_max_amount ?? 3}
-            defaultGuests={guest?.guests_amount_arriving > 0 ? guest.guests_amount_arriving : 1}
+            defaultGuests={guest?.guests_amount_arriving ?? 0}
             guestLoading={guestLoading}
             guestError={guestError}
             onAttend={handleAttend}

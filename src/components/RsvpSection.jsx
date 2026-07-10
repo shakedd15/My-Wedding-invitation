@@ -156,7 +156,7 @@ export default function RsvpSection({
 
   // סנכרן את הקאונטר כאשר נתוני האורח נטענים מה-DB
   useEffect(() => {
-    setGuestsCount(Math.min(Math.max(defaultGuests, 1), maxGuests));
+    setGuestsCount(Math.min(Math.max(defaultGuests, 0), maxGuests));
   }, [defaultGuests, maxGuests]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError,  setSubmitError]  = useState(null);
