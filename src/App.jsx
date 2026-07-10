@@ -11,6 +11,9 @@ import { useLanguage } from "./hooks/useLanguage.js";
 import { ASSETS } from "./constants/config.js";
 import MenuSection from "./components/MenuSection.jsx";
 import RsvpSection from "./components/RsvpSection.jsx";
+import ClosingSection from "./components/ClosingSection.jsx";
+import { useGuest } from "./hooks/useGuest.js";
+import { supabase } from "./lib/supabase.js";
 
 function useUrlParams() {
   return useMemo(() => {
@@ -25,6 +28,28 @@ function useUrlParams() {
 export default function App() {
   const { copy } = useLanguage("he");
   const { guestId, page } = useUrlParams();
+
+  /* ── Supabase: fetch guest data for the personalized RSVP ── */
+  const { guest, loading: guestLoading, error: guestError } = useGuest(guestId);
+
+  /* ── RSVP handlers — update the guests table ── */
+  const handleAttend = useCallback(async (confirmedCount) => {
+    if (!guestId) return;
+    const { error } = await supabase
+      .from("guests")
+      .update({ guests_amount_arriving: confirmedCount })
+      .eq("id", guestId);
+    if (error) throw error;
+  }, [guestId]);
+
+  const handleDecline = useCallback(async () => {
+    if (!guestId) return;
+    const { error } = await supabase
+      .from("guests")
+      .update({ guests_amount_arriving: 0 })
+      .eq("id", guestId);
+    if (error) throw error;
+  }, [guestId]);
 
   const audioRef = useRef(null);
   const [isOn, setIsOn] = useState(false);
@@ -102,7 +127,18 @@ export default function App() {
           <VenueSection />
 
           {/* ── Stage 5: RSVP ── */}
-          <RsvpSection />
+          <RsvpSection
+            guestName={guest?.full_name ?? null}
+            gender={guest?.gender ?? "F"}
+            maxGuests={guest?.guests_max_amount ?? 3}
+            guestLoading={guestLoading}
+            guestError={guestError}
+            onAttend={handleAttend}
+            onDecline={handleDecline}
+          />
+
+          {/* ── Stage 6: Closing photo ── */}
+          <ClosingSection />
 
           {/* Native HTML5 audio. `autoPlay` is attempted; see useEffect above. */}
           <audio

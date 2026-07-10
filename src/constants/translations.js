@@ -75,7 +75,7 @@ export const TRANSLATIONS = {
     // ---- Section 2: The Date ----
     dateSection: {
       greeting: "משפחה וחברים יקרים,",
-      greetingSubtitle: "אנחנו נרגשים להזמינכם לחתונתנו",
+      greetingSubtitle: "שחים להזמינכם לחגוג עימנו את יום נישואינו",
       title: "מועד החתונה",
       decorLine: "SAVE THE DATE",
       units: [

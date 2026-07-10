@@ -127,36 +127,60 @@ function ActionBtn({ onClick, variant = "primary", disabled, children }) {
 
 /* ────────────────────────────────────────────────────────────
    RsvpSection
-   Props (all optional — hardcoded defaults below):
-     guestName  : string   – display name for the greeting
-     maxGuests  : number   – server-provided cap (default 3)
-     defaultGuests : number – pre-selected count (default 1)
+   Props:
+     guestName    : string|null – full_name from DB; null = no ?id= in URL
+     gender       : string      – 'F' (אישה) | 'M' (גבר) | 'X' (משפחה)
+     maxGuests    : number      – guests_max_amount from DB (default 3)
+     guestLoading : boolean     – true while guest data is being fetched
+     guestError   : string      – error message if guest fetch failed
+     onAttend     : (count: number) => Promise<void>
+     onDecline    : () => Promise<void>
 ──────────────────────────────────────────────────────────── */
 export default function RsvpSection({
-  guestName   = "שקד",
-  maxGuests   = 3,
-  defaultGuests = 1,
+  guestName    = null,
+  gender       = "F",
+  maxGuests    = 3,
+  guestLoading = false,
+  guestError   = null,
+  onAttend,
+  onDecline,
 }) {
   const sectionRef = useRef(null);
   const titleRef   = useRef(null);
   const cardRef    = useRef(null);
 
-  const [guestsCount, setGuestsCount] = useState(
-    Math.min(Math.max(defaultGuests, 0), maxGuests)
-  );
-  const [submitted, setSubmitted] = useState(null); // null | "attending" | "declined"
+  const [guestsCount,  setGuestsCount]  = useState(1);
+  const [submitted,    setSubmitted]    = useState(null); // null | "attending" | "declined"
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError,  setSubmitError]  = useState(null);
 
   const decrement = () => setGuestsCount((n) => Math.max(0, n - 1));
   const increment = () => setGuestsCount((n) => Math.min(maxGuests, n + 1));
 
-  const handleAttend = () => {
-    console.log("RSVP attending:", { guestName, guestsCount });
-    setSubmitted("attending");
+  const handleAttend = async () => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+    try {
+      if (onAttend) await onAttend(guestsCount);
+      setSubmitted("attending");
+    } catch (err) {
+      setSubmitError("אירעה שגיאה בשמירת הנתונים. נסו שנית.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleDecline = () => {
-    console.log("RSVP declined:", { guestName });
-    setSubmitted("declined");
+  const handleDecline = async () => {
+    setIsSubmitting(true);
+    setSubmitError(null);
+    try {
+      if (onDecline) await onDecline();
+      setSubmitted("declined");
+    } catch (err) {
+      setSubmitError("אירעה שגיאה בשמירת הנתונים. נסו שנית.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   useGSAP(
@@ -184,9 +208,14 @@ export default function RsvpSection({
     { scope: sectionRef }
   );
 
-  /* ── feminine greeting suffix – "יקרה" for שקד specifically;
-     in production this would come from the guest record           ── */
-  const greeting = `${guestName} יקרה,`;
+  const suffix = gender === "M" ? "היקר" : gender === "X" ? "היקרים" : "היקרה";
+  const greeting = guestName ? `${guestName} ${suffix},` : null;
+  const subText  = gender === "M" ? "נשמח לדעת אם תגיע לחגוג איתנו"
+                 : gender === "X" ? "נשמח לדעת אם תגיעו לחגוג איתנו"
+                 :                  "נשמח לדעת אם תגיעי לחגוג איתנו";
+  const attendLabel = gender === "M" ? "מאשר הגעה"
+                    : gender === "X" ? "מאשרים הגעה"
+                    :                  "מאשרת הגעה";
 
   return (
     <section
@@ -233,22 +262,33 @@ export default function RsvpSection({
           WebkitBackdropFilter: "blur(8px)",
         }}
       >
-        {submitted === null ? (
+        {/* ── Loading skeleton ── */}
+        {guestLoading ? (
+          <LoadingSpinner />
+        ) : guestError ? (
+          /* ── Guest not found / fetch error ── */
+          <ErrorMessage message={guestError} />
+        ) : submitted !== null ? (
+          /* ── Already submitted (or just submitted) ── */
+          <ConfirmationMessage variant={submitted} guestName={guestName} gender={gender} />
+        ) : (
           <>
             {/* ── Greeting ── */}
             <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-              <p
-                className="font-display"
-                style={{
-                  fontSize: "clamp(1.25rem, 5vw, 1.55rem)",
-                  fontStyle: "italic",
-                  fontWeight: 400,
-                  color: "var(--color-ink)",
-                  margin: "0 0 0.5rem",
-                }}
-              >
-                {greeting}
-              </p>
+              {greeting && (
+                <p
+                  className="font-display"
+                  style={{
+                    fontSize: "clamp(1.25rem, 5vw, 1.55rem)",
+                    fontStyle: "italic",
+                    fontWeight: 400,
+                    color: "var(--color-ink)",
+                    margin: "0 0 0.5rem",
+                  }}
+                >
+                  {greeting}
+                </p>
+              )}
               <p
                 style={{
                   fontSize: "clamp(0.92rem, 3.8vw, 1.05rem)",
@@ -258,7 +298,7 @@ export default function RsvpSection({
                   fontWeight: 300,
                 }}
               >
-                נשמח לדעת אם תגיעי לחגוג איתנו
+                {subText}
               </p>
             </div>
 
@@ -276,16 +316,14 @@ export default function RsvpSection({
                   marginBottom: "0.6rem",
                 }}
               >
-                {/* Minus */}
                 <CounterBtn
                   onClick={decrement}
-                  disabled={guestsCount === 0}
+                  disabled={isSubmitting || guestsCount === 0}
                   ariaLabel="הפחת אורח"
                 >
                   <MinusIcon />
                 </CounterBtn>
 
-                {/* Count display */}
                 <span
                   style={{
                     fontSize: "42px",
@@ -302,10 +340,9 @@ export default function RsvpSection({
                   {guestsCount}
                 </span>
 
-                {/* Plus */}
                 <CounterBtn
                   onClick={increment}
-                  disabled={guestsCount === maxGuests}
+                  disabled={isSubmitting || guestsCount === maxGuests}
                   ariaLabel="הוסף אורח"
                 >
                   <PlusIcon />
@@ -325,6 +362,21 @@ export default function RsvpSection({
               </p>
             </div>
 
+            {/* ── Submit error ── */}
+            {submitError && (
+              <p
+                style={{
+                  textAlign: "center",
+                  fontSize: "0.88rem",
+                  color: "#c05a5a",
+                  marginBottom: "1rem",
+                  fontWeight: 400,
+                }}
+              >
+                {submitError}
+              </p>
+            )}
+
             {/* ── Action buttons ── */}
             <div
               style={{
@@ -337,33 +389,96 @@ export default function RsvpSection({
               <ActionBtn
                 variant="primary"
                 onClick={handleAttend}
+                disabled={isSubmitting}
               >
-                מאשרת הגעה
+                {isSubmitting ? "שומרים…" : attendLabel}
               </ActionBtn>
 
               <ActionBtn
                 variant="secondary"
                 onClick={handleDecline}
+                disabled={isSubmitting}
               >
                 לא אוכל להגיע
               </ActionBtn>
             </div>
           </>
-        ) : (
-          /* ── Confirmation message ── */
-          <ConfirmationMessage variant={submitted} guestName={guestName} />
         )}
       </div>
     </section>
   );
 }
 
+/* ── Loading spinner ── */
+function LoadingSpinner() {
+  return (
+    <div style={{ textAlign: "center", padding: "2rem 0" }}>
+      <div
+        style={{
+          display: "inline-block",
+          width: "40px",
+          height: "40px",
+          border: `2.5px solid rgba(122,170,200,0.2)`,
+          borderTopColor: DUSTY_BLUE,
+          borderRadius: "50%",
+          animation: "rsvp-spin 0.8s linear infinite",
+        }}
+      />
+      <style>{`@keyframes rsvp-spin { to { transform: rotate(360deg); } }`}</style>
+      <p
+        style={{
+          marginTop: "1rem",
+          fontSize: "0.9rem",
+          color: "rgba(90,138,170,0.7)",
+          fontWeight: 300,
+        }}
+      >
+        טוענים את הפרטים שלכם…
+      </p>
+    </div>
+  );
+}
+
+/* ── Error state (guest not found / network error) ── */
+function ErrorMessage({ message }) {
+  return (
+    <div style={{ textAlign: "center", padding: "1.5rem 0" }}>
+      <svg width="44" height="44" viewBox="0 0 52 52" fill="none" aria-hidden="true" style={{ margin: "0 auto 1rem", display: "block" }}>
+        <circle cx="26" cy="26" r="25" stroke={GOLD} strokeWidth="1.5" fill="rgba(197,160,105,0.08)" />
+        <path d="M26 16v14" stroke={GOLD} strokeWidth="2.2" strokeLinecap="round" />
+        <circle cx="26" cy="35" r="1.5" fill={GOLD} />
+      </svg>
+      <p
+        className="font-display"
+        style={{
+          fontSize: "clamp(1rem, 4vw, 1.2rem)",
+          fontStyle: "italic",
+          color: "var(--color-ink)",
+          margin: "0 0 0.5rem",
+        }}
+      >
+        לא מצאנו את ההזמנה
+      </p>
+      <p style={{ fontSize: "0.9rem", color: "#777", margin: 0, fontWeight: 300, lineHeight: 1.6 }}>
+        {message}
+      </p>
+    </div>
+  );
+}
+
 /* ── Post-submit confirmation ── */
-function ConfirmationMessage({ variant, guestName }) {
+function ConfirmationMessage({ variant, guestName, gender }) {
   const isAttending = variant === "attending";
+
+  const thankYou = guestName ? `תודה רבה, ${guestName}!` : "תודה רבה!";
+  const seeYou   = gender === "X" ? "נתראה בשמחה! מחכים לכם בלב פתוח ✦"
+                 : gender === "M" ? "נתראה בשמחה! מחכים לך בלב פתוח ✦"
+                 :                  "נתראה בשמחה! מחכים לך בלב פתוח ✦";
+  const decline  = gender === "X" ? "נשמח לחגוג איתכם בהזדמנות אחרת"
+                 :                  "נשמח לחגוג איתך בהזדמנות אחרת";
+
   return (
     <div style={{ textAlign: "center", padding: "1rem 0" }}>
-      {/* icon */}
       <div style={{ marginBottom: "1.25rem" }}>
         {isAttending ? (
           <svg width="52" height="52" viewBox="0 0 52 52" fill="none" aria-hidden="true">
@@ -389,7 +504,7 @@ function ConfirmationMessage({ variant, guestName }) {
           margin: "0 0 0.6rem",
         }}
       >
-        {isAttending ? `תודה רבה, ${guestName}!` : "נבין לחלוטין"}
+        {isAttending ? thankYou : "נבין לחלוטין"}
       </p>
 
       <p
@@ -401,9 +516,7 @@ function ConfirmationMessage({ variant, guestName }) {
           fontWeight: 300,
         }}
       >
-        {isAttending
-          ? "נתראה בשמחה! מחכים לכם בלב פתוח ✦"
-          : "נשמח לחגוג איתך בהזדמנות אחרת"}
+        {isAttending ? seeYou : decline}
       </p>
     </div>
   );
