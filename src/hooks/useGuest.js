@@ -30,10 +30,13 @@ export function useGuest(guestId) {
       .from("guests")
       .select("id, full_name, gender, guests_max_amount, guests_amount_arriving")
       .eq("id", guestId)
-      .single()
+      .maybeSingle()
       .then(({ data, error: sbError }) => {
         if (cancelled) return;
-        if (sbError || !data) {
+        if (sbError) {
+          setError(`שגיאת חיבור: ${sbError.message}`);
+          setGuest(null);
+        } else if (!data) {
           setError("האורח לא נמצא. בדקו שהקישור נכון.");
           setGuest(null);
         } else {
