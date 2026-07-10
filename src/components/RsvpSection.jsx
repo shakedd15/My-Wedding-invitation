@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -128,20 +128,22 @@ function ActionBtn({ onClick, variant = "primary", disabled, children }) {
 /* ────────────────────────────────────────────────────────────
    RsvpSection
    Props:
-     guestName    : string|null – full_name from DB; null = no ?id= in URL
-     gender       : string      – 'F' (אישה) | 'M' (גבר) | 'X' (משפחה)
-     maxGuests    : number      – guests_max_amount from DB (default 3)
-     guestLoading : boolean     – true while guest data is being fetched
-     guestError   : string      – error message if guest fetch failed
-     onAttend     : (count: number) => Promise<void>
-     onDecline    : () => Promise<void>
+     guestName     : string|null – full_name from DB; null = no ?id= in URL
+     gender        : string      – 'F' (אישה) | 'M' (גבר) | 'X' (משפחה)
+     maxGuests     : number      – guests_max_amount from DB (default 3)
+     defaultGuests : number      – guests_amount_arriving from DB (initial counter value)
+     guestLoading  : boolean     – true while guest data is being fetched
+     guestError    : string      – error message if guest fetch failed
+     onAttend      : (count: number) => Promise<void>
+     onDecline     : () => Promise<void>
 ──────────────────────────────────────────────────────────── */
 export default function RsvpSection({
-  guestName    = null,
-  gender       = "F",
-  maxGuests    = 3,
-  guestLoading = false,
-  guestError   = null,
+  guestName     = null,
+  gender        = "F",
+  maxGuests     = 3,
+  defaultGuests = 1,
+  guestLoading  = false,
+  guestError    = null,
   onAttend,
   onDecline,
 }) {
@@ -149,8 +151,13 @@ export default function RsvpSection({
   const titleRef   = useRef(null);
   const cardRef    = useRef(null);
 
-  const [guestsCount,  setGuestsCount]  = useState(1);
+  const [guestsCount,  setGuestsCount]  = useState(defaultGuests);
   const [submitted,    setSubmitted]    = useState(null); // null | "attending" | "declined"
+
+  // סנכרן את הקאונטר כאשר נתוני האורח נטענים מה-DB
+  useEffect(() => {
+    setGuestsCount(Math.min(Math.max(defaultGuests, 1), maxGuests));
+  }, [defaultGuests, maxGuests]);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError,  setSubmitError]  = useState(null);
 
