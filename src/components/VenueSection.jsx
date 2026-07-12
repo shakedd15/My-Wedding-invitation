@@ -39,9 +39,20 @@ export default function VenueSection() {
     const video = videoRef.current;
     if (!video) return;
 
+    // React sets `muted` as a JSX *attribute*, but some mobile browsers
+    // (notably iOS Safari) check the live DOM *property* before allowing
+    // autoplay — without this, the video silently refuses to play until a
+    // manual tap (a real user gesture) unlocks it.
+    video.muted = true;
+    video.defaultMuted = true;
+
+    // Try to play immediately in case the section is already in view on load.
+    video.play().catch(() => {});
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
+          video.muted = true;
           video.play().catch(() => {});
           setPaused(false);
         } else {
@@ -141,10 +152,11 @@ export default function VenueSection() {
         <video
           ref={videoRef}
           src="/video/east-video.mp4"
+          autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
+          preload="auto"
           onClick={handleVideoClick}
           style={{
             width: "100%",
