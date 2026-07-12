@@ -151,7 +151,7 @@ export default function VenueSection() {
       >
         <video
           ref={videoRef}
-          src="/video/east-video.mp4"
+          src="/video/ease2.mp4"
           autoPlay
           muted
           loop
