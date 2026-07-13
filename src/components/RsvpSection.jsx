@@ -215,13 +215,15 @@ export default function RsvpSection({
     { scope: sectionRef }
   );
 
-  const suffix = gender === "M" ? "היקר" : gender === "X" ? "היקרים" : "היקרה";
+  const normalizedGender = String(gender ?? "F").toUpperCase();
+
+  const suffix = normalizedGender === "M" ? "היקר" : normalizedGender === "X" ? "היקרים" : "היקרה";
   const greeting = guestName ? `${guestName} ${suffix},` : null;
-  const subText  = gender === "M" ? "נשמח לדעת אם תגיע לחגוג איתנו"
-                 : gender === "X" ? "נשמח לדעת אם תגיעו לחגוג איתנו"
+  const subText  = normalizedGender === "M" ? "נשמח לדעת אם תגיע לחגוג איתנו"
+                 : normalizedGender === "X" ? "נשמח לדעת אם תגיעו לחגוג איתנו"
                  :                  "נשמח לדעת אם תגיעי לחגוג איתנו";
-  const attendLabel = gender === "M" ? "מאשר הגעה"
-                    : gender === "X" ? "מאשרים הגעה"
+  const attendLabel = normalizedGender === "M" ? "מאשר הגעה"
+                    : normalizedGender === "X" ? "מאשרים הגעה"
                     :                  "מאשרת הגעה";
 
   return (
@@ -277,7 +279,7 @@ export default function RsvpSection({
           <ErrorMessage message={guestError} />
         ) : submitted !== null ? (
           /* ── Already submitted (or just submitted) ── */
-          <ConfirmationMessage variant={submitted} guestName={guestName} gender={gender} />
+          <ConfirmationMessage variant={submitted} guestName={guestName} gender={normalizedGender} />
         ) : (
           <>
             {/* ── Greeting ── */}
@@ -475,13 +477,14 @@ function ErrorMessage({ message }) {
 
 /* ── Post-submit confirmation ── */
 function ConfirmationMessage({ variant, guestName, gender }) {
+  const normalizedGender = String(gender ?? "F").toUpperCase();
   const isAttending = variant === "attending";
 
   const thankYou = guestName ? `תודה רבה, ${guestName}!` : "תודה רבה!";
-  const seeYou   = gender === "X" ? "נתראה בשמחה! מחכים לכם בלב פתוח ✦"
-                 : gender === "M" ? "נתראה בשמחה! מחכים לך בלב פתוח ✦"
+  const seeYou   = normalizedGender === "X" ? "נתראה בשמחה! מחכים לכם בלב פתוח ✦"
+                 : normalizedGender === "M" ? "נתראה בשמחה! מחכים לך בלב פתוח ✦"
                  :                  "נתראה בשמחה! מחכים לך בלב פתוח ✦";
-  const decline  = gender === "X" ? "נשמח לחגוג איתכם בהזדמנות אחרת"
+  const decline  = normalizedGender === "X" ? "נשמח לחגוג איתכם בהזדמנות אחרת"
                  :                  "נשמח לחגוג איתך בהזדמנות אחרת";
 
   return (

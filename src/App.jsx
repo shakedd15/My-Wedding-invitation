@@ -129,7 +129,7 @@ export default function App() {
           {/* ── Stage 5: RSVP ── */}
           <RsvpSection
             guestName={guest?.full_name ?? null}
-            gender={guest?.gender ?? "F"}
+            gender={String(guest?.gender ?? "F").toUpperCase()}
             maxGuests={guest?.guests_max_amount ?? 3}
             defaultGuests={
               guest?.guests_amount_arriving === -1

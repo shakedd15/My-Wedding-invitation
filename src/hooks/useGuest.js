@@ -55,7 +55,10 @@ export function useGuest(guestId) {
           setError("האורח לא נמצא. בדקו שהקישור נכון.");
           setGuest(null);
         } else {
-          setGuest(data);
+          setGuest({
+            ...data,
+            gender: data.gender ? String(data.gender).toUpperCase() : "F",
+          });
         }
         setLoading(false);
       });
