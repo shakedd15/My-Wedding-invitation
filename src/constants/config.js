@@ -60,12 +60,4 @@ export const DETAILS = {
   payboxUrl: "https://payboxapp.page.link/",
   rsvpUrl: "/",
   shareUrl: "https://eyal-shaked-wedding.com/Details",
-  icons: {
-    leaves: "/images/details/leaves.png",
-    rings: "/images/details/rings.png",
-    clock: "/images/details/clock.png",
-    location: "/images/details/location.png",
-    heart: "/images/details/heart.png",
-    waze: "/images/details/waze.png",
-  },
 };
