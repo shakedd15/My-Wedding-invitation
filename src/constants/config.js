@@ -58,6 +58,4 @@ export const DETAILS = {
       "https://waze.com/ul?q=East+TLV+Mitav+13+Tel+Aviv&navigate=yes",
   },
   payboxUrl: "https://payboxapp.page.link/",
-  rsvpUrl: "/",
-  shareUrl: "https://eyal-shaked-wedding.com/Details",
 };

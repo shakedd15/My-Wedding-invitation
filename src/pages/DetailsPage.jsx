@@ -88,30 +88,6 @@ function GiftIcon({ size = 52 }) {
   );
 }
 
-function EnvelopeIcon({ size = 52 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true" style={iconStyle(size)}>
-      <rect x="8" y="18" width="48" height="32" rx="2" stroke={GOLD} strokeWidth="2" />
-      <path d="M8 22l24 18 24-18" stroke={GOLD} strokeWidth="2" strokeLinejoin="round" />
-      <path
-        d="M32 14c-2.2-2.6-5.8-2.4-5.8.2 0 1.6 1.8 2.4 5.8 4.8 4-2.4 5.8-3.2 5.8-4.8 0-2.6-3.6-2.8-5.8-.2z"
-        fill={GOLD}
-      />
-    </svg>
-  );
-}
-
-function ShareIcon({ size = 52 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true" style={iconStyle(size)}>
-      <circle cx="44" cy="14" r="6" stroke={GOLD} strokeWidth="2" />
-      <circle cx="16" cy="32" r="6" stroke={GOLD} strokeWidth="2" />
-      <circle cx="44" cy="50" r="6" stroke={GOLD} strokeWidth="2" />
-      <path d="M22 29l16-11M22 35l16 11" stroke={GOLD} strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  );
-}
-
 function WazeIcon({ size = 24 }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true" style={iconStyle(size)}>
@@ -255,30 +231,6 @@ const SCHEDULE_ICONS = {
   clock: ClockIcon,
   heart: () => <HeartIcon size={22} filled />,
 };
-
-async function handleShare() {
-  const shareData = {
-    title: "שקד & איל — פרטי החתונה",
-    text: "כל הפרטים לחתונה של שקד ואיל",
-    url: DETAILS.shareUrl,
-  };
-
-  if (navigator.share) {
-    try {
-      await navigator.share(shareData);
-      return;
-    } catch {
-      /* cancelled */
-    }
-  }
-
-  try {
-    await navigator.clipboard.writeText(DETAILS.shareUrl);
-    alert("הקישור הועתק!");
-  } catch {
-    window.prompt("העתיקו את הקישור:", DETAILS.shareUrl);
-  }
-}
 
 export default function DetailsPage() {
   useEffect(() => {
@@ -448,26 +400,6 @@ export default function DetailsPage() {
             <PayboxLogo />
             למתנה ב-PayBox
           </PillButton>
-        </SectionBlock>
-
-        <HeartDivider />
-
-        <SectionBlock
-          icon={<EnvelopeIcon />}
-          title="עדכון אישור הגעה"
-          subtitle="כבר אישרתם הגעה ורוצים לעדכן פרטים?"
-        >
-          <PillButton href={DETAILS.rsvpUrl}>לעדכון אישור הגעה</PillButton>
-        </SectionBlock>
-
-        <HeartDivider />
-
-        <SectionBlock
-          icon={<ShareIcon />}
-          title="שתפו עם חברים ומשפחה"
-          subtitle="כדי שגם הם יוכלו להגיע לחגוג איתנו"
-        >
-          <PillButton onClick={handleShare}>שיתוף העמוד</PillButton>
         </SectionBlock>
       </div>
     </main>
