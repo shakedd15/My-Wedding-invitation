@@ -8,98 +8,48 @@ const WAZE_BG = "#e8ddd0";
 const PAYBOX_BG = "#5f7a62";
 const BORDER = "#d8d8d8";
 
-function iconStyle(size) {
-  return { display: "block", margin: "0 auto", flexShrink: 0, width: size, height: size };
-}
+const ICONS = {
+  leaves: "/images/details/leaves.png",
+  rings: "/images/details/rings.png",
+  clock: "/images/details/clock.png",
+  location: "/images/details/location.png",
+  heart: "/images/details/heart.png",
+  waze: "/images/details/waze.png",
+};
 
-function LeavesIcon({ size = 72 }) {
+function DetailIcon({ name, size = 52 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true" style={iconStyle(size)}>
-      <path d="M18 52c8-14 18-24 34-34" stroke={GOLD} strokeWidth="1.8" strokeLinecap="round" />
-      <path d="M28 42c-2-8 2-14 10-18M36 34c-1-7 3-12 10-15M42 28c0-6 3-10 8-12" stroke={GOLD} strokeWidth="1.6" strokeLinecap="round" />
-      <ellipse cx="24" cy="30" rx="7" ry="11" transform="rotate(-35 24 30)" stroke={GOLD} strokeWidth="1.6" />
-      <path d="M24 22v16" stroke={GOLD} strokeWidth="1.2" transform="rotate(-35 24 30)" />
-      <ellipse cx="34" cy="22" rx="6" ry="10" transform="rotate(-20 34 22)" stroke={GOLD} strokeWidth="1.6" />
-      <path d="M34 15v14" stroke={GOLD} strokeWidth="1.2" transform="rotate(-20 34 22)" />
-      <ellipse cx="44" cy="16" rx="5" ry="8" transform="rotate(-10 44 16)" stroke={GOLD} strokeWidth="1.6" />
-      <ellipse cx="20" cy="40" rx="5.5" ry="9" transform="rotate(-50 20 40)" stroke={GOLD} strokeWidth="1.6" />
-      <ellipse cx="40" cy="36" rx="5" ry="8" transform="rotate(25 40 36)" stroke={GOLD} strokeWidth="1.6" />
-      <ellipse cx="48" cy="26" rx="4.5" ry="7" transform="rotate(35 48 26)" stroke={GOLD} strokeWidth="1.6" />
-    </svg>
-  );
-}
-
-function HeartIcon({ size = 18, filled = true }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true" style={iconStyle(size)}>
-      <path
-        d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
-        fill={filled ? GOLD : "none"}
-        stroke={GOLD}
-        strokeWidth={filled ? 0 : 1.8}
-      />
-    </svg>
-  );
-}
-
-function RingsIcon({ size = 56 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true" style={iconStyle(size)}>
-      <circle cx="26" cy="36" r="14" stroke={GOLD} strokeWidth="2" />
-      <circle cx="38" cy="36" r="14" stroke={GOLD} strokeWidth="2" />
-      <path d="M26 18l-3 5h6l-3-5z" stroke={GOLD} strokeWidth="1.8" strokeLinejoin="round" />
-      <path d="M23 23h6M24.5 20.5h3" stroke={GOLD} strokeWidth="1.4" />
-    </svg>
-  );
-}
-
-function ClockIcon({ size = 22 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true" style={iconStyle(size)}>
-      <circle cx="12" cy="12" r="9" stroke={GOLD} strokeWidth="1.8" />
-      <path d="M12 7v5l3.5 2" stroke={GOLD} strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function LocationIcon({ size = 24 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true" style={iconStyle(size)}>
-      <path
-        d="M12 22s7-7.2 7-13a7 7 0 10-14 0c0 5.8 7 13 7 13z"
-        stroke={GOLD}
-        strokeWidth="1.8"
-        strokeLinejoin="round"
-      />
-      <circle cx="12" cy="9" r="2.5" stroke={GOLD} strokeWidth="1.8" />
-    </svg>
+    <img
+      src={ICONS[name]}
+      alt=""
+      aria-hidden="true"
+      style={{
+        width: size,
+        height: size,
+        objectFit: "contain",
+        display: "block",
+        margin: "0 auto",
+        flexShrink: 0,
+      }}
+    />
   );
 }
 
 function GiftIcon({ size = 52 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 64 64" fill="none" aria-hidden="true" style={iconStyle(size)}>
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 64 64"
+      fill="none"
+      aria-hidden="true"
+      style={{ display: "block", margin: "0 auto", flexShrink: 0 }}
+    >
       <rect x="10" y="28" width="44" height="30" rx="2" stroke={GOLD} strokeWidth="2" />
       <path d="M10 36h44" stroke={GOLD} strokeWidth="2" />
       <path d="M32 28v30" stroke={GOLD} strokeWidth="2" />
       <path d="M32 28c-8-10-18-8-18-2s10 4 18 2" stroke={GOLD} strokeWidth="2" strokeLinecap="round" />
       <path d="M32 28c8-10 18-8 18-2s-10 4-18 2" stroke={GOLD} strokeWidth="2" strokeLinecap="round" />
-    </svg>
-  );
-}
-
-function WazeIcon({ size = 24 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" aria-hidden="true" style={iconStyle(size)}>
-      <path
-        d="M12 3c4.8 0 8.5 3.4 8.5 8.2 0 2.4-1 4.5-2.6 6l1.1 2.8-3.2-1.2c-1.1.4-2.4.6-3.8.6-4.8 0-8.5-3.4-8.5-8.2S7.2 3 12 3z"
-        fill="#33ccff"
-        stroke="#1a8fb8"
-        strokeWidth="0.8"
-      />
-      <circle cx="9.2" cy="10.5" r="1.3" fill="#1c2460" />
-      <circle cx="14.8" cy="10.5" r="1.3" fill="#1c2460" />
-      <path d="M9 14c.8 1.2 2 1.8 3 1.8s2.2-.6 3-1.8" stroke="#1c2460" strokeWidth="1.2" strokeLinecap="round" />
     </svg>
   );
 }
@@ -119,7 +69,9 @@ function HeartDivider() {
       }}
     >
       <div style={{ flex: 1, height: "1px", background: GOLD }} />
-      <HeartIcon size={10} />
+      <svg width="10" height="10" viewBox="0 0 24 24" fill={GOLD} aria-hidden="true">
+        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
+      </svg>
       <div style={{ flex: 1, height: "1px", background: GOLD }} />
     </div>
   );
@@ -227,11 +179,6 @@ function PayboxLogo() {
   );
 }
 
-const SCHEDULE_ICONS = {
-  clock: ClockIcon,
-  heart: () => <HeartIcon size={22} filled />,
-};
-
 export default function DetailsPage() {
   useEffect(() => {
     document.title = "שקד & איל — פרטי החתונה";
@@ -263,9 +210,9 @@ export default function DetailsPage() {
         }}
       >
         <header style={{ textAlign: "center", width: "100%" }}>
-          <LeavesIcon size={72} />
+          <DetailIcon name="leaves" size={72} />
           <div style={{ margin: "0.75rem 0 1.1rem" }}>
-            <HeartIcon size={18} />
+            <DetailIcon name="heart" size={18} />
           </div>
 
           <h1
@@ -328,7 +275,7 @@ export default function DetailsPage() {
 
         <HeartDivider />
 
-        <SectionBlock icon={<RingsIcon size={56} />} title="מתי ואיפה?">
+        <SectionBlock icon={<DetailIcon name="rings" size={56} />} title="מתי ואיפה?">
           <div
             style={{
               display: "flex",
@@ -338,25 +285,22 @@ export default function DetailsPage() {
               alignItems: "center",
             }}
           >
-            {schedule.map((item) => {
-              const Icon = SCHEDULE_ICONS[item.icon] ?? ClockIcon;
-              return (
-                <div
-                  key={item.text}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.55rem",
-                    fontSize: "clamp(0.92rem, 3.8vw, 1rem)",
-                    color: INK,
-                    fontWeight: 400,
-                  }}
-                >
-                  <Icon />
-                  <span>{item.text}</span>
-                </div>
-              );
-            })}
+            {schedule.map((item) => (
+              <div
+                key={item.text}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.55rem",
+                  fontSize: "clamp(0.92rem, 3.8vw, 1rem)",
+                  color: INK,
+                  fontWeight: 400,
+                }}
+              >
+                <DetailIcon name={item.icon} size={22} />
+                <span>{item.text}</span>
+              </div>
+            ))}
           </div>
 
           <div
@@ -369,7 +313,7 @@ export default function DetailsPage() {
               textAlign: "center",
             }}
           >
-            <LocationIcon size={24} />
+            <DetailIcon name="location" size={24} />
             <div>
               <p style={{ margin: 0, fontWeight: 600, fontSize: "clamp(0.95rem, 4vw, 1.02rem)" }}>
                 {venue.name}
@@ -384,17 +328,14 @@ export default function DetailsPage() {
           </div>
 
           <PillButton href={venue.wazeUrl} variant="waze">
-            <WazeIcon size={24} />
+            <DetailIcon name="waze" size={24} />
             נווטו איתנו ב-Waze
           </PillButton>
         </SectionBlock>
 
         <HeartDivider />
 
-        <SectionBlock
-          icon={<GiftIcon />}
-          title="ניתן להעניק מתנה גם בפייסבוקס"
-        >
+        <SectionBlock icon={<GiftIcon />} title="ניתן להעניק מתנה גם בפייסבוקס">
           <PillButton href={DETAILS.payboxUrl} variant="paybox">
             <PayboxLogo />
             למתנה ב-PayBox
