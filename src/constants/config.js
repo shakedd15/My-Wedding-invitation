@@ -43,8 +43,8 @@ export const DETAILS = {
   couple: { bride: "שקד", groom: "איל" },
   subtitle: "מתחתנים",
   date: {
-    gregorian: "24.06.2025",
-    hebrew: 'יום שלישי, כ"ח בסיוון תשפ"ה',
+    gregorian: "10.11.2026",
+    hebrew: 'יום שלישי, ל׳ בחשוון',
   },
   schedule: [
     { icon: "clock", text: "קבלת פנים: 19:30" },
