@@ -8,7 +8,7 @@ const WAZE_BG = "#e8ddd0";
 const PAYBOX_BG = "#5f7a62";
 const BORDER = "#d8d8d8";
 
-function BlendIcon({ src, size = 52, alt = "" }) {
+function DetailIcon({ src, size = 52, alt = "" }) {
   return (
     <img
       src={src}
@@ -18,7 +18,6 @@ function BlendIcon({ src, size = 52, alt = "" }) {
         width: size,
         height: size,
         objectFit: "contain",
-        mixBlendMode: "screen",
         display: "block",
         margin: "0 auto",
       }}
@@ -235,9 +234,9 @@ export default function DetailsPage() {
       >
         {/* ── Header ── */}
         <header style={{ textAlign: "center", width: "100%" }}>
-          <BlendIcon src={icons.leaves} size={72} />
+          <DetailIcon src={icons.leaves} size={72} />
           <div style={{ margin: "0.75rem 0 1.1rem" }}>
-            <BlendIcon src={icons.heart} size={18} />
+            <DetailIcon src={icons.heart} size={18} />
           </div>
 
           <h1
@@ -305,7 +304,7 @@ export default function DetailsPage() {
 
         {/* ── When & Where ── */}
         <SectionBlock
-          icon={<BlendIcon src={icons.rings} size={56} />}
+          icon={<DetailIcon src={icons.rings} size={56} />}
           title="מתי ואיפה?"
         >
           <div
@@ -329,7 +328,7 @@ export default function DetailsPage() {
                   fontWeight: 400,
                 }}
               >
-                <BlendIcon src={icons[item.icon]} size={22} />
+                <DetailIcon src={icons[item.icon]} size={22} />
                 <span>{item.text}</span>
               </div>
             ))}
@@ -345,7 +344,7 @@ export default function DetailsPage() {
               textAlign: "right",
             }}
           >
-            <BlendIcon src={icons.location} size={24} />
+            <DetailIcon src={icons.location} size={24} />
             <div>
               <p style={{ margin: 0, fontWeight: 600, fontSize: "clamp(0.95rem, 4vw, 1.02rem)" }}>
                 {venue.name}
