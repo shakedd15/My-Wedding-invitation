@@ -80,11 +80,11 @@ function HeartDivider() {
 function SectionBlock({ icon, title, subtitle, children }) {
   return (
     <section style={{ textAlign: "center", width: "100%" }}>
-      <div style={{ marginBottom: "1rem" }}>{icon}</div>
+      <div style={{ marginBottom: "0.45rem" }}>{icon}</div>
       <h2
         className="font-body"
         style={{
-          margin: "0 0 0.65rem",
+          margin: subtitle ? "0 0 0.35rem" : "0 0 0.75rem",
           fontSize: "clamp(1.05rem, 4.5vw, 1.15rem)",
           fontWeight: 600,
           color: INK,
@@ -97,10 +97,10 @@ function SectionBlock({ icon, title, subtitle, children }) {
         <p
           className="font-body"
           style={{
-            margin: "0 0 1.35rem",
+            margin: "0 0 0.75rem",
             fontSize: "clamp(0.88rem, 3.8vw, 0.95rem)",
             color: MUTED,
-            lineHeight: 1.65,
+            lineHeight: 1.5,
             fontWeight: 300,
           }}
         >
@@ -124,7 +124,7 @@ function PillButton({ href, onClick, variant = "outline", children }) {
     width: "100%",
     maxWidth: "320px",
     margin: "0 auto",
-    padding: "0.9rem 1.25rem",
+    padding: "0.75rem 1.25rem",
     borderRadius: "999px",
     border: isWaze || isPaybox ? "none" : `1.5px solid ${BORDER}`,
     background: isWaze ? WAZE_BG : isPaybox ? PAYBOX_BG : "#ffffff",
@@ -194,7 +194,7 @@ export default function DetailsPage() {
         minHeight: "100dvh",
         background: "#ffffff",
         color: INK,
-        padding: "2.5rem 1.5rem 3.5rem",
+        padding: "1.25rem 1.25rem 1.5rem",
         display: "flex",
         justifyContent: "center",
       }}
@@ -206,19 +206,19 @@ export default function DetailsPage() {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: "2.25rem",
+          gap: "0.85rem",
         }}
       >
         <header style={{ textAlign: "center", width: "100%" }}>
           <DetailIcon name="leaves" size={72} />
-          <div style={{ margin: "0.75rem 0 1.1rem" }}>
+          <div style={{ margin: "0.35rem 0 0.5rem" }}>
             <DetailIcon name="heart" size={18} />
           </div>
 
           <h1
             className="font-display"
             style={{
-              margin: "0 0 0.35rem",
+              margin: "0 0 0.2rem",
               fontSize: "clamp(2.4rem, 10vw, 3rem)",
               fontWeight: 400,
               lineHeight: 1.15,
@@ -235,7 +235,7 @@ export default function DetailsPage() {
           <p
             className="font-display"
             style={{
-              margin: "0 0 1.5rem",
+              margin: "0 0 0.65rem",
               fontSize: "clamp(1rem, 4vw, 1.1rem)",
               letterSpacing: "0.55em",
               fontWeight: 300,
@@ -251,7 +251,7 @@ export default function DetailsPage() {
           <p
             className="font-serif"
             style={{
-              margin: "1.35rem 0 0.45rem",
+              margin: "0.65rem 0 0.2rem",
               fontSize: "clamp(1.35rem, 5.5vw, 1.55rem)",
               fontWeight: 400,
               color: INK,
@@ -280,8 +280,8 @@ export default function DetailsPage() {
             style={{
               display: "flex",
               flexDirection: "column",
-              gap: "0.85rem",
-              marginBottom: "1.35rem",
+              gap: "0.45rem",
+              marginBottom: "0.75rem",
               alignItems: "center",
             }}
           >
@@ -308,8 +308,8 @@ export default function DetailsPage() {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              gap: "0.55rem",
-              marginBottom: "1.5rem",
+              gap: "0.35rem",
+              marginBottom: "0.85rem",
               textAlign: "center",
             }}
           >
@@ -318,10 +318,10 @@ export default function DetailsPage() {
               <p style={{ margin: 0, fontWeight: 600, fontSize: "clamp(0.95rem, 4vw, 1.02rem)" }}>
                 {venue.name}
               </p>
-              <p style={{ margin: "0.2rem 0 0", color: MUTED, fontSize: "clamp(0.88rem, 3.8vw, 0.95rem)" }}>
+              <p style={{ margin: "0.15rem 0 0", color: MUTED, fontSize: "clamp(0.88rem, 3.8vw, 0.95rem)" }}>
                 {venue.address}
               </p>
-              <p style={{ margin: "0.2rem 0 0", color: MUTED, fontSize: "clamp(0.88rem, 3.8vw, 0.95rem)" }}>
+              <p style={{ margin: "0.15rem 0 0", color: MUTED, fontSize: "clamp(0.88rem, 3.8vw, 0.95rem)" }}>
                 {venue.parking}
               </p>
             </div>
