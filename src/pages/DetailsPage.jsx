@@ -410,11 +410,11 @@ export default function DetailsPage() {
           <div
             style={{
               display: "flex",
-              alignItems: "flex-start",
-              justifyContent: "center",
+              flexDirection: "column",
+              alignItems: "center",
               gap: "0.55rem",
               marginBottom: "1.5rem",
-              textAlign: "right",
+              textAlign: "center",
             }}
           >
             <LocationIcon size={24} />
