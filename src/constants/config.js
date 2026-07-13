@@ -38,3 +38,34 @@ export const ANIMATION = {
   sealFade: 1.2, // Phase 1: wax seal opacity 1 -> 0 (smooth, slow)
   flapOpen: 1.5, // Phase 2: flaps recede while the card grows out (pleasant)
 };
+
+export const DETAILS = {
+  couple: { bride: "שקד", groom: "איל" },
+  subtitle: "מתחתנים",
+  date: {
+    gregorian: "24.06.2025",
+    hebrew: 'יום שלישי, כ"ח בסיוון תשפ"ה',
+  },
+  schedule: [
+    { icon: "clock", text: "קבלת פנים: 19:30" },
+    { icon: "heart", text: "חופה וקידושין: 20:30" },
+  ],
+  venue: {
+    name: "גן אירועים אגדתא",
+    address: "החיטה 1, פרדס חנה",
+    parking: "חניה חופשית במקום",
+    wazeUrl:
+      "https://waze.com/ul?q=%D7%92%D7%9F+%D7%90%D7%99%D7%A8%D7%95%D7%A2%D7%99%D7%9D+%D7%90%D7%92%D7%93%D7%AA%D7%90+%D7%94%D7%97%D7%99%D7%98%D7%94+1+%D7%A4%D7%A8%D7%93%D7%A1+%D7%97%D7%A0%D7%94&navigate=yes",
+  },
+  payboxUrl: "https://payboxapp.page.link/",
+  rsvpUrl: "/",
+  shareUrl: "https://eyal-shaked-wedding.com/Details",
+  icons: {
+    leaves: "/images/details/leaves.png",
+    rings: "/images/details/rings.png",
+    clock: "/images/details/clock.png",
+    location: "/images/details/location.png",
+    heart: "/images/details/heart.png",
+    waze: "/images/details/waze.png",
+  },
+};
