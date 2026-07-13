@@ -12,22 +12,25 @@ import { ASSETS } from "./constants/config.js";
 import MenuSection from "./components/MenuSection.jsx";
 import RsvpSection from "./components/RsvpSection.jsx";
 import ClosingSection from "./components/ClosingSection.jsx";
+import DetailsPage from "./pages/DetailsPage.jsx";
 import { useGuest } from "./hooks/useGuest.js";
 import { supabase } from "./lib/supabase.js";
 
 function useUrlParams() {
   return useMemo(() => {
     const params = new URLSearchParams(window.location.search);
+    const pathname = window.location.pathname.replace(/\/$/, "") || "/";
     return {
       guestId: params.get("id"),
       page: params.get("page"),
+      pathname: pathname.toLowerCase(),
     };
   }, []);
 }
 
 export default function App() {
   const { copy } = useLanguage("he");
-  const { guestId, page } = useUrlParams();
+  const { guestId, page, pathname } = useUrlParams();
 
   /* ── Supabase: fetch guest data for the personalized RSVP ── */
   const { guest, loading: guestLoading, error: guestError } = useGuest(guestId);
@@ -90,12 +93,14 @@ export default function App() {
     }
   }, []);
 
+  const showDetails = pathname === "/details";
   const showMenu = page === "menu";
 
   return (
     <>
-      {/* ── Menu section — visible only when ?page=menu is present ── */}
-      {showMenu ? (
+      {showDetails ? (
+        <DetailsPage />
+      ) : showMenu ? (
         <div id="menu-section">
           <MenuSection />
         </div>
