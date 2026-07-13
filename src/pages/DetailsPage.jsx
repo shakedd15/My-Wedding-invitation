@@ -393,8 +393,7 @@ export default function DetailsPage() {
 
         <SectionBlock
           icon={<GiftIcon />}
-          title="רוצים לשמח אותנו?"
-          subtitle="תרומתכם תלווה אותנו בדרכנו המשותפת"
+          title="ניתן להעניק מתנה גם בפייסבוקס"
         >
           <PillButton href={DETAILS.payboxUrl} variant="paybox">
             <PayboxLogo />
