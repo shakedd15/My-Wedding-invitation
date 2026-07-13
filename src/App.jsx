@@ -37,7 +37,7 @@ export default function App() {
     if (!guestId) return;
     const { error } = await supabase
       .from("guests")
-      .update({ guests_amount_arriving: confirmedCount })
+      .update({ guests_amount_arriving: confirmedCount === 0 ? -1 : confirmedCount })
       .eq("id", guestId);
     if (error) throw error;
   }, [guestId]);

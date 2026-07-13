@@ -169,7 +169,7 @@ export default function RsvpSection({
     setSubmitError(null);
     try {
       if (onAttend) await onAttend(guestsCount);
-      setSubmitted("attending");
+      setSubmitted(guestsCount === 0 ? "declined" : "attending");
     } catch (err) {
       setSubmitError("אירעה שגיאה בשמירת הנתונים. נסו שנית.");
     } finally {
