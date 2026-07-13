@@ -15,7 +15,7 @@ const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12
  *   full_name              varchar  – display name
  *   gender                 varchar  – 'F' (אישה) | 'M' (גבר) | 'X' (משפחה)
  *   guests_max_amount      int8     – max seats allowed (default 3)
- *   guests_amount_arriving int8     – updated on RSVP submit (future use)
+ *   guests_amount_arriving int8     – RSVP count; -1 = declined, 0+ = attending count
  *
  * @param {string|null} guestId  - value of the ?id= query-string param (a UUID), or null
  * @returns {{ guest: object|null, loading: boolean, error: string|null }}

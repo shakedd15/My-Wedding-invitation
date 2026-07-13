@@ -131,7 +131,7 @@ function ActionBtn({ onClick, variant = "primary", disabled, children }) {
      guestName     : string|null – full_name from DB; null = no ?id= in URL
      gender        : string      – 'F' (אישה) | 'M' (גבר) | 'X' (משפחה)
      maxGuests     : number      – guests_max_amount from DB (default 3)
-     defaultGuests : number      – guests_amount_arriving from DB (initial counter value)
+     defaultGuests : number      – guests_amount_arriving from DB (-1 mapped to 0 for display)
      guestLoading  : boolean     – true while guest data is being fetched
      guestError    : string      – error message if guest fetch failed
      onAttend      : (count: number) => Promise<void>

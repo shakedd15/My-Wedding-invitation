@@ -46,7 +46,7 @@ export default function App() {
     if (!guestId) return;
     const { error } = await supabase
       .from("guests")
-      .update({ guests_amount_arriving: 0 })
+      .update({ guests_amount_arriving: -1 })
       .eq("id", guestId);
     if (error) throw error;
   }, [guestId]);
@@ -131,7 +131,11 @@ export default function App() {
             guestName={guest?.full_name ?? null}
             gender={guest?.gender ?? "F"}
             maxGuests={guest?.guests_max_amount ?? 3}
-            defaultGuests={guest?.guests_amount_arriving ?? 0}
+            defaultGuests={
+              guest?.guests_amount_arriving === -1
+                ? 0
+                : (guest?.guests_amount_arriving ?? 0)
+            }
             guestLoading={guestLoading}
             guestError={guestError}
             onAttend={handleAttend}
