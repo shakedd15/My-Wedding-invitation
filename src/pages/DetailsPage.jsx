@@ -17,7 +17,7 @@ const ICONS = {
   waze: "/images/details/waze.png",
 };
 
-function DetailIcon({ name, size = 52 }) {
+function DetailIcon({ name, size = 52, inline = false }) {
   return (
     <img
       src={ICONS[name]}
@@ -27,9 +27,10 @@ function DetailIcon({ name, size = 52 }) {
         width: size,
         height: size,
         objectFit: "contain",
-        display: "block",
-        margin: "0 auto",
+        display: inline ? "block" : "block",
+        margin: inline ? 0 : "0 auto",
         flexShrink: 0,
+        alignSelf: "center",
       }}
     />
   );
@@ -117,7 +118,7 @@ function PillButton({ href, onClick, variant = "outline", children }) {
   const isPaybox = variant === "paybox";
 
   const style = {
-    display: "flex",
+    display: "inline-flex",
     alignItems: "center",
     justifyContent: "center",
     gap: "0.65rem",
@@ -132,9 +133,11 @@ function PillButton({ href, onClick, variant = "outline", children }) {
     fontSize: "clamp(0.9rem, 3.8vw, 0.98rem)",
     fontFamily: "inherit",
     fontWeight: 500,
+    lineHeight: 1,
     textDecoration: "none",
     cursor: "pointer",
     boxSizing: "border-box",
+    textAlign: "center",
   };
 
   if (href) {
@@ -184,7 +187,7 @@ export default function DetailsPage() {
     document.title = "שקד & איל — פרטי החתונה";
   }, []);
 
-  const { couple, subtitle, date, schedule, venue } = DETAILS;
+  const { couple, date, schedule, venue } = DETAILS;
 
   return (
     <main
@@ -280,7 +283,7 @@ export default function DetailsPage() {
                   fontWeight: 400,
                 }}
               >
-                <DetailIcon name={item.icon} size={22} />
+                <DetailIcon name={item.icon} size={22} inline />
                 <span>{item.text}</span>
               </div>
             ))}
@@ -311,8 +314,8 @@ export default function DetailsPage() {
           </div>
 
           <PillButton href={venue.wazeUrl} variant="waze">
-            <DetailIcon name="waze" size={24} />
-            נווטו איתנו ב-Waze
+            <DetailIcon name="waze" size={24} inline />
+            <span style={{ lineHeight: 1 }}>נווטו איתנו ב-Waze</span>
           </PillButton>
         </SectionBlock>
 
@@ -321,7 +324,7 @@ export default function DetailsPage() {
         <SectionBlock icon={<GiftIcon />} title="ניתן להעניק מתנה גם בפייסבוקס">
           <PillButton href={DETAILS.payboxUrl} variant="paybox">
             <PayboxLogo />
-            למתנה ב-PayBox
+            <span style={{ lineHeight: 1 }}>למתנה ב-PayBox</span>
           </PillButton>
         </SectionBlock>
       </div>
