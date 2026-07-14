@@ -19,7 +19,7 @@ const ICONS = {
   gift: "/images/details/gift.png",
 };
 
-function DetailIcon({ name, size = 52, inline = false, invert = false }) {
+function DetailIcon({ name, size = 52, inline = false }) {
   return (
     <img
       src={ICONS[name]}
@@ -33,7 +33,6 @@ function DetailIcon({ name, size = 52, inline = false, invert = false }) {
         margin: inline ? 0 : "0 auto",
         flexShrink: 0,
         alignSelf: "center",
-        filter: invert ? "brightness(0) invert(1)" : undefined,
       }}
     />
   );
@@ -143,28 +142,6 @@ function PillButton({ href, onClick, variant = "outline", children }) {
     <button type="button" onClick={onClick} style={style}>
       {children}
     </button>
-  );
-}
-
-function PayboxLogo() {
-  return (
-    <span
-      aria-hidden="true"
-      style={{
-        width: "28px",
-        height: "28px",
-        borderRadius: "50%",
-        background: "rgba(255,255,255,0.2)",
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontWeight: 700,
-        fontSize: "1rem",
-        flexShrink: 0,
-      }}
-    >
-      P
-    </span>
   );
 }
 
@@ -318,11 +295,11 @@ export default function DetailsPage() {
             }}
           >
             <PillButton href={DETAILS.payboxUrl} variant="paybox">
-              <PayboxLogo />
+              <DetailIcon name="gift" size={22} inline />
               <span style={{ lineHeight: 1 }}>למתנה ב-PayBox</span>
             </PillButton>
             <PillButton href={DETAILS.bitUrl} variant="bit">
-              <DetailIcon name="gift" size={22} inline invert />
+              <DetailIcon name="gift" size={22} inline />
               <span style={{ lineHeight: 1 }}>למתנה ב-bit</span>
             </PillButton>
           </div>
