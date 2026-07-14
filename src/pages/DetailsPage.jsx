@@ -6,6 +6,7 @@ const INK = "#2f2f2f";
 const MUTED = "#5a5a5a";
 const WAZE_BG = "#e8ddd0";
 const PAYBOX_BG = "#5f7a62";
+const BIT_BG = "#4414b3";
 const BORDER = "#d8d8d8";
 
 const ICONS = {
@@ -27,31 +28,12 @@ function DetailIcon({ name, size = 52, inline = false }) {
         width: size,
         height: size,
         objectFit: "contain",
-        display: inline ? "block" : "block",
+        display: "block",
         margin: inline ? 0 : "0 auto",
         flexShrink: 0,
         alignSelf: "center",
       }}
     />
-  );
-}
-
-function GiftIcon({ size = 52 }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 64 64"
-      fill="none"
-      aria-hidden="true"
-      style={{ display: "block", margin: "0 auto", flexShrink: 0 }}
-    >
-      <rect x="10" y="28" width="44" height="30" rx="2" stroke={GOLD} strokeWidth="2" />
-      <path d="M10 36h44" stroke={GOLD} strokeWidth="2" />
-      <path d="M32 28v30" stroke={GOLD} strokeWidth="2" />
-      <path d="M32 28c-8-10-18-8-18-2s10 4 18 2" stroke={GOLD} strokeWidth="2" strokeLinecap="round" />
-      <path d="M32 28c8-10 18-8 18-2s-10 4-18 2" stroke={GOLD} strokeWidth="2" strokeLinecap="round" />
-    </svg>
   );
 }
 
@@ -81,7 +63,7 @@ function HeartDivider() {
 function SectionBlock({ icon, title, subtitle, children }) {
   return (
     <section style={{ textAlign: "center", width: "100%" }}>
-      <div style={{ marginBottom: "0.45rem" }}>{icon}</div>
+      {icon && <div style={{ marginBottom: "0.45rem" }}>{icon}</div>}
       <h2
         className="font-body"
         style={{
@@ -116,6 +98,8 @@ function SectionBlock({ icon, title, subtitle, children }) {
 function PillButton({ href, onClick, variant = "outline", children }) {
   const isWaze = variant === "waze";
   const isPaybox = variant === "paybox";
+  const isBit = variant === "bit";
+  const isSolid = isWaze || isPaybox || isBit;
 
   const style = {
     display: "inline-flex",
@@ -127,9 +111,9 @@ function PillButton({ href, onClick, variant = "outline", children }) {
     margin: "0 auto",
     padding: "0.75rem 1.25rem",
     borderRadius: "999px",
-    border: isWaze || isPaybox ? "none" : `1.5px solid ${BORDER}`,
-    background: isWaze ? WAZE_BG : isPaybox ? PAYBOX_BG : "#ffffff",
-    color: isPaybox ? "#ffffff" : INK,
+    border: isSolid ? "none" : `1.5px solid ${BORDER}`,
+    background: isWaze ? WAZE_BG : isPaybox ? PAYBOX_BG : isBit ? BIT_BG : "#ffffff",
+    color: isPaybox || isBit ? "#ffffff" : INK,
     fontSize: "clamp(0.9rem, 3.8vw, 0.98rem)",
     fontFamily: "inherit",
     fontWeight: 500,
@@ -178,6 +162,29 @@ function PayboxLogo() {
       }}
     >
       P
+    </span>
+  );
+}
+
+function BitLogo() {
+  return (
+    <span
+      aria-hidden="true"
+      style={{
+        width: "28px",
+        height: "28px",
+        borderRadius: "8px",
+        background: "rgba(255,255,255,0.2)",
+        display: "inline-flex",
+        alignItems: "center",
+        justifyContent: "center",
+        fontWeight: 700,
+        fontSize: "0.72rem",
+        letterSpacing: "0.02em",
+        flexShrink: 0,
+      }}
+    >
+      bit
     </span>
   );
 }
@@ -321,11 +328,25 @@ export default function DetailsPage() {
 
         <HeartDivider />
 
-        <SectionBlock icon={<GiftIcon />} title="ניתן להעניק מתנה גם בפייסבוקס">
-          <PillButton href={DETAILS.payboxUrl} variant="paybox">
-            <PayboxLogo />
-            <span style={{ lineHeight: 1 }}>למתנה ב-PayBox</span>
-          </PillButton>
+        <SectionBlock title="ניתן להעניק מתנה גם בפייסבוקס וביט 👇">
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "0.65rem",
+              width: "100%",
+              alignItems: "center",
+            }}
+          >
+            <PillButton href={DETAILS.payboxUrl} variant="paybox">
+              <PayboxLogo />
+              <span style={{ lineHeight: 1 }}>למתנה ב-PayBox</span>
+            </PillButton>
+            <PillButton href={DETAILS.bitUrl} variant="bit">
+              <BitLogo />
+              <span style={{ lineHeight: 1 }}>למתנה ב-bit</span>
+            </PillButton>
+          </div>
         </SectionBlock>
       </div>
     </main>
