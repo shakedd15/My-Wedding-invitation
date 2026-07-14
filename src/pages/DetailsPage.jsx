@@ -5,8 +5,8 @@ const GOLD = "#c5a069";
 const INK = "#2f2f2f";
 const MUTED = "#5a5a5a";
 const WAZE_BG = "#e8ddd0";
-const PAYBOX_BG = "#5f7a62";
-const BIT_BG = "#4414b3";
+const PAYBOX_BG = "#2ba9eb";
+const BIT_BG = "#00353b";
 const BORDER = "#d8d8d8";
 
 const ICONS = {
