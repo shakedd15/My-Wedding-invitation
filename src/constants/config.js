@@ -41,7 +41,6 @@ export const ANIMATION = {
 
 export const DETAILS = {
   couple: { bride: "שקד", groom: "איל" },
-  subtitle: "מתחתנים",
   date: {
     gregorian: "10.11.2026",
     hebrew: 'יום שלישי, ל׳ בחשוון',

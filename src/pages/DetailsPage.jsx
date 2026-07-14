@@ -211,40 +211,23 @@ export default function DetailsPage() {
       >
         <header style={{ textAlign: "center", width: "100%" }}>
           <DetailIcon name="leaves" size={72} />
-          <div style={{ margin: "0.35rem 0 0.5rem" }}>
-            <DetailIcon name="heart" size={18} />
-          </div>
 
           <h1
             className="font-display"
             style={{
-              margin: "0 0 0.2rem",
+              margin: "0.5rem 0 0.65rem",
               fontSize: "clamp(2.4rem, 10vw, 3rem)",
               fontWeight: 400,
               lineHeight: 1.15,
               color: INK,
             }}
           >
-            {couple.bride}{" "}
+            {couple.groom}{" "}
             <span className="font-serif" style={{ color: GOLD, fontStyle: "italic", fontWeight: 300 }}>
               &
             </span>{" "}
-            {couple.groom}
+            {couple.bride}
           </h1>
-
-          <p
-            className="font-display"
-            style={{
-              margin: "0 0 0.65rem",
-              fontSize: "clamp(1rem, 4vw, 1.1rem)",
-              letterSpacing: "0.55em",
-              fontWeight: 300,
-              color: MUTED,
-              paddingRight: "0.55em",
-            }}
-          >
-            {subtitle.split("").join(" ")}
-          </p>
 
           <HeartDivider />
 
