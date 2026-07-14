@@ -16,9 +16,10 @@ const ICONS = {
   location: "/images/details/location.png",
   heart: "/images/details/heart.png",
   waze: "/images/details/waze.png",
+  gift: "/images/details/gift.png",
 };
 
-function DetailIcon({ name, size = 52, inline = false }) {
+function DetailIcon({ name, size = 52, inline = false, invert = false }) {
   return (
     <img
       src={ICONS[name]}
@@ -32,6 +33,7 @@ function DetailIcon({ name, size = 52, inline = false }) {
         margin: inline ? 0 : "0 auto",
         flexShrink: 0,
         alignSelf: "center",
+        filter: invert ? "brightness(0) invert(1)" : undefined,
       }}
     />
   );
