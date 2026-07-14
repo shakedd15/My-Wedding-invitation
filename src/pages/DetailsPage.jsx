@@ -168,29 +168,6 @@ function PayboxLogo() {
   );
 }
 
-function BitLogo() {
-  return (
-    <span
-      aria-hidden="true"
-      style={{
-        width: "28px",
-        height: "28px",
-        borderRadius: "8px",
-        background: "rgba(255,255,255,0.2)",
-        display: "inline-flex",
-        alignItems: "center",
-        justifyContent: "center",
-        fontWeight: 700,
-        fontSize: "0.72rem",
-        letterSpacing: "0.02em",
-        flexShrink: 0,
-      }}
-    >
-      bit
-    </span>
-  );
-}
-
 export default function DetailsPage() {
   useEffect(() => {
     document.title = "שקד & איל — פרטי החתונה";
@@ -345,7 +322,7 @@ export default function DetailsPage() {
               <span style={{ lineHeight: 1 }}>למתנה ב-PayBox</span>
             </PillButton>
             <PillButton href={DETAILS.bitUrl} variant="bit">
-              <BitLogo />
+              <DetailIcon name="gift" size={22} inline invert />
               <span style={{ lineHeight: 1 }}>למתנה ב-bit</span>
             </PillButton>
           </div>
