@@ -10,7 +10,6 @@ const EVENTS = [
   { time: "20:30", label: "חופה\nוקידושין",      side: "left"  },
   { time: "21:00", label: "ארוחה עיקרית",        side: "right" },
   { time: "22:30", label: "מסיבה\nובר פתוח",     side: "left"  },
-  { time: "01:00", label: "סיום החגיגות",        side: "right" },
 ];
 
 const BLUE = "var(--color-blue)";
@@ -171,6 +170,9 @@ export default function ScheduleSection() {
             </div>
           </div>
         ))}
+
+        {/* Extend the timeline past the last event, without a diamond */}
+        <div aria-hidden="true" style={{ height: "56px" }} />
       </div>
     </section>
   );
