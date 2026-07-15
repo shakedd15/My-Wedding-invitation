@@ -248,8 +248,8 @@ export default function Envelope({ copy, onSealTap }) {
         <span
           className="font-body text-ink"
           style={{
-            fontSize: "14px",
-            fontWeight: 300,
+            fontSize: "20px",
+            fontWeight: 700,
             letterSpacing: "1px",
             whiteSpace: "nowrap",
           }}
@@ -263,13 +263,13 @@ export default function Envelope({ copy, onSealTap }) {
           fill="none"
           aria-hidden="true"
         >
-          {/* Outer gold circle */}
-          <circle cx="18" cy="18" r="17" stroke="rgba(197,160,105,0.55)" strokeWidth="1.2" />
+          {/* Outer circle */}
+          <circle cx="18" cy="18" r="16.5" stroke="#1a1a1a" strokeWidth="2.5" />
           {/* Chevron pointing down */}
           <polyline
             points="11,14 18,22 25,14"
-            stroke="#c5a069"
-            strokeWidth="2"
+            stroke="#1a1a1a"
+            strokeWidth="3.25"
             strokeLinecap="round"
             strokeLinejoin="round"
             fill="none"
