@@ -265,7 +265,7 @@ export default function DateSection({ copy }) {
         <div
           className="flex items-center"
           dir="ltr"
-          style={{ gap: "8px", marginTop: "32px", alignItems: "flex-end" }}
+          style={{ gap: "8px", marginTop: "32px", alignItems: "center" }}
         >
           {units.map((unit, idx) => (
             <>
@@ -279,7 +279,7 @@ export default function DateSection({ copy }) {
                     fontSize: "60px",
                     color: C_BLUE_DARK,
                     lineHeight: 1,
-                    paddingBottom: "24px",
+                    paddingBottom: "0",
                     flexShrink: 0,
                   }}
                 >
@@ -287,7 +287,7 @@ export default function DateSection({ copy }) {
                 </span>
               )}
               <div
-                key={unit.label}
+                key={unit.value}
                 className="ds-card"
                 style={{
                   opacity: 0,
@@ -295,7 +295,6 @@ export default function DateSection({ copy }) {
                   flexDirection: "column",
                   alignItems: "center",
                   justifyContent: "center",
-                  gap: "4px",
                   flexShrink: 0,
                 }}
               >
@@ -310,17 +309,6 @@ export default function DateSection({ copy }) {
                   }}
                 >
                   {unit.value}
-                </span>
-                <span
-                  style={{
-                    fontFamily: "var(--font-serif)",
-                    fontSize: "24px",
-                    fontWeight: 400,
-                    color: C_BLUE_DARK,
-                    letterSpacing: "0.5px",
-                  }}
-                >
-                  {unit.label}
                 </span>
               </div>
             </>
