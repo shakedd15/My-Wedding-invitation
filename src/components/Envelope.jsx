@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import gsap from "gsap";
+import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
 import InvitationCard from "./InvitationCard.jsx";
 import {
@@ -10,7 +11,7 @@ import {
   CARD_START_SCALE,
 } from "../constants/config.js";
 
-gsap.registerPlugin(useGSAP);
+gsap.registerPlugin(useGSAP, ScrollToPlugin);
 
 /**
  * Builds a rounded-corner triangle path in objectBoundingBox space (0..1).
@@ -78,12 +79,13 @@ export default function Envelope({ copy, onSealTap }) {
   const cardRef = useRef(null);
   const arrowRef = useRef(null);
   const tlRef = useRef(null);
+  const scrollHintTlRef = useRef(null);
 
   const setFlap = (key) => (el) => {
     if (el) flapsRef.current[key] = el;
   };
 
-  useGSAP(
+  const { contextSafe } = useGSAP(
     () => {
       const reduceMotion = window.matchMedia(
         "(prefers-reduced-motion: reduce)"
@@ -164,6 +166,37 @@ export default function Envelope({ copy, onSealTap }) {
     tlRef.current?.play();
   };
 
+  // Nudge the page down briefly, then return — teaches that the page scrolls.
+  const handleScrollHint = contextSafe(() => {
+    if (phase !== "open") return;
+    if (scrollHintTlRef.current?.isActive()) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+    if (reduceMotion) {
+      window.scrollTo(0, Math.min(window.innerHeight * 0.3, 220));
+      window.setTimeout(() => window.scrollTo(0, 0), 350);
+      return;
+    }
+
+    const startY = window.scrollY || window.pageYOffset || 0;
+    const peekY = startY + Math.min(window.innerHeight * 0.32, 260);
+
+    scrollHintTlRef.current = gsap
+      .timeline()
+      .to(window, {
+        duration: 0.65,
+        scrollTo: { y: peekY, autoKill: false },
+        ease: "power2.inOut",
+      })
+      .to(window, {
+        duration: 0.8,
+        scrollTo: { y: startY, autoKill: false },
+        ease: "power2.inOut",
+      });
+  });
+
   const e = copy.envelope;
   const texVar = { "--tex": `url(${ASSETS.envelopeTexture})` };
 
@@ -239,10 +272,13 @@ export default function Envelope({ copy, onSealTap }) {
       </div>
 
       {/* ===== Scroll hint arrow (fades in + bounces after envelope opens) ===== */}
-      <div
+      <button
+        type="button"
         ref={arrowRef}
-        aria-hidden="true"
-        className="pointer-events-none absolute bottom-14 left-1/2 z-40 -translate-x-1/2"
+        onClick={handleScrollHint}
+        disabled={phase !== "open"}
+        aria-label="גללו מטה"
+        className="pointer-events-auto absolute bottom-14 left-1/2 z-40 -translate-x-1/2 cursor-pointer border-0 bg-transparent p-0 outline-none disabled:pointer-events-none focus-visible:ring-2 focus-visible:ring-ink/30"
         style={{ opacity: 0, willChange: "transform, opacity", display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}
       >
         <span
@@ -275,7 +311,7 @@ export default function Envelope({ copy, onSealTap }) {
             fill="none"
           />
         </svg>
-      </div>
+      </button>
 
       {/* ===== Wax-seal sticker + instruction (centered, like the reference) ===== */}
       <div className="pointer-events-none absolute inset-0 z-30 grid place-items-center">
