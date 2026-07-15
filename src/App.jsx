@@ -7,6 +7,7 @@ import WaveDivider from "./components/WaveDivider.jsx";
 import CountdownSection from "./components/CountdownSection.jsx";
 import ScheduleSection from "./components/ScheduleSection.jsx";
 import VenueSection from "./components/VenueSection.jsx";
+import ParentsSection from "./components/ParentsSection.jsx";
 import { useLanguage } from "./hooks/useLanguage.js";
 import { ASSETS } from "./constants/config.js";
 import MenuSection from "./components/MenuSection.jsx";
@@ -130,6 +131,9 @@ export default function App() {
 
           {/* ── Stage 4: Venue / Location ── */}
           <VenueSection />
+
+          {/* ── Stage 4.5: Parents welcome ── */}
+          <ParentsSection />
 
           {/* ── Stage 5: RSVP ── */}
           <RsvpSection
