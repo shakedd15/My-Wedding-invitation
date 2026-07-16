@@ -41,7 +41,7 @@ export default function ClosingSection() {
     >
       {/* ── Photo ── */}
       <img
-        src="/images/couple.jpg"
+        src="/images/FullSizeRender.jpg"
         alt="שקד ואיל"
         style={{
           width: "100%",
