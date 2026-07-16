@@ -202,16 +202,37 @@ export default function ParentsSection() {
             opacity: 0,
             flex: "0 0 auto",
             width: "clamp(108px, 28vw, 148px)",
+            position: "relative",
+            aspectRatio: "1 / 1",
+            filter: "drop-shadow(0 6px 18px rgba(80, 60, 30, 0.22))",
           }}
         >
+          {/* Photo sits in the transparent opening of the frame */}
           <img
-            src="/images/parents-framed.png"
+            src="/images/FullSizeRender_3.jpg"
             alt="שקד ואיל"
             style={{
+              position: "absolute",
+              left: "24.5%",
+              top: "24%",
+              width: "50.5%",
+              height: "51.5%",
+              objectFit: "cover",
+              objectPosition: "center",
+              display: "block",
+            }}
+          />
+          <img
+            src="/images/parents-frame.png"
+            alt=""
+            aria-hidden="true"
+            style={{
+              position: "relative",
+              zIndex: 1,
               width: "100%",
               height: "auto",
               display: "block",
-              filter: "drop-shadow(0 6px 18px rgba(80, 60, 30, 0.22))",
+              pointerEvents: "none",
             }}
           />
         </div>
