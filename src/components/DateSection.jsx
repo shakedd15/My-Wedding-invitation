@@ -28,7 +28,7 @@ function GoldHeartDivider({ lineWidth = 40, heartSize = 11 }) {
           style={{ width: branchW, height: branchH, objectFit: "contain", transform: "scaleX(-1)", flexShrink: 0 }}
         />
         <span
-          className="font-body"
+          className="font-display"
           style={{
             fontSize: "20px",
             fontWeight: 300,
@@ -205,12 +205,12 @@ export default function DateSection({ copy }) {
 
         {/* ── Greeting ── */}
         <p
-          className="ds-greeting font-body"
+          className="ds-greeting font-display"
           style={{
             opacity: 0,
             marginTop: "32px",
             fontSize: "39px",
-            fontWeight: 700,
+            fontWeight: 300,
             color: C_BLUE,
             letterSpacing: "0.5px",
             lineHeight: 1.5,
@@ -221,12 +221,12 @@ export default function DateSection({ copy }) {
 
         {/* ── Second text ── */}
         <p
-          className="ds-greeting-sub font-body"
+          className="ds-greeting-sub font-display"
           style={{
             opacity: 0,
             marginTop: "28px",
             fontSize: "23px",
-            fontWeight: 400,
+            fontWeight: 300,
             color: C_BODY,
             lineHeight: 1.6,
             letterSpacing: "0.2px",
@@ -242,12 +242,12 @@ export default function DateSection({ copy }) {
 
         {/* ── Main title ── */}
         <h2
-          className="ds-title font-body"
+          className="ds-title font-display"
           style={{
             opacity: 0,
             marginTop: "0",
             fontSize: "60px",
-            fontWeight: 700,
+            fontWeight: 300,
             color: C_BLUE,
             letterSpacing: "1px",
             lineHeight: 1.15,
@@ -317,13 +317,13 @@ export default function DateSection({ copy }) {
 
         {/* ── Bottom text ── */}
         <p
-          className="ds-dayname font-body"
+          className="ds-dayname font-display"
           style={{
             opacity: 0,
             marginTop: "36px",
             marginBottom: "50px",
             fontSize: "29px",
-            fontWeight: 700,
+            fontWeight: 300,
             color: C_BLUE,
             letterSpacing: "0.5px",
           }}

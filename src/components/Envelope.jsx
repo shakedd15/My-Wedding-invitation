@@ -342,7 +342,7 @@ export default function Envelope({ copy, onSealTap }) {
             <p
               ref={instructionRef}
               dir={copy.meta.dir}
-              className="mt-5 font-body text-2xl font-normal tracking-wide text-ink/70"
+              className="mt-5 font-display text-2xl font-normal tracking-wide text-ink/70"
             >
               {e.instruction}
             </p>

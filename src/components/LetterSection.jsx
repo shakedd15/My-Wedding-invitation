@@ -109,7 +109,7 @@ export default function LetterSection({ copy }) {
             <div className="h-px w-12" style={{ background: "var(--color-blue)", opacity: 0.45 }} />
           </div>
           <h2
-            className="font-body text-4xl font-light tracking-widest"
+            className="font-display text-4xl font-light tracking-widest"
             style={{ color: "var(--color-blue)" }}
           >
             {title}

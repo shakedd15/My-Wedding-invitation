@@ -179,7 +179,7 @@ export default function DetailsPage() {
           <DetailIcon name="leaves" size={72} />
 
           <h1
-            className="font-body"
+            className="font-display"
             style={{
               margin: "0.5rem 0 0.65rem",
               fontSize: "clamp(2.4rem, 10vw, 3rem)",

@@ -73,13 +73,13 @@ export default function ScheduleSection() {
     >
       {/* Title */}
       <h2
-        className="sch-title mb-14 text-center font-body"
+        className="sch-title mb-14 text-center font-display font-light"
         style={{
           opacity: 0,
           color: "var(--color-ink)",
           fontSize: "clamp(1.8rem, 7vw, 2.6rem)",
-          fontWeight: 700,
-          letterSpacing: "0.01em",
+          fontStyle: "italic",
+          letterSpacing: "0.02em",
         }}
       >
         תוכניית הערב
@@ -117,8 +117,8 @@ export default function ScheduleSection() {
                   style={{ opacity: 0 }}
                 >
                   <span
-                    className="font-body block"
-                    style={{ color: BLUE, fontSize: "clamp(1.7rem,6.5vw,2.4rem)", fontWeight: 700, lineHeight: 1 }}
+                    className="font-display block"
+                    style={{ color: BLUE, fontSize: "clamp(1.7rem,6.5vw,2.4rem)", fontWeight: 300, lineHeight: 1 }}
                   >
                     {ev.time}
                   </span>
@@ -154,8 +154,8 @@ export default function ScheduleSection() {
                   style={{ opacity: 0 }}
                 >
                   <span
-                    className="font-body block"
-                    style={{ color: BLUE, fontSize: "clamp(1.7rem,6.5vw,2.4rem)", fontWeight: 700, lineHeight: 1 }}
+                    className="font-display block"
+                    style={{ color: BLUE, fontSize: "clamp(1.7rem,6.5vw,2.4rem)", fontWeight: 300, lineHeight: 1 }}
                   >
                     {ev.time}
                   </span>
