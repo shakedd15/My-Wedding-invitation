@@ -245,11 +245,10 @@ export default function RsvpSection({
             <div style={{ textAlign: "center", marginBottom: "2rem" }}>
               {greeting && (
                 <p
-                  className="font-display"
+                  className="font-body"
                   style={{
                     fontSize: "clamp(1.25rem, 5vw, 1.55rem)",
-                    fontStyle: "italic",
-                    fontWeight: 400,
+                    fontWeight: 700,
                     color: "var(--color-ink)",
                     margin: "0 0 0.5rem",
                   }}
@@ -263,7 +262,7 @@ export default function RsvpSection({
                   color: "#5a5a5a",
                   margin: 0,
                   lineHeight: 1.65,
-                  fontWeight: 300,
+                  fontWeight: 400,
                 }}
               >
                 {subText}
@@ -417,17 +416,17 @@ function ErrorMessage({ message }) {
         <circle cx="26" cy="35" r="1.5" fill={GOLD} />
       </svg>
       <p
-        className="font-display"
+        className="font-body"
         style={{
           fontSize: "clamp(1rem, 4vw, 1.2rem)",
-          fontStyle: "italic",
+          fontWeight: 700,
           color: "var(--color-ink)",
           margin: "0 0 0.5rem",
         }}
       >
         לא מצאנו את ההזמנה
       </p>
-      <p style={{ fontSize: "0.9rem", color: "#777", margin: 0, fontWeight: 300, lineHeight: 1.6 }}>
+      <p style={{ fontSize: "0.9rem", color: "#777", margin: 0, fontWeight: 400, lineHeight: 1.6 }}>
         {message}
       </p>
     </div>
@@ -464,11 +463,10 @@ function ConfirmationMessage({ variant, guestName, gender }) {
       </div>
 
       <p
-        className="font-display"
+        className="font-body"
         style={{
           fontSize: "clamp(1.2rem, 5vw, 1.45rem)",
-          fontStyle: "italic",
-          fontWeight: 400,
+          fontWeight: 700,
           color: "var(--color-ink)",
           margin: "0 0 0.6rem",
         }}
@@ -482,7 +480,7 @@ function ConfirmationMessage({ variant, guestName, gender }) {
           color: "#5a5a5a",
           margin: 0,
           lineHeight: 1.7,
-          fontWeight: 300,
+          fontWeight: 400,
         }}
       >
         {isAttending ? seeYou : decline}

@@ -78,11 +78,10 @@ export default function ClosingSection() {
         }}
       >
         <p
-          className="font-display"
+          className="font-body"
           style={{
             fontSize: "clamp(1.6rem, 6vw, 2.8rem)",
-            fontStyle: "italic",
-            fontWeight: 300,
+            fontWeight: 700,
             lineHeight: 1.55,
             color: "#fff",
             textShadow: "0 2px 18px rgba(0,0,0,0.35)",
