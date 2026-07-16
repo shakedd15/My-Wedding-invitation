@@ -5,34 +5,8 @@ import { useGSAP } from "@gsap/react";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const GOLD = "#c5a069";
 const INK = "#2f2f2f";
 const CREAM = "rgb(246, 245, 240)";
-
-function GoldHeart({ size = 12 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill={GOLD} aria-hidden="true">
-      <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-    </svg>
-  );
-}
-
-function HeartLine({ lineWidth = 48, heartSize = 11 }) {
-  return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "6px",
-        justifyContent: "center",
-      }}
-    >
-      <div style={{ width: lineWidth, height: "1px", background: GOLD }} />
-      <GoldHeart size={heartSize} />
-      <div style={{ width: lineWidth, height: "1px", background: GOLD }} />
-    </div>
-  );
-}
 
 function ParentsBlock({ title, lines }) {
   return (
@@ -44,16 +18,15 @@ function ParentsBlock({ title, lines }) {
         flexDirection: "column",
         alignItems: "center",
         textAlign: "center",
-        gap: "0.55rem",
+        gap: "0.35rem",
         minWidth: 0,
         flex: "1 1 0",
       }}
     >
-      <HeartLine lineWidth={36} heartSize={10} />
       <p
         className="font-body"
         style={{
-          margin: "0.15rem 0 0",
+          margin: 0,
           fontSize: "clamp(1.05rem, 3.6vw, 1.25rem)",
           fontWeight: 700,
           color: INK,
@@ -77,7 +50,6 @@ function ParentsBlock({ title, lines }) {
           {line}
         </p>
       ))}
-      <HeartLine lineWidth={36} heartSize={10} />
     </div>
   );
 }
@@ -141,7 +113,6 @@ export default function ParentsSection() {
         alignItems: "center",
       }}
     >
-      {/* Header: leaf + heart + title + divider */}
       <div
         className="ps-header"
         style={{
@@ -163,11 +134,10 @@ export default function ParentsSection() {
             marginBottom: "0.35rem",
           }}
         />
-        <GoldHeart size={14} />
         <h2
           className="font-body"
           style={{
-            margin: "0.55rem 0 0.7rem",
+            margin: "0.35rem 0 0",
             fontSize: "clamp(1.55rem, 6vw, 2rem)",
             fontWeight: 700,
             color: INK,
@@ -177,10 +147,8 @@ export default function ParentsSection() {
         >
           נשמח לראותכם
         </h2>
-        <HeartLine lineWidth={56} heartSize={12} />
       </div>
 
-      {/* Three columns: bride parents | photo | groom parents (RTL → visual right / center / left) */}
       <div
         style={{
           width: "100%",
@@ -201,13 +169,12 @@ export default function ParentsSection() {
           style={{
             opacity: 0,
             flex: "0 0 auto",
-            width: "clamp(108px, 28vw, 148px)",
+            width: "clamp(132px, 34vw, 180px)",
             position: "relative",
             aspectRatio: "1 / 1",
             filter: "drop-shadow(0 6px 18px rgba(80, 60, 30, 0.22))",
           }}
         >
-          {/* Photo sits in the transparent opening of the frame */}
           <img
             src="/images/FullSizeRender_3.jpg"
             alt="שקד ואיל"
@@ -241,10 +208,6 @@ export default function ParentsSection() {
           title="משפחת החתן"
           lines={["שלומית ושמואל", "בק"]}
         />
-      </div>
-
-      <div style={{ marginTop: "1.75rem" }}>
-        <GoldHeart size={12} />
       </div>
     </section>
   );
