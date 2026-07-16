@@ -300,11 +300,11 @@ export default function Envelope({ copy, onSealTap }) {
           aria-hidden="true"
         >
           {/* Outer circle */}
-          <circle cx="18" cy="18" r="16.5" stroke="#1a1a1a" strokeWidth="2.5" />
+          <circle cx="18" cy="18" r="16.5" stroke="#c5a069" strokeWidth="2.5" />
           {/* Chevron pointing down */}
           <polyline
             points="11,14 18,22 25,14"
-            stroke="#1a1a1a"
+            stroke="#c5a069"
             strokeWidth="3.25"
             strokeLinecap="round"
             strokeLinejoin="round"
