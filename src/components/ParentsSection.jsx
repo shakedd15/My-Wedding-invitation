@@ -192,7 +192,7 @@ export default function ParentsSection() {
         }}
       >
         <ParentsBlock
-          title="הורי הכלה"
+          title="משפחת הכלה"
           lines={["חני ומשה לוי ליבמן", "פיני ועדית דונל"]}
         />
 
@@ -217,7 +217,7 @@ export default function ParentsSection() {
         </div>
 
         <ParentsBlock
-          title="הורי החתן"
+          title="משפחת החתן"
           lines={["שלומית ושמואל", "בק"]}
         />
       </div>
