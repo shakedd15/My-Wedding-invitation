@@ -179,7 +179,7 @@ export default function DetailsPage() {
           <DetailIcon name="leaves" size={72} />
 
           <h1
-            className="font-display"
+            className="font-body"
             style={{
               margin: "0.5rem 0 0.65rem",
               fontSize: "clamp(2.4rem, 10vw, 3rem)",
@@ -189,7 +189,7 @@ export default function DetailsPage() {
             }}
           >
             {couple.groom}{" "}
-            <span className="font-serif" style={{ color: GOLD, fontStyle: "italic", fontWeight: 300 }}>
+            <span className="font-body" style={{ color: GOLD, fontStyle: "italic", fontWeight: 300 }}>
               &
             </span>{" "}
             {couple.bride}
@@ -198,7 +198,7 @@ export default function DetailsPage() {
           <HeartDivider />
 
           <p
-            className="font-serif"
+            className="font-body"
             style={{
               margin: "0.65rem 0 0.2rem",
               fontSize: "clamp(1.35rem, 5.5vw, 1.55rem)",

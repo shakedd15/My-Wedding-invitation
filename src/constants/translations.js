@@ -83,7 +83,7 @@ export const TRANSLATIONS = {
         { value: "11", label: "חודש" },
         { value: "2026", label: "שנה" },
       ],
-      dayName: "יום שלישי",
+      dayName: "יום שלישי | ל׳ בחשוון תשפ״ז",
     },
 
     // ---- Section 3: The Letter ----

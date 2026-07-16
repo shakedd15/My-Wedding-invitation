@@ -245,7 +245,7 @@ export default function RsvpSection({
             <div style={{ textAlign: "center", marginBottom: "2rem" }}>
               {greeting && (
                 <p
-                  className="font-display"
+                  className="font-body"
                   style={{
                     fontSize: "clamp(1.25rem, 5vw, 1.55rem)",
                     fontStyle: "italic",
@@ -417,7 +417,7 @@ function ErrorMessage({ message }) {
         <circle cx="26" cy="35" r="1.5" fill={GOLD} />
       </svg>
       <p
-        className="font-display"
+        className="font-body"
         style={{
           fontSize: "clamp(1rem, 4vw, 1.2rem)",
           fontStyle: "italic",
@@ -464,7 +464,7 @@ function ConfirmationMessage({ variant, guestName, gender }) {
       </div>
 
       <p
-        className="font-display"
+        className="font-body"
         style={{
           fontSize: "clamp(1.2rem, 5vw, 1.45rem)",
           fontStyle: "italic",

@@ -24,7 +24,7 @@ function ParentsBlock({ title, lines }) {
       }}
     >
       <p
-        className="font-display"
+        className="font-body"
         style={{
           margin: 0,
           fontSize: "clamp(1.05rem, 3.6vw, 1.25rem)",
@@ -38,7 +38,7 @@ function ParentsBlock({ title, lines }) {
       {lines.map((line) => (
         <p
           key={line}
-          className="font-display"
+          className="font-body"
           style={{
             margin: 0,
             fontSize: "clamp(0.98rem, 3.4vw, 1.15rem)",
@@ -135,7 +135,7 @@ export default function ParentsSection() {
           }}
         />
         <h2
-          className="font-display"
+          className="font-body"
           style={{
             margin: "0.35rem 0 0",
             fontSize: "clamp(1.55rem, 6vw, 2rem)",

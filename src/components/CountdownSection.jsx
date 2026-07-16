@@ -94,7 +94,7 @@ export default function CountdownSection() {
       >
         {/* Script title */}
         <p
-          className="font-display"
+          className="font-body"
           style={{
             color: "#2a2a2a",
             fontSize: "clamp(1.5rem, 6vw, 2.2rem)",
@@ -116,7 +116,7 @@ export default function CountdownSection() {
             <div key={key} className="flex items-end">
               <div className="flex flex-col items-center">
                 <span
-                  className="font-display tabular-nums"
+                  className="font-body tabular-nums"
                   style={{
                     fontSize: "clamp(2.6rem, 10vw, 4rem)",
                     fontWeight: 300,
@@ -143,7 +143,7 @@ export default function CountdownSection() {
               {/* Colon separator (not after last item) */}
               {i < UNITS.length - 1 && (
                 <span
-                  className="font-display"
+                  className="font-body"
                   style={{
                     fontSize: "clamp(2rem, 8vw, 3.2rem)",
                     color: "#1a4a6e",

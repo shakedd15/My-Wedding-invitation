@@ -73,7 +73,7 @@ export default function ScheduleSection() {
     >
       {/* Title */}
       <h2
-        className="sch-title mb-14 text-center font-display font-light"
+        className="sch-title mb-14 text-center font-body font-light"
         style={{
           opacity: 0,
           color: "var(--color-ink)",
@@ -117,7 +117,7 @@ export default function ScheduleSection() {
                   style={{ opacity: 0 }}
                 >
                   <span
-                    className="font-display block"
+                    className="font-body block"
                     style={{ color: BLUE, fontSize: "clamp(1.7rem,6.5vw,2.4rem)", fontWeight: 300, lineHeight: 1 }}
                   >
                     {ev.time}
@@ -154,7 +154,7 @@ export default function ScheduleSection() {
                   style={{ opacity: 0 }}
                 >
                   <span
-                    className="font-display block"
+                    className="font-body block"
                     style={{ color: BLUE, fontSize: "clamp(1.7rem,6.5vw,2.4rem)", fontWeight: 300, lineHeight: 1 }}
                   >
                     {ev.time}

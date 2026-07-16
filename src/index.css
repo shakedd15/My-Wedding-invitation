@@ -1,12 +1,11 @@
 /* Hebrew-friendly fonts (must precede other rules).
-   - Frank Ruhl Libre: elegant Hebrew serif (title)
-   - Heebo: clean, delicate Hebrew sans-serif (instruction / body) */
-@import url("https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@300;400;500;700;900&family=Heebo:wght@200;300;400;500;700&family=Bodoni+Moda:ital,opsz,wght@0,6..96,300;0,6..96,400;1,6..96,300&display=swap");
+   - Heebo: clean sans-serif used sitewide */
+@import url("https://fonts.googleapis.com/css2?family=Heebo:wght@200;300;400;500;700&display=swap");
 @import "tailwindcss";
 
 /*
   Design tokens. Tailwind v4 reads these CSS variables to generate utilities
-  (e.g. bg-cream, text-gold, font-display).
+  (e.g. bg-cream, text-gold, font-body).
 */
 @theme {
   --color-ink: #1c1410;
@@ -23,9 +22,9 @@
   --color-blue-deep: #4A85A8;
   --color-blue-bg: #EDF5FA;
 
-  --font-display: "Frank Ruhl Libre", ui-serif, Georgia, serif;
+  --font-display: "Heebo", ui-sans-serif, system-ui, sans-serif;
   --font-body: "Heebo", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Bodoni Moda", "Didot", "Bodoni MT", "Book Antiqua", Georgia, serif;
+  --font-serif: "Heebo", ui-sans-serif, system-ui, sans-serif;
 }
 
 /* ---- Hard reset: no frames, no safe-area gaps, full-bleed everywhere ---- */
