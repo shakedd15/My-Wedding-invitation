@@ -24,11 +24,11 @@ function ParentsBlock({ title, lines }) {
       }}
     >
       <p
-        className="font-body"
+        className="font-display"
         style={{
           margin: 0,
           fontSize: "clamp(1.05rem, 3.6vw, 1.25rem)",
-          fontWeight: 700,
+          fontWeight: 400,
           color: INK,
           letterSpacing: "0.01em",
         }}
@@ -38,11 +38,11 @@ function ParentsBlock({ title, lines }) {
       {lines.map((line) => (
         <p
           key={line}
-          className="font-body"
+          className="font-display"
           style={{
             margin: 0,
             fontSize: "clamp(0.98rem, 3.4vw, 1.15rem)",
-            fontWeight: 400,
+            fontWeight: 300,
             color: INK,
             lineHeight: 1.45,
           }}
@@ -135,13 +135,14 @@ export default function ParentsSection() {
           }}
         />
         <h2
-          className="font-body"
+          className="font-display"
           style={{
             margin: "0.35rem 0 0",
             fontSize: "clamp(1.55rem, 6vw, 2rem)",
-            fontWeight: 700,
+            fontWeight: 300,
+            fontStyle: "italic",
             color: INK,
-            letterSpacing: "0.01em",
+            letterSpacing: "0.02em",
             textAlign: "center",
           }}
         >
@@ -154,7 +155,7 @@ export default function ParentsSection() {
           width: "100%",
           maxWidth: "560px",
           display: "flex",
-          alignItems: "center",
+          alignItems: "flex-start",
           justifyContent: "center",
           gap: "clamp(0.45rem, 2.5vw, 1rem)",
         }}
@@ -172,6 +173,7 @@ export default function ParentsSection() {
             width: "clamp(132px, 34vw, 180px)",
             position: "relative",
             aspectRatio: "1 / 1",
+            alignSelf: "center",
             filter: "drop-shadow(0 6px 18px rgba(80, 60, 30, 0.22))",
           }}
         >
