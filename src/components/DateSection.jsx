@@ -12,54 +12,62 @@ const BG     = "transparent";
 
 const BIG_SIZE = "60px";
 
-/* ── Line · leaf · monogram · leaf · line divider ───────── */
-function LineDivider({ heartSize = 16, lineWidth = 50 }) {
-  const leafH = heartSize * 4.4;
-  const leafW = heartSize * 3.2;
+/* ── Signature divider with names ───────── */
+function LineDivider({ heartSize = 16 }) {
+  const nameStyle = {
+    fontFamily: "var(--font-body)",
+    fontSize: "23px",
+    fontWeight: 300,
+    color: C_GOLD,
+    letterSpacing: "0.45em",
+    textTransform: "uppercase",
+    whiteSpace: "nowrap",
+  };
+
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-      {/* Left line */}
-      <div style={{ width: lineWidth, height: "1px", background: C_GOLD, opacity: 0.5, flexShrink: 0 }} />
-      {/* Left leaf (mirrored — tip points toward heart) */}
-      <img
-        src="/images/branch-gold.png"
-        alt=""
-        aria-hidden="true"
+    <div
+      dir="ltr"
+      style={{
+        display: "grid",
+        gridTemplateColumns: "1fr auto 1fr",
+        alignItems: "center",
+        width: "100%",
+        columnGap: "10px",
+        transform: "translateX(-2px)",
+      }}
+    >
+      <span
         style={{
-          width: leafW,
-          height: leafH,
-          objectFit: "contain",
-          transform: "scaleX(-1)",
-          flexShrink: 0,
+          ...nameStyle,
+          justifySelf: "end",
+          textAlign: "right",
+          marginInlineEnd: "-0.45em",
         }}
-      />
-      {/* E&S monogram */}
+      >
+        SHAKED
+      </span>
       <img
-        src="/images/Gemini_Generated_Image_b6l9wkb6l9wkb6l9-Photoroom.png"
+        src="/gold%20signature.png"
         alt=""
         aria-hidden="true"
         style={{
-          width: Math.round(heartSize * 2.8 * 4),
-          height: Math.round(heartSize * 2.8 * 4),
+          width: Math.round(heartSize * 15),
+          height: "auto",
           objectFit: "contain",
-          flexShrink: 0,
           display: "block",
+          justifySelf: "center",
         }}
       />
-      {/* Right leaf */}
-      <img
-        src="/images/branch-gold.png"
-        alt=""
-        aria-hidden="true"
+      <span
         style={{
-          width: leafW,
-          height: leafH,
-          objectFit: "contain",
-          flexShrink: 0,
+          ...nameStyle,
+          justifySelf: "start",
+          textAlign: "left",
+          marginInlineEnd: "-0.45em",
         }}
-      />
-      {/* Right line */}
-      <div style={{ width: lineWidth, height: "1px", background: C_GOLD, opacity: 0.5, flexShrink: 0 }} />
+      >
+        EYAL
+      </span>
     </div>
   );
 }
@@ -128,8 +136,8 @@ export default function DateSection({ copy }) {
         }}
       >
         {/* ── Top decoration ── */}
-        <div className="ds-ornament" style={{ opacity: 0, marginTop: "20px" }}>
-          <LineDivider heartSize={14} lineWidth={40} />
+        <div className="ds-ornament" style={{ opacity: 0, marginTop: "20px", width: "100%" }}>
+          <LineDivider heartSize={14} />
         </div>
 
         {/* ── Greeting ── */}
@@ -137,12 +145,12 @@ export default function DateSection({ copy }) {
           className="ds-greeting font-body"
           style={{
             opacity: 0,
-            marginTop: "32px",
-            fontSize: BIG_SIZE,
+            marginTop: "28px",
+            fontSize: "23px",
             fontWeight: 300,
-            color: C_INK,
-            letterSpacing: "0.5px",
-            lineHeight: 1.15,
+            color: "rgb(26, 26, 26)",
+            lineHeight: 1.6,
+            letterSpacing: "0.2px",
           }}
         >
           {greeting}

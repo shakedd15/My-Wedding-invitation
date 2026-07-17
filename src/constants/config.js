@@ -15,8 +15,8 @@ export const ASSETS = {
   // bright off-white reference envelope).
   envelopeTexture: "/images/paper.jpg",
 
-  // The full revealed invitation scene (rose arch + view + names baked in).
-  sceneImg: "/images/scene.jpg",
+  // The full revealed invitation scene (couple + rose arch).
+  sceneImg: "/images/shakedAndEyal.png",
 
   // Transparent floral wax-seal sticker (trimmed + optimized PNG).
   sealImg: "/images/wax-seal.png",

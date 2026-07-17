@@ -31,10 +31,10 @@ export const TRANSLATIONS = {
     // Filled with placeholders so you can drop real details in later.
     card: {
       kicker: "", // e.g. "בשמחה רבה"
-      groomName: "", // e.g. "דניאל"
-      brideName: "", // e.g. "נועה"
+      groomName: "איל",
+      brideName: "שקד",
       coupleSeparator: "&", // visual separator between names
-      subtitle: "מתחתנים!", // shown under the names (like "are getting married!")
+      subtitle: "מתחתנים",
       inviteLine: "", // e.g. "מתכבדים להזמינכם לחתונתם"
 
       date: {
@@ -104,10 +104,10 @@ export const TRANSLATIONS = {
     },
     card: {
       kicker: "",
-      groomName: "",
-      brideName: "",
+      groomName: "Eyal",
+      brideName: "Shaked",
       coupleSeparator: "&",
-      subtitle: "are getting married!",
+      subtitle: "are getting married",
       inviteLine: "",
       date: { label: "", day: "", gregorian: "", hebrew: "", time: "" },
       location: { label: "", venue: "", address: "", mapUrl: "", mapButton: "" },
