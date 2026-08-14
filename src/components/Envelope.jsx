@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { useGSAP } from "@gsap/react";
@@ -78,8 +78,10 @@ export default function Envelope({ copy, onSealTap }) {
   const instructionRef = useRef(null);
   const cardRef = useRef(null);
   const arrowRef = useRef(null);
+  const mouseRef = useRef(null);
   const tlRef = useRef(null);
   const scrollHintTlRef = useRef(null);
+  const mouseLoopRef = useRef(null);
 
   const setFlap = (key) => (el) => {
     if (el) flapsRef.current[key] = el;
@@ -135,29 +137,73 @@ export default function Envelope({ copy, onSealTap }) {
         openAt
       );
 
-      // Phase 3 — after reveal: fade in the scroll arrow, then loop its bounce.
-      gsap.set(arrowRef.current, { autoAlpha: 0, y: 0 });
-      tl.to(
-        arrowRef.current,
-        { autoAlpha: 1, duration: 0.5, ease: "power1.in" },
-        `>` // immediately after previous step
-      ).to(
-        arrowRef.current,
-        {
-          y: 10,
-          duration: 0.7,
-          ease: "sine.inOut",
-          yoyo: true,
-          repeat: -1,
-        },
-        `<` // start bounce at same time as fade-in
-      );
+      // Scroll hint stays hidden until the 15s timer after open.
+      gsap.set(arrowRef.current, { autoAlpha: 0 });
+      gsap.set(mouseRef.current, { y: 28 });
 
       tlRef.current = tl;
       // useGSAP reverts this context (kills the timeline + tweens) on unmount.
     },
     { scope: stageRef }
   );
+
+  // After the envelope opens: wait 15s, then show mouse scroll tutorial.
+  useEffect(() => {
+    if (phase !== "open") return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+    let cancelled = false;
+    const timer = window.setTimeout(() => {
+      if (cancelled) return;
+      // Skip if they already scrolled away from the first section.
+      if ((window.scrollY || window.pageYOffset || 0) > 40) return;
+
+      gsap.to(arrowRef.current, {
+        autoAlpha: 1,
+        duration: 0.55,
+        ease: "power1.out",
+      });
+
+      if (reduceMotion) {
+        gsap.set(mouseRef.current, { y: 0 });
+        return;
+      }
+
+      // Swipe gesture: mouse moves bottom → top, then resets and repeats.
+      mouseLoopRef.current = gsap.fromTo(
+        mouseRef.current,
+        { y: 36, autoAlpha: 0.35 },
+        {
+          y: -22,
+          autoAlpha: 1,
+          duration: 1.2,
+          ease: "power1.inOut",
+          repeat: -1,
+          repeatDelay: 0.45,
+        }
+      );
+    }, 15000);
+
+    const onScroll = () => {
+      if ((window.scrollY || window.pageYOffset || 0) <= 40) return;
+      cancelled = true;
+      window.clearTimeout(timer);
+      mouseLoopRef.current?.kill();
+      gsap.to(arrowRef.current, { autoAlpha: 0, duration: 0.3 });
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+
+    return () => {
+      cancelled = true;
+      window.clearTimeout(timer);
+      window.removeEventListener("scroll", onScroll);
+      mouseLoopRef.current?.kill();
+    };
+  }, [phase]);
 
   const handleOpen = () => {
     if (phase !== "sealed") return;
@@ -271,46 +317,58 @@ export default function Envelope({ copy, onSealTap }) {
         </svg>
       </div>
 
-      {/* ===== Scroll hint arrow (fades in + bounces after envelope opens) ===== */}
+      {/* ===== Scroll hint: mouse tutorial after 15s on the open invitation ===== */}
       <button
         type="button"
         ref={arrowRef}
         onClick={handleScrollHint}
         disabled={phase !== "open"}
-        aria-label="גללו מטה"
+        aria-label="גללו למטה"
         className="pointer-events-auto absolute bottom-14 left-1/2 z-40 -translate-x-1/2 cursor-pointer border-0 bg-transparent p-0 outline-none disabled:pointer-events-none focus-visible:ring-2 focus-visible:ring-ink/30"
-        style={{ opacity: 0, willChange: "transform, opacity", display: "flex", flexDirection: "column", alignItems: "center", gap: "6px" }}
+        style={{
+          opacity: 0,
+          willChange: "opacity",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          gap: "10px",
+        }}
       >
         <span
-          className="font-body text-ink"
+          className="font-body"
           style={{
-            fontSize: "20px",
+            fontSize: "22px",
             fontWeight: 700,
             letterSpacing: "1px",
             whiteSpace: "nowrap",
+            color: "#1a1a1a",
+            textShadow: "0 1px 8px rgba(243, 234, 216, 0.9)",
           }}
         >
-          גללו מטה
+          גללו למטה
         </span>
-        <svg
-          width="72"
-          height="72"
-          viewBox="0 0 36 36"
-          fill="none"
-          aria-hidden="true"
+        <span
+          style={{
+            display: "block",
+            height: "72px",
+            overflow: "visible",
+          }}
         >
-          {/* Outer circle */}
-          <circle cx="18" cy="18" r="16.5" stroke="#c5a069" strokeWidth="2.5" />
-          {/* Chevron pointing down */}
-          <polyline
-            points="11,14 18,22 25,14"
-            stroke="#c5a069"
-            strokeWidth="3.25"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
+          <img
+            ref={mouseRef}
+            src="/images/scroll-mouse.png"
+            alt=""
+            aria-hidden="true"
+            style={{
+              width: "56px",
+              height: "56px",
+              objectFit: "contain",
+              display: "block",
+              willChange: "transform",
+              filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.25))",
+            }}
           />
-        </svg>
+        </span>
       </button>
 
       {/* ===== Wax-seal sticker + instruction (centered, like the reference) ===== */}

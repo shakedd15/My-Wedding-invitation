@@ -60,7 +60,7 @@ export default function ClosingSection() {
         style={{
           position: "absolute",
           inset: 0,
-          background: `linear-gradient(to bottom, ${CREAM_ABOVE} 0%, transparent 38%)`,
+          background: `linear-gradient(to bottom, ${CREAM_ABOVE} 0%, transparent 25%)`,
           pointerEvents: "none",
         }}
       />
