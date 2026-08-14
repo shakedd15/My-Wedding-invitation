@@ -137,9 +137,35 @@ export default function Envelope({ copy, onSealTap }) {
         openAt
       );
 
-      // Scroll hint stays hidden until the 8s timer after open.
+      // Phase 3 — after reveal: fade in mouse scroll hint and loop swipe-up.
       gsap.set(arrowRef.current, { autoAlpha: 0 });
-      gsap.set(mouseRef.current, { y: 28 });
+      gsap.set(mouseRef.current, { y: 36, autoAlpha: 0.35 });
+
+      tl.to(
+        arrowRef.current,
+        { autoAlpha: 1, duration: 0.5, ease: "power1.in" },
+        `>`
+      );
+
+      if (!reduceMotion) {
+        tl.add(() => {
+          mouseLoopRef.current?.kill();
+          mouseLoopRef.current = gsap.fromTo(
+            mouseRef.current,
+            { y: 36, autoAlpha: 0.35 },
+            {
+              y: -22,
+              autoAlpha: 1,
+              duration: 1.2,
+              ease: "power1.inOut",
+              repeat: -1,
+              repeatDelay: 0.45,
+            }
+          );
+        }, `<`);
+      } else {
+        tl.set(mouseRef.current, { y: 0, autoAlpha: 1 }, `<`);
+      }
 
       tlRef.current = tl;
       // useGSAP reverts this context (kills the timeline + tweens) on unmount.
@@ -147,7 +173,8 @@ export default function Envelope({ copy, onSealTap }) {
     { scope: stageRef }
   );
 
-  // After the envelope opens: wait 8s, then show mouse scroll tutorial.
+  // Hide the mouse hint once the guest scrolls past the first section.
+  // After 8s: big GSAP sweep — arrow rises to the top of the page, then returns.
   useEffect(() => {
     if (phase !== "open") return;
 
@@ -156,51 +183,51 @@ export default function Envelope({ copy, onSealTap }) {
     ).matches;
 
     let cancelled = false;
+    const sweepTlRef = { current: null };
+
     const timer = window.setTimeout(() => {
       if (cancelled) return;
-      // Skip if they already scrolled away from the first section.
       if ((window.scrollY || window.pageYOffset || 0) > 40) return;
+      if (reduceMotion) return;
 
-      gsap.to(arrowRef.current, {
-        autoAlpha: 1,
-        duration: 0.55,
-        ease: "power1.out",
-      });
+      // Pause the small mouse loop during the big sweep.
+      mouseLoopRef.current?.pause();
 
-      if (reduceMotion) {
-        gsap.set(mouseRef.current, { y: 0 });
-        return;
-      }
+      const travelUp = -(window.innerHeight * 0.72);
 
-      // Swipe gesture: mouse moves bottom → top, then resets and repeats.
-      mouseLoopRef.current = gsap.fromTo(
-        mouseRef.current,
-        { y: 36, autoAlpha: 0.35 },
-        {
-          y: -22,
-          autoAlpha: 1,
-          duration: 1.2,
-          ease: "power1.inOut",
-          repeat: -1,
-          repeatDelay: 0.45,
-        }
-      );
+      sweepTlRef.current = gsap
+        .timeline({
+          onComplete: () => {
+            mouseLoopRef.current?.resume();
+          },
+        })
+        .to(arrowRef.current, {
+          y: travelUp,
+          duration: 1.35,
+          ease: "power2.inOut",
+        })
+        .to(arrowRef.current, {
+          y: 0,
+          duration: 1.35,
+          ease: "power2.inOut",
+        });
     }, 8000);
 
     const onScroll = () => {
       if ((window.scrollY || window.pageYOffset || 0) <= 40) return;
       cancelled = true;
       window.clearTimeout(timer);
+      sweepTlRef.current?.kill();
       mouseLoopRef.current?.kill();
       gsap.to(arrowRef.current, { autoAlpha: 0, duration: 0.3 });
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
-
     return () => {
       cancelled = true;
       window.clearTimeout(timer);
       window.removeEventListener("scroll", onScroll);
+      sweepTlRef.current?.kill();
       mouseLoopRef.current?.kill();
     };
   }, [phase]);
@@ -317,7 +344,7 @@ export default function Envelope({ copy, onSealTap }) {
         </svg>
       </div>
 
-      {/* ===== Scroll hint: mouse tutorial after 8s on the open invitation ===== */}
+      {/* ===== Scroll hint: mouse tutorial appears right after envelope opens ===== */}
       <button
         type="button"
         ref={arrowRef}
