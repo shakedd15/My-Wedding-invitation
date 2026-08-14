@@ -137,7 +137,7 @@ export default function Envelope({ copy, onSealTap }) {
         openAt
       );
 
-      // Scroll hint stays hidden until the 15s timer after open.
+      // Scroll hint stays hidden until the 8s timer after open.
       gsap.set(arrowRef.current, { autoAlpha: 0 });
       gsap.set(mouseRef.current, { y: 28 });
 
@@ -185,7 +185,7 @@ export default function Envelope({ copy, onSealTap }) {
           repeatDelay: 0.45,
         }
       );
-    }, 15000);
+    }, 8000);
 
     const onScroll = () => {
       if ((window.scrollY || window.pageYOffset || 0) <= 40) return;
