@@ -56,16 +56,22 @@ function ParentsBlock({ title, lines }) {
 
 function swingPhoto(photo) {
   gsap.killTweensOf(photo, "rotation");
-  gsap.set(photo, { transformOrigin: "50% 0%", rotation: 0 });
+  gsap.set(photo, { transformOrigin: "50% 0%", force3D: true });
 
+  // Pendulum settle: slow side-to-side decay, like a framed photo on a nail.
   return gsap
     .timeline()
-    .to(photo, { rotation: -6, duration: 0.35, ease: "power1.out" })
-    .to(photo, { rotation: 6, duration: 0.55, ease: "sine.inOut" })
-    .to(photo, { rotation: -4, duration: 0.5, ease: "sine.inOut" })
-    .to(photo, { rotation: 2.5, duration: 0.45, ease: "sine.inOut" })
-    .to(photo, { rotation: -1, duration: 0.4, ease: "sine.inOut" })
-    .to(photo, { rotation: 0, duration: 0.55, ease: "power2.out" });
+    .fromTo(
+      photo,
+      { rotation: 0 },
+      { rotation: -7, duration: 0.55, ease: "power1.out" }
+    )
+    .to(photo, { rotation: 6.5, duration: 0.9, ease: "sine.inOut" })
+    .to(photo, { rotation: -5, duration: 0.85, ease: "sine.inOut" })
+    .to(photo, { rotation: 3.5, duration: 0.8, ease: "sine.inOut" })
+    .to(photo, { rotation: -2, duration: 0.75, ease: "sine.inOut" })
+    .to(photo, { rotation: 1, duration: 0.7, ease: "sine.inOut" })
+    .to(photo, { rotation: 0, duration: 0.85, ease: "power2.out" });
 }
 
 export default function ParentsSection() {

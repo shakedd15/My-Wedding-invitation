@@ -173,7 +173,7 @@ export default function Envelope({ copy, onSealTap }) {
     { scope: stageRef }
   );
 
-  // Every 5s: big GSAP sweep — arrow rises to the top of the page, then returns.
+  // First sweep after 3s, then every 5s — arrow rises to the top, then returns.
   // Continues until the guest scrolls past the first section.
   useEffect(() => {
     if (phase !== "open") return;
@@ -215,7 +215,7 @@ export default function Envelope({ copy, onSealTap }) {
         });
     };
 
-    scheduleTimer = window.setTimeout(runSweep, 5000);
+    scheduleTimer = window.setTimeout(runSweep, 3000);
 
     const onScroll = () => {
       if ((window.scrollY || window.pageYOffset || 0) <= 40) return;
