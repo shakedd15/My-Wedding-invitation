@@ -1,0 +1,175 @@
+.manage-page {
+  position: relative;
+  isolation: isolate;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: #f3f3f3;
+  color: #111111;
+  font-family: var(--font-body);
+}
+
+.manage-page-glow {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 220px;
+  background:
+    radial-gradient(120% 90% at 50% -10%, #ff8a4a 0%, #ff6a2b 42%, rgba(255, 106, 43, 0) 72%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.manage-page-inner {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 520px);
+  margin: 0 auto;
+  padding: 1.35rem 1.05rem 2rem;
+}
+
+.manage-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.manage-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 118px;
+  padding: 1.15rem 1.2rem;
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 8px 22px rgba(17, 17, 17, 0.06);
+}
+
+.manage-card-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.2rem;
+  min-width: 0;
+}
+
+.manage-card-value {
+  margin: 0;
+  color: #e91e73;
+  font-size: clamp(2.15rem, 8vw, 2.7rem);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.manage-card-label {
+  margin: 0;
+  color: #111111;
+  font-size: 1.02rem;
+  font-weight: 600;
+  line-height: 1.3;
+}
+
+.manage-card-icon {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  object-fit: contain;
+  background: transparent;
+}
+
+.manage-progress-card {
+  position: relative;
+  padding-bottom: 1.45rem;
+}
+
+.manage-progress-track {
+  position: absolute;
+  right: 1.2rem;
+  left: 1.2rem;
+  bottom: 0.85rem;
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #f4d6e4;
+}
+
+.manage-progress-fill {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transform: scaleX(0);
+  transform-origin: right center;
+  background: #e91e73;
+  border-radius: inherit;
+}
+
+.manage-progress-sheen {
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.7) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}
+
+.manage-skeleton {
+  border-radius: 8px;
+  background: linear-gradient(90deg, #ececec 25%, #f7f7f7 50%, #ececec 75%);
+  background-size: 200% 100%;
+  animation: manage-shimmer 1.2s linear infinite;
+}
+
+.manage-skeleton-value {
+  width: 4.5rem;
+  height: 2.1rem;
+}
+
+.manage-skeleton-label {
+  width: 7.5rem;
+  height: 0.95rem;
+}
+
+.manage-error {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 1.3rem 1.2rem;
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 8px 22px rgba(17, 17, 17, 0.06);
+}
+
+.manage-error p {
+  margin: 0;
+  color: #111111;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.manage-retry {
+  padding: 0.55rem 1rem;
+  border: 0;
+  border-radius: 999px;
+  background: #e91e73;
+  color: #ffffff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@keyframes manage-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .manage-skeleton {
+    animation: none;
+  }
+}
