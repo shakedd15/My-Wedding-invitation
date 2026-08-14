@@ -147,7 +147,7 @@ export default function Envelope({ copy, onSealTap }) {
     { scope: stageRef }
   );
 
-  // After the envelope opens: wait 15s, then show mouse scroll tutorial.
+  // After the envelope opens: wait 8s, then show mouse scroll tutorial.
   useEffect(() => {
     if (phase !== "open") return;
 
@@ -317,7 +317,7 @@ export default function Envelope({ copy, onSealTap }) {
         </svg>
       </div>
 
-      {/* ===== Scroll hint: mouse tutorial after 15s on the open invitation ===== */}
+      {/* ===== Scroll hint: mouse tutorial after 8s on the open invitation ===== */}
       <button
         type="button"
         ref={arrowRef}
