@@ -10,7 +10,7 @@ const EVENTS = [
   { time: "20:30", label: "חופה\nוקידושין",      side: "left"  },
   { time: "21:30", label: "נשיקות, חיבוקים\nוחוגגים", side: "right" },
   { time: "22:00", label: "סעודה",               side: "left"  },
-  { time: "22:40", label: "אפטר פארטי",          side: "right" },
+  { time: "22:40", label: "מסיבה\nובר פתוח",       side: "right" },
 ];
 
 const BLUE = "var(--color-blue)";
