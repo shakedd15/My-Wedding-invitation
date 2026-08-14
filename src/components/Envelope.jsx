@@ -173,8 +173,8 @@ export default function Envelope({ copy, onSealTap }) {
     { scope: stageRef }
   );
 
-  // Hide the mouse hint once the guest scrolls past the first section.
-  // After 8s: big GSAP sweep — arrow rises to the top of the page, then returns.
+  // Every 5s: big GSAP sweep — arrow rises to the top of the page, then returns.
+  // Continues until the guest scrolls past the first section.
   useEffect(() => {
     if (phase !== "open") return;
 
@@ -183,22 +183,24 @@ export default function Envelope({ copy, onSealTap }) {
     ).matches;
 
     let cancelled = false;
+    let scheduleTimer = null;
     const sweepTlRef = { current: null };
 
-    const timer = window.setTimeout(() => {
+    const runSweep = () => {
       if (cancelled) return;
       if ((window.scrollY || window.pageYOffset || 0) > 40) return;
       if (reduceMotion) return;
 
-      // Pause the small mouse loop during the big sweep.
       mouseLoopRef.current?.pause();
-
       const travelUp = -(window.innerHeight * 0.72);
 
+      sweepTlRef.current?.kill();
       sweepTlRef.current = gsap
         .timeline({
           onComplete: () => {
             mouseLoopRef.current?.resume();
+            if (cancelled) return;
+            scheduleTimer = window.setTimeout(runSweep, 5000);
           },
         })
         .to(arrowRef.current, {
@@ -211,12 +213,14 @@ export default function Envelope({ copy, onSealTap }) {
           duration: 1.35,
           ease: "power2.inOut",
         });
-    }, 8000);
+    };
+
+    scheduleTimer = window.setTimeout(runSweep, 5000);
 
     const onScroll = () => {
       if ((window.scrollY || window.pageYOffset || 0) <= 40) return;
       cancelled = true;
-      window.clearTimeout(timer);
+      window.clearTimeout(scheduleTimer);
       sweepTlRef.current?.kill();
       mouseLoopRef.current?.kill();
       gsap.to(arrowRef.current, { autoAlpha: 0, duration: 0.3 });
@@ -225,7 +229,7 @@ export default function Envelope({ copy, onSealTap }) {
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => {
       cancelled = true;
-      window.clearTimeout(timer);
+      window.clearTimeout(scheduleTimer);
       window.removeEventListener("scroll", onScroll);
       sweepTlRef.current?.kill();
       mouseLoopRef.current?.kill();
