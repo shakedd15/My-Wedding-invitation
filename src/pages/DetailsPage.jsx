@@ -10,7 +10,6 @@ const BIT_BG = "#00353b";
 const BORDER = "#d8d8d8";
 
 const ICONS = {
-  leaves: "/images/details/leaves.png",
   rings: "/images/details/rings.png",
   clock: "/images/details/clock.png",
   location: "/images/details/location.png",
@@ -176,12 +175,10 @@ export default function DetailsPage() {
         }}
       >
         <header style={{ textAlign: "center", width: "100%" }}>
-          <DetailIcon name="leaves" size={72} />
-
           <h1
             className="font-body"
             style={{
-              margin: "0.5rem 0 0.65rem",
+              margin: "0 0 0.65rem",
               fontSize: "clamp(2.4rem, 10vw, 3rem)",
               fontWeight: 400,
               lineHeight: 1.15,
