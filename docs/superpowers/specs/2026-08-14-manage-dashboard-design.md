@@ -29,7 +29,7 @@ supabase
 
 - **מוזמנים:** סכום `guests_max_amount` בכל הרשומות.
 - **מגיעים:** סכום ערכי `guests_amount_arriving` הגדולים מ-0.
-- **לא מגיעים:** סכום `guests_max_amount` ברשומות שבהן `guests_amount_arriving = -1`.
+- **לא מגיעים:** סכום `guests_max_amount` ברשומות שבהן `guests_amount_arriving = -1`, ועוד סכום `guests_max_amount - guests_amount_arriving` ברשומות שבהן `guests_amount_arriving > 0`.
 - **מתלבטים:** סכום `guests_max_amount` ברשומות שבהן `guests_amount_arriving = 0`.
 - **קצב התקדמות:** `(מגיעים + לא מגיעים) × 100 ÷ מוזמנים`.
 - **לא תקינים:** סכום `guests_max_amount` ברשומות שבהן `sms_count = 0`.

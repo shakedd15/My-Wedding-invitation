@@ -20,9 +20,14 @@ export function computeGuestStats(rows = []) {
 
     stats.invited += maxAmount;
 
-    if (arriving > 0) stats.arriving += arriving;
-    else if (arriving === -1) stats.notAttending += maxAmount;
-    else stats.undecided += maxAmount;
+    if (arriving > 0) {
+      stats.arriving += arriving;
+      stats.notAttending += Math.max(0, maxAmount - arriving);
+    } else if (arriving === -1) {
+      stats.notAttending += maxAmount;
+    } else {
+      stats.undecided += maxAmount;
+    }
 
     if (smsCount === 0) stats.invalid += maxAmount;
   }

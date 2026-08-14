@@ -12,10 +12,22 @@ test("aggregates guest dashboard metrics from invitation rows", () => {
 
   assert.equal(stats.invited, 14);
   assert.equal(stats.arriving, 8);
-  assert.equal(stats.notAttending, 2);
+  assert.equal(stats.notAttending, 3);
   assert.equal(stats.undecided, 3);
   assert.equal(stats.invalid, 3);
-  assert.equal(stats.progressPercent, 71);
+  assert.equal(stats.progressPercent, 79);
+});
+
+test("counts unused seats from partial RSVPs as not attending", () => {
+  const stats = computeGuestStats([
+    { guests_max_amount: 3, guests_amount_arriving: 2, sms_count: 1 },
+  ]);
+
+  assert.equal(stats.invited, 3);
+  assert.equal(stats.arriving, 2);
+  assert.equal(stats.notAttending, 1);
+  assert.equal(stats.undecided, 0);
+  assert.equal(stats.progressPercent, 100);
 });
 
 test("treats missing amounts as zero and empty tables as zeros", () => {
