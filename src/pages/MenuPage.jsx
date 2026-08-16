@@ -1,13 +1,69 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { useGSAP } from "@gsap/react";
 import { DETAILS, MENU } from "../constants/config.js";
+
+gsap.registerPlugin(useGSAP);
 
 const GOLD = "#c5a069";
 const INK = "#2f2f2f";
 const MUTED = "#5a5a5a";
 
-function HeartDivider() {
+function HeartDivider({ delay = 0 }) {
+  const rootRef = useRef(null);
+  const leftRef = useRef(null);
+  const rightRef = useRef(null);
+  const heartRef = useRef(null);
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add(
+        {
+          reduceMotion: "(prefers-reduced-motion: reduce)",
+          motion: "(prefers-reduced-motion: no-preference)",
+        },
+        (context) => {
+          const { reduceMotion } = context.conditions;
+          if (reduceMotion) return;
+
+          gsap.set(leftRef.current, { scaleX: 0, transformOrigin: "right center" });
+          gsap.set(rightRef.current, { scaleX: 0, transformOrigin: "left center" });
+          gsap.set(heartRef.current, { scale: 0, autoAlpha: 0, transformOrigin: "50% 50%" });
+
+          const tl = gsap.timeline({ delay });
+          tl.to([leftRef.current, rightRef.current], {
+            scaleX: 1,
+            duration: 0.85,
+            ease: "power2.out",
+          }).to(
+            heartRef.current,
+            {
+              scale: 1,
+              autoAlpha: 1,
+              duration: 0.45,
+              ease: "back.out(1.8)",
+            },
+            "-=0.3",
+          ).to(heartRef.current, {
+            scale: 1.22,
+            duration: 0.7,
+            ease: "sine.inOut",
+            repeat: -1,
+            yoyo: true,
+          });
+        },
+      );
+
+      return () => mm.revert();
+    },
+    { scope: rootRef, dependencies: [delay] },
+  );
+
   return (
     <div
+      ref={rootRef}
+      aria-hidden="true"
       style={{
         display: "flex",
         alignItems: "center",
@@ -19,11 +75,24 @@ function HeartDivider() {
         opacity: 0.55,
       }}
     >
-      <div style={{ flex: 1, height: "1px", background: GOLD }} />
-      <svg width="10" height="10" viewBox="0 0 24 24" fill={GOLD} aria-hidden="true">
+      <div
+        ref={leftRef}
+        style={{ flex: 1, height: "1px", background: GOLD, willChange: "transform" }}
+      />
+      <svg
+        ref={heartRef}
+        width="10"
+        height="10"
+        viewBox="0 0 24 24"
+        fill={GOLD}
+        style={{ willChange: "transform, opacity" }}
+      >
         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
       </svg>
-      <div style={{ flex: 1, height: "1px", background: GOLD }} />
+      <div
+        ref={rightRef}
+        style={{ flex: 1, height: "1px", background: GOLD, willChange: "transform" }}
+      />
     </div>
   );
 }
@@ -54,6 +123,21 @@ export default function MenuPage() {
         overflow: "hidden",
       }}
     >
+      <img
+        src="/images/menu/flower-top.png"
+        alt=""
+        aria-hidden="true"
+        style={{
+          position: "absolute",
+          right: 0,
+          top: 0,
+          height: "min(52dvh, 420px)",
+          width: "auto",
+          pointerEvents: "none",
+          userSelect: "none",
+          zIndex: 0,
+        }}
+      />
       <img
         src="/images/menu/flower.png"
         alt=""
@@ -99,7 +183,7 @@ export default function MenuPage() {
             {couple.bride}
           </h1>
 
-          <HeartDivider />
+          <HeartDivider delay={0.15} />
 
           <p
             className="font-body"
@@ -115,9 +199,9 @@ export default function MenuPage() {
           </p>
         </header>
 
-        {MENU.map(({ course, items }) => (
+        {MENU.map(({ course, items }, index) => (
           <section key={course} style={{ textAlign: "center", width: "100%" }}>
-            <HeartDivider />
+            <HeartDivider delay={0.35 + index * 0.22} />
             <h2
               className="font-body"
               style={{
