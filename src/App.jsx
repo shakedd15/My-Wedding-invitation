@@ -10,10 +10,11 @@ import VenueSection from "./components/VenueSection.jsx";
 import ParentsSection from "./components/ParentsSection.jsx";
 import { useLanguage } from "./hooks/useLanguage.js";
 import { ASSETS } from "./constants/config.js";
-import MenuSection from "./components/MenuSection.jsx";
 import RsvpSection from "./components/RsvpSection.jsx";
 import ClosingSection from "./components/ClosingSection.jsx";
 import DetailsPage from "./pages/DetailsPage.jsx";
+import MenuPage from "./pages/MenuPage.jsx";
+import { isMenuPath } from "./routes.js";
 import { useGuest } from "./hooks/useGuest.js";
 import { supabase } from "./lib/supabase.js";
 
@@ -23,7 +24,6 @@ function useUrlParams() {
     const pathname = window.location.pathname.replace(/\/$/, "") || "/";
     return {
       guestId: params.get("id"),
-      page: params.get("page"),
       pathname: pathname.toLowerCase(),
     };
   }, []);
@@ -31,7 +31,7 @@ function useUrlParams() {
 
 export default function App() {
   const { copy } = useLanguage("he");
-  const { guestId, page, pathname } = useUrlParams();
+  const { guestId, pathname } = useUrlParams();
 
   /* ── Supabase: fetch guest data for the personalized RSVP ── */
   const { guest, loading: guestLoading, error: guestError } = useGuest(guestId);
@@ -95,16 +95,14 @@ export default function App() {
   }, []);
 
   const showDetails = pathname === "/details";
-  const showMenu = page === "menu";
+  const showMenu = isMenuPath(pathname);
 
   return (
     <>
       {showDetails ? (
         <DetailsPage />
       ) : showMenu ? (
-        <div id="menu-section">
-          <MenuSection />
-        </div>
+        <MenuPage />
       ) : (
         /* ── Landing page — shown for all visitors, including those with ?id= ── */
         <main className="page-wrapper">
