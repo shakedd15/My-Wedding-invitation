@@ -113,7 +113,7 @@ export default function MenuPage() {
   const bottomFlowerRef = useRef(null);
 
   useEffect(() => {
-    document.title = "שקד & איל — תפריט החתונה";
+    document.title = "שקד & איל — תפריט";
   }, []);
 
   useGSAP(
@@ -246,11 +246,11 @@ export default function MenuPage() {
               color: INK,
             }}
           >
-            {couple.groom}{" "}
+            {couple.bride}{" "}
             <span className="font-body" style={{ color: GOLD, fontStyle: "italic", fontWeight: 300 }}>
               &
             </span>{" "}
-            {couple.bride}
+            {couple.groom}
           </h1>
 
           <HeartDivider delay={0.15} />
@@ -265,7 +265,7 @@ export default function MenuPage() {
               letterSpacing: "0.04em",
             }}
           >
-            תפריט החתונה
+            תפריט
           </p>
         </header>
 
