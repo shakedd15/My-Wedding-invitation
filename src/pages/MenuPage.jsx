@@ -67,7 +67,6 @@ export default function MenuPage() {
           pointerEvents: "none",
           userSelect: "none",
           zIndex: 0,
-          mixBlendMode: "screen",
         }}
       />
       <div
