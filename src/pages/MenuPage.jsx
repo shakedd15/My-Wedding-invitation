@@ -51,7 +51,17 @@ function HeartDivider({ delay = 0 }) {
             ease: "sine.inOut",
             repeat: -1,
             yoyo: true,
-          });
+          }).to(
+            [leftRef.current, rightRef.current],
+            {
+              scaleX: 0.86,
+              duration: 1.8,
+              ease: "sine.inOut",
+              repeat: -1,
+              yoyo: true,
+            },
+            "<",
+          );
         },
       );
 
@@ -98,14 +108,70 @@ function HeartDivider({ delay = 0 }) {
 }
 
 export default function MenuPage() {
+  const pageRef = useRef(null);
+  const topFlowerRef = useRef(null);
+  const bottomFlowerRef = useRef(null);
+
   useEffect(() => {
     document.title = "שקד & איל — תפריט החתונה";
   }, []);
+
+  useGSAP(
+    () => {
+      const mm = gsap.matchMedia();
+      mm.add(
+        {
+          reduceMotion: "(prefers-reduced-motion: reduce)",
+          motion: "(prefers-reduced-motion: no-preference)",
+        },
+        (context) => {
+          gsap.set(topFlowerRef.current, { xPercent: 32, transformOrigin: "80% 8%" });
+          gsap.set(bottomFlowerRef.current, { transformOrigin: "8% 92%" });
+
+          if (context.conditions.reduceMotion) return;
+
+          gsap.to(topFlowerRef.current, {
+            rotation: 5,
+            duration: 4.6,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+          });
+          gsap.to(topFlowerRef.current, {
+            y: 12,
+            duration: 3.5,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+          });
+
+          gsap.to(bottomFlowerRef.current, {
+            rotation: -4,
+            duration: 5.4,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+          });
+          gsap.to(bottomFlowerRef.current, {
+            y: -14,
+            duration: 4.2,
+            ease: "sine.inOut",
+            yoyo: true,
+            repeat: -1,
+          });
+        },
+      );
+
+      return () => mm.revert();
+    },
+    { scope: pageRef },
+  );
 
   const { couple } = DETAILS;
 
   return (
     <main
+      ref={pageRef}
       dir="rtl"
       className="font-body"
       style={{
@@ -124,6 +190,7 @@ export default function MenuPage() {
       }}
     >
       <img
+        ref={topFlowerRef}
         src="/images/menu/flower-top.png"
         alt=""
         aria-hidden="true"
@@ -133,13 +200,14 @@ export default function MenuPage() {
           top: 0,
           height: "min(35dvh, 280px)",
           width: "auto",
-          transform: "translateX(32%)",
           pointerEvents: "none",
           userSelect: "none",
           zIndex: 0,
+          willChange: "transform",
         }}
       />
       <img
+        ref={bottomFlowerRef}
         src="/images/menu/flower.png"
         alt=""
         aria-hidden="true"
@@ -152,6 +220,7 @@ export default function MenuPage() {
           pointerEvents: "none",
           userSelect: "none",
           zIndex: 0,
+          willChange: "transform",
         }}
       />
       <div
