@@ -445,7 +445,7 @@ export default function DetailsPage() {
 
         <HeartDivider />
 
-        <SectionBlock title="ניתן להעניק מתנה גם בפייסבוקס או דרך כרטיס האשראי 👇">
+        <SectionBlock title="ניתן להעניק מתנה גם עם כרטיס אשראי או דרך פייסבוקס 👇">
           <div
             style={{
               display: "flex",
