@@ -52,11 +52,11 @@ export const DETAILS = {
   venue: {
     name: "איסט תל אביב · EAST TLV",
     address: "מיטב 13, תל אביב-יפו",
-    parking: "חניה במקום",
+    parking: "מחכה לאורחינו חניה במקום",
     wazeUrl:
       "https://waze.com/ul?q=East+TLV+Mitav+13+Tel+Aviv&navigate=yes",
   },
-  payboxUrl: "https://payboxapp.page.link/",
+  payboxUrl: "https://links.payboxapp.com/wq7MXwwxXUb",
   bitUrl: "https://www.bitpay.co.il/",
 };
 

@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { DETAILS } from "../constants/config.js";
 
 const GOLD = "#c5a069";
@@ -144,12 +144,176 @@ function PillButton({ href, onClick, variant = "outline", children }) {
   );
 }
 
+const WARNING_GOLD = "#c4a04a";
+const MODAL_CONFIRM = "#76b9d8";
+const MODAL_CANCEL = "#b0b0b0";
+
+function WarningIcon() {
+  return (
+    <svg width="52" height="46" viewBox="0 0 52 46" fill="none" aria-hidden="true">
+      <path
+        d="M26 4.5L48.5 42.5H3.5L26 4.5Z"
+        stroke={WARNING_GOLD}
+        strokeWidth="2.4"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M26 17v13"
+        stroke={WARNING_GOLD}
+        strokeWidth="2.6"
+        strokeLinecap="round"
+      />
+      <circle cx="26" cy="35.5" r="1.7" fill={WARNING_GOLD} />
+    </svg>
+  );
+}
+
+function PayboxWarningModal({ open, onConfirm, onCancel }) {
+  useEffect(() => {
+    if (!open) return undefined;
+
+    const onKeyDown = (event) => {
+      if (event.key === "Escape") onCancel();
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [open, onCancel]);
+
+  if (!open) return null;
+
+  const buttonStyle = {
+    flex: 1,
+    border: "none",
+    borderRadius: "12px",
+    padding: "0.72rem 0.5rem",
+    color: "#ffffff",
+    fontFamily: "inherit",
+    fontSize: "0.95rem",
+    fontWeight: 500,
+    cursor: "pointer",
+    lineHeight: 1.2,
+  };
+
+  return (
+    <div
+      role="presentation"
+      onClick={onCancel}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 1000,
+        background: "rgba(0, 0, 0, 0.28)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "1.25rem",
+      }}
+    >
+      <div
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="paybox-warning-title"
+        onClick={(event) => event.stopPropagation()}
+        style={{
+          width: "100%",
+          maxWidth: "340px",
+          background: "#ffffff",
+          borderRadius: "18px",
+          padding: "1.55rem 1.25rem 1.2rem",
+          boxShadow: "0 14px 40px rgba(0, 0, 0, 0.16)",
+          textAlign: "center",
+        }}
+      >
+        <div style={{ display: "flex", justifyContent: "center", marginBottom: "0.7rem" }}>
+          <WarningIcon />
+        </div>
+
+        <h2
+          id="paybox-warning-title"
+          className="font-body"
+          style={{
+            margin: "0 0 0.7rem",
+            fontSize: "1.35rem",
+            fontWeight: 700,
+            color: INK,
+          }}
+        >
+          !שימו לב
+        </h2>
+
+        <p
+          className="font-body"
+          style={{
+            margin: "0 0 0.45rem",
+            fontSize: "0.92rem",
+            fontWeight: 400,
+            color: INK,
+            lineHeight: 1.55,
+          }}
+        >
+          ניתן להעביר עד ₪1,000 בלבד מכרטיסי אשראי!
+        </p>
+        <p
+          className="font-body"
+          style={{
+            margin: 0,
+            fontSize: "0.92rem",
+            fontWeight: 400,
+            color: INK,
+            lineHeight: 1.55,
+          }}
+        >
+          על מנת להעביר יותר מכך, עליכם להטעין את היתרה ב paybox לפני ביצוע
+        </p>
+
+        <div
+          dir="ltr"
+          style={{
+            display: "flex",
+            gap: "0.65rem",
+            marginTop: "1.2rem",
+          }}
+        >
+          <button
+            type="button"
+            onClick={onConfirm}
+            style={{ ...buttonStyle, background: MODAL_CONFIRM }}
+          >
+            הבנתי
+          </button>
+          <button
+            type="button"
+            onClick={onCancel}
+            style={{ ...buttonStyle, background: MODAL_CANCEL }}
+          >
+            החלטתי לוותר
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function DetailsPage() {
+  const [showPayboxWarning, setShowPayboxWarning] = useState(false);
+
   useEffect(() => {
     document.title = "שקד & איל — פרטי החתונה";
   }, []);
 
   const { couple, date, schedule, venue } = DETAILS;
+
+  const openPaybox = () => {
+    window.open(DETAILS.payboxUrl, "_blank", "noopener,noreferrer");
+    setShowPayboxWarning(false);
+  };
 
   return (
     <main
@@ -291,7 +455,7 @@ export default function DetailsPage() {
               alignItems: "center",
             }}
           >
-            <PillButton href={DETAILS.payboxUrl} variant="paybox">
+            <PillButton variant="paybox" onClick={() => setShowPayboxWarning(true)}>
               <DetailIcon name="gift" size={22} inline />
               <span style={{ lineHeight: 1 }}>למתנה ב-PayBox</span>
             </PillButton>
@@ -302,6 +466,12 @@ export default function DetailsPage() {
           </div>
         </SectionBlock>
       </div>
+
+      <PayboxWarningModal
+        open={showPayboxWarning}
+        onConfirm={openPaybox}
+        onCancel={() => setShowPayboxWarning(false)}
+      />
     </main>
   );
 }
