@@ -455,13 +455,13 @@ export default function DetailsPage() {
               alignItems: "center",
             }}
           >
+            <PillButton href={DETAILS.bitUrl} variant="bit">
+              <DetailIcon name="gift" size={22} inline />
+              <span style={{ lineHeight: 1 }}>למתנה בכרטיס אשראי</span>
+            </PillButton>
             <PillButton variant="paybox" onClick={() => setShowPayboxWarning(true)}>
               <DetailIcon name="gift" size={22} inline />
               <span style={{ lineHeight: 1 }}>למתנה ב-PayBox</span>
-            </PillButton>
-            <PillButton href={DETAILS.bitUrl} variant="bit">
-              <DetailIcon name="gift" size={22} inline />
-              <span style={{ lineHeight: 1 }}>למתנה ב-bit</span>
             </PillButton>
           </div>
         </SectionBlock>
