@@ -349,11 +349,11 @@ export default function DetailsPage() {
               color: INK,
             }}
           >
-            {couple.groom}{" "}
+            {couple.bride}{" "}
             <span className="font-body" style={{ color: GOLD, fontStyle: "italic", fontWeight: 300 }}>
               &
             </span>{" "}
-            {couple.bride}
+            {couple.groom}
           </h1>
 
           <HeartDivider />
