@@ -245,7 +245,7 @@ function PayboxWarningModal({ open, onConfirm, onCancel }) {
             color: INK,
           }}
         >
-          !שימו לב
+          שימו לב!
         </h2>
 
         <p
@@ -258,7 +258,7 @@ function PayboxWarningModal({ open, onConfirm, onCancel }) {
             lineHeight: 1.55,
           }}
         >
-          ניתן להעביר עד ₪1,000 בלבד מכרטיסי אשראי!
+          ניתן להעביר עד ₪1,000 בלבד מכרטיס האשראי!
         </p>
         <p
           className="font-body"
@@ -445,7 +445,7 @@ export default function DetailsPage() {
 
         <HeartDivider />
 
-        <SectionBlock title="ניתן להעניק מתנה גם בפייסבוקס וביט 👇">
+        <SectionBlock title="ניתן להעניק מתנה גם בפייסבוקס או דרך כרטיס האשראי 👇">
           <div
             style={{
               display: "flex",
