@@ -57,7 +57,7 @@ export const DETAILS = {
       "https://waze.com/ul?q=East+TLV+Mitav+13+Tel+Aviv&navigate=yes",
   },
   payboxUrl: "https://links.payboxapp.com/wq7MXwwxXUb",
-  bitUrl: "https://bit.ly/4gprL1b",
+  bitUrl: "https://gift.rsvpevents.co.il/events/f939914c-ffcf-422a-8894-c99247d88fbd",
 };
 
 export const MENU = [
