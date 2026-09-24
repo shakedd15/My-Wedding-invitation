@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import MetricCard from "../components/manage/MetricCard.jsx";
 import ProgressCard from "../components/manage/ProgressCard.jsx";
+import RespondedGuestsTable from "../components/manage/RespondedGuestsTable.jsx";
 import { useGuestStats } from "../hooks/useGuestStats.js";
 import "./ManagePage.css";
 
@@ -13,7 +14,7 @@ const ICONS = {
 };
 
 export default function ManagePage() {
-  const { stats, loading, error, retry } = useGuestStats();
+  const { stats, responded, loading, error, retry } = useGuestStats();
 
   useEffect(() => {
     document.title = "ניהול מוזמנים";
@@ -63,6 +64,7 @@ export default function ManagePage() {
               value={stats?.invalid ?? 0}
               loading={loading}
             />
+            <RespondedGuestsTable guests={responded} loading={loading} />
           </div>
         )}
       </div>

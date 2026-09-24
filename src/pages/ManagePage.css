@@ -159,6 +159,160 @@
   cursor: pointer;
 }
 
+.manage-table-card {
+  padding: 1.05rem 0.15rem 0.35rem;
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 8px 22px rgba(17, 17, 17, 0.06);
+}
+
+.manage-table-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.15rem 1rem 0.85rem;
+}
+
+.manage-table-title {
+  margin: 0;
+  color: #111111;
+  font-size: 1.05rem;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.manage-table-note {
+  margin: 0.15rem 0 0;
+  color: #6d6d6d;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+
+.manage-table-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.1rem;
+  height: 2.1rem;
+  padding: 0 0.55rem;
+  border-radius: 999px;
+  background: #fff1f6;
+  color: #e91e73;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.manage-table-count-skeleton {
+  width: 2.1rem;
+  height: 2.1rem;
+  border-radius: 999px;
+}
+
+.manage-table-scroll {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.manage-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+  table-layout: fixed;
+}
+
+.manage-table th:nth-child(1),
+.manage-table td:nth-child(1) {
+  width: 32%;
+}
+
+.manage-table th:nth-child(2),
+.manage-table td:nth-child(2) {
+  width: 30%;
+}
+
+.manage-table th:nth-child(3),
+.manage-table td:nth-child(3) {
+  width: 18%;
+}
+
+.manage-table th:nth-child(4),
+.manage-table td:nth-child(4) {
+  width: 20%;
+}
+
+.manage-table th {
+  padding: 0.55rem 0.45rem;
+  background: #fff1f6;
+  color: #9a3d62;
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 1.25;
+  text-align: right;
+}
+
+.manage-table th:nth-child(n + 3),
+.manage-table td:nth-child(n + 3) {
+  text-align: center;
+}
+
+.manage-table td {
+  padding: 0.72rem 0.45rem;
+  border-top: 1px solid #f6e4ec;
+  color: #111111;
+  overflow-wrap: anywhere;
+  vertical-align: top;
+  line-height: 1.35;
+}
+
+.manage-table tbody tr:nth-child(even) td {
+  background: #fffafc;
+}
+
+.manage-table-name {
+  font-weight: 700;
+}
+
+.manage-table-description {
+  color: #4d4d4d;
+}
+
+.manage-table-num {
+  direction: ltr;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  unicode-bidi: isolate;
+  white-space: nowrap;
+}
+
+.manage-table-arriving--yes {
+  color: #e91e73;
+}
+
+.manage-table-arriving--no {
+  color: #8a8a8a;
+}
+
+.manage-table-empty {
+  margin: 0;
+  padding: 0.2rem 1rem 1rem;
+  color: #6d6d6d;
+  font-size: 0.95rem;
+}
+
+.manage-table-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0 1rem 0.9rem;
+}
+
+.manage-table-skeleton-row {
+  height: 2.4rem;
+  border-radius: 12px;
+}
+
 @keyframes manage-shimmer {
   from {
     background-position: 100% 0;

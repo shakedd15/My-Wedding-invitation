@@ -40,3 +40,23 @@ export function computeGuestStats(rows = []) {
 
   return stats;
 }
+
+export function selectRespondedGuests(rows = []) {
+  return rows
+    .filter((row) => {
+      const arriving = Number(row?.guests_amount_arriving);
+      return Number.isFinite(arriving) && arriving !== 0;
+    })
+    .map((row) => ({
+      id: row?.id ?? null,
+      fullName: typeof row?.full_name === "string" && row.full_name.trim()
+        ? row.full_name.trim()
+        : "",
+      description: typeof row?.description === "string" && row.description.trim()
+        ? row.description.trim()
+        : "",
+      maxAmount: toAmount(row?.guests_max_amount),
+      arriving: Number(row.guests_amount_arriving),
+    }))
+    .sort((a, b) => b.arriving - a.arriving || a.fullName.localeCompare(b.fullName, "he"));
+}

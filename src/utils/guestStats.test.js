@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { computeGuestStats } from "./guestStats.js";
+import { computeGuestStats, selectRespondedGuests } from "./guestStats.js";
 
 test("aggregates guest dashboard metrics from invitation rows", () => {
   const stats = computeGuestStats([
@@ -50,4 +50,22 @@ test("treats missing amounts as zero and empty tables as zeros", () => {
   assert.equal(stats.undecided, 2);
   assert.equal(stats.invalid, 0);
   assert.equal(stats.progressPercent, 0);
+});
+
+test("lists only guests who confirmed or declined, highest arrival count first", () => {
+  const guests = selectRespondedGuests([
+    { id: "c", full_name: "  גל  ", description: "חברים", guests_max_amount: 3, guests_amount_arriving: 0 },
+    { id: "b", full_name: "דנה", description: "  ", guests_max_amount: 2, guests_amount_arriving: -1 },
+    { id: "e", full_name: "רות", description: "עבודה", guests_max_amount: 2, guests_amount_arriving: 2 },
+    { id: "a", full_name: "אבי", description: "משפחה", guests_max_amount: 4, guests_amount_arriving: "3" },
+    { id: "f", full_name: "גלית", description: "משפחה", guests_max_amount: 2, guests_amount_arriving: 2 },
+    { id: "d", full_name: "יוסי", description: null, guests_max_amount: 1, guests_amount_arriving: null },
+  ]);
+
+  assert.deepEqual(guests, [
+    { id: "a", fullName: "אבי", description: "משפחה", maxAmount: 4, arriving: 3 },
+    { id: "f", fullName: "גלית", description: "משפחה", maxAmount: 2, arriving: 2 },
+    { id: "e", fullName: "רות", description: "עבודה", maxAmount: 2, arriving: 2 },
+    { id: "b", fullName: "דנה", description: "", maxAmount: 2, arriving: -1 },
+  ]);
 });
