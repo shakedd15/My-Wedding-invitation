@@ -67,10 +67,14 @@ export default function GuestListDialog({
   };
 
   const saveCount = async (guest) => {
+    const maxAmount = Math.max(guest.maxAmount, 0);
+    if (draft.trim() === "") {
+      setRowError(`אפשר לרשום בין 0 ל-${maxAmount}.`);
+      return;
+    }
     const count = Number(draft);
-    const maxAmount = guest.maxAmount > 0 ? guest.maxAmount : 1;
-    if (!Number.isInteger(count) || count < 1 || count > maxAmount) {
-      setRowError(guest.maxAmount > 0 ? `אפשר לרשום בין 1 ל-${guest.maxAmount}.` : "הקלידו מספר מאשרים.");
+    if (!Number.isInteger(count) || count < 0 || count > maxAmount) {
+      setRowError(`אפשר לרשום בין 0 ל-${maxAmount}.`);
       return;
     }
     await persist(guest, count);
@@ -150,7 +154,7 @@ export default function GuestListDialog({
                                 className="manage-arriving-input"
                                 type="number"
                                 inputMode="numeric"
-                                min="1"
+                                min="0"
                                 max={guest.maxAmount || undefined}
                                 value={draft}
                                 aria-label={`אישרו הגעה עבור ${guest.fullName || "אורח"}`}

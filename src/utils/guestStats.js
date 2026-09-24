@@ -56,6 +56,8 @@ function toGuestListItem(row) {
       : "",
     maxAmount: toAmount(row?.guests_max_amount),
     arriving: Number.isFinite(arriving) ? arriving : 0,
+    giftAmount: toAmount(row?.guest_gift_amount),
+    smsCount: toAmount(row?.sms_count),
   };
 }
 
@@ -75,4 +77,12 @@ export function selectPendingGuests(rows = []) {
     .map(toGuestListItem)
     .filter((guest) => guest.arriving === 0)
     .sort(byHebrewName);
+}
+
+export function selectAllGuests(rows = []) {
+  return rows.map(toGuestListItem).sort(byHebrewName);
+}
+
+export function guestInviteLink(id) {
+  return id ? `https://eyal-shaked-wedding.com/?id=${id}` : "";
 }

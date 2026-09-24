@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import AllGuestsDialog from "../components/manage/AllGuestsDialog.jsx";
 import GuestListDialog from "../components/manage/GuestListDialog.jsx";
 import MetricCard from "../components/manage/MetricCard.jsx";
 import ProgressCard from "../components/manage/ProgressCard.jsx";
@@ -10,11 +11,11 @@ const ICONS = {
   arriving: "/images/manage/arriving.png",
   notAttending: "/images/manage/not-attending.png",
   undecided: "/images/manage/undecided.png",
-  invalid: "/images/manage/invalid.png",
+  manage: "/images/manage/manage-guests.png",
 };
 
 export default function ManagePage() {
-  const { stats, responded, pending, loading, error, retry, updateArriving } = useGuestStats();
+  const { stats, responded, pending, guests, loading, error, retry, updateArriving, updateGuest } = useGuestStats();
   const [list, setList] = useState(null);
   const arrivingGuests = responded.filter((guest) => guest.arriving > 0);
   const declinedGuests = responded.filter((guest) => guest.arriving < 0);
@@ -65,10 +66,11 @@ export default function ManagePage() {
             />
             <ProgressCard percent={stats?.progressPercent ?? 0} loading={loading} />
             <MetricCard
-              iconSrc={ICONS.invalid}
-              label="לא תקינים"
-              value={stats?.invalid ?? 0}
+              iconSrc={ICONS.manage}
+              label="ניהול מוזמנים"
+              value={guests.length}
               loading={loading}
+              onClick={() => setList("all")}
             />
           </div>
         )}
@@ -100,6 +102,13 @@ export default function ManagePage() {
           editable
           onSaveArriving={(guest, arriving) => updateArriving(guest.id, arriving)}
           emptyText="אין אורחים שממתינים לתשובה."
+          onClose={() => setList(null)}
+        />
+      ) : null}
+      {list === "all" ? (
+        <AllGuestsDialog
+          guests={guests}
+          onSave={updateGuest}
           onClose={() => setList(null)}
         />
       ) : null}

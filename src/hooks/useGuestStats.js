@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "../lib/supabase.js";
-import { computeGuestStats, selectPendingGuests, selectRespondedGuests } from "../utils/guestStats.js";
+import { computeGuestStats, selectAllGuests, selectPendingGuests, selectRespondedGuests } from "../utils/guestStats.js";
 
 export function useGuestStats() {
   const [rows, setRows] = useState(null);
@@ -19,7 +19,7 @@ export function useGuestStats() {
 
     supabase
       .from("guests")
-      .select("id, full_name, description, phone_number, guests_max_amount, guests_amount_arriving, sms_count")
+      .select("id, full_name, description, phone_number, guests_max_amount, guests_amount_arriving, guest_gift_amount, sms_count")
       .then(({ data, error: sbError }) => {
         if (cancelled) return;
         if (sbError) {
@@ -55,9 +55,21 @@ export function useGuestStats() {
     );
   }, []);
 
+  const updateGuest = useCallback(async (id, fields) => {
+    const { error: sbError } = await supabase
+      .from("guests")
+      .update(fields)
+      .eq("id", id);
+    if (sbError) throw sbError;
+    setRows((current) =>
+      (current ?? []).map((row) => (row.id === id ? { ...row, ...fields } : row)),
+    );
+  }, []);
+
   const stats = rows ? computeGuestStats(rows) : null;
   const responded = rows ? selectRespondedGuests(rows) : [];
   const pending = rows ? selectPendingGuests(rows) : [];
+  const guests = rows ? selectAllGuests(rows) : [];
 
-  return { stats, responded, pending, loading, error, retry, updateArriving };
+  return { stats, responded, pending, guests, loading, error, retry, updateArriving, updateGuest };
 }

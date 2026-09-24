@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { computeGuestStats, selectPendingGuests, selectRespondedGuests } from "./guestStats.js";
+import { computeGuestStats, guestInviteLink, selectAllGuests, selectPendingGuests, selectRespondedGuests } from "./guestStats.js";
 
 test("aggregates guest dashboard metrics from invitation rows", () => {
   const stats = computeGuestStats([
@@ -63,10 +63,10 @@ test("lists only guests who confirmed or declined, highest arrival count first",
   ]);
 
   assert.deepEqual(guests, [
-    { id: "a", fullName: "אבי", description: "משפחה", phone: "", maxAmount: 4, arriving: 3 },
-    { id: "f", fullName: "גלית", description: "משפחה", phone: "", maxAmount: 2, arriving: 2 },
-    { id: "e", fullName: "רות", description: "עבודה", phone: "", maxAmount: 2, arriving: 2 },
-    { id: "b", fullName: "דנה", description: "", phone: "", maxAmount: 2, arriving: -1 },
+    { id: "a", fullName: "אבי", description: "משפחה", phone: "", maxAmount: 4, arriving: 3, giftAmount: 0, smsCount: 0 },
+    { id: "f", fullName: "גלית", description: "משפחה", phone: "", maxAmount: 2, arriving: 2, giftAmount: 0, smsCount: 0 },
+    { id: "e", fullName: "רות", description: "עבודה", phone: "", maxAmount: 2, arriving: 2, giftAmount: 0, smsCount: 0 },
+    { id: "b", fullName: "דנה", description: "", phone: "", maxAmount: 2, arriving: -1, giftAmount: 0, smsCount: 0 },
   ]);
 });
 
@@ -79,7 +79,20 @@ test("lists guests who have not replied, sorted by name", () => {
   ]);
 
   assert.deepEqual(guests, [
-    { id: "c", fullName: "גל", description: "חברים", phone: "050-0000000", maxAmount: 3, arriving: 0 },
-    { id: "d", fullName: "יוסי", description: "", phone: "", maxAmount: 1, arriving: 0 },
+    { id: "c", fullName: "גל", description: "חברים", phone: "050-0000000", maxAmount: 3, arriving: 0, giftAmount: 0, smsCount: 0 },
+    { id: "d", fullName: "יוסי", description: "", phone: "", maxAmount: 1, arriving: 0, giftAmount: 0, smsCount: 0 },
   ]);
+});
+
+test("lists every guest and builds the personal invitation link", () => {
+  const guests = selectAllGuests([
+    { id: "b", full_name: "דנה", description: "משפחה", phone_number: "050", guests_max_amount: 2, guests_amount_arriving: -1, guest_gift_amount: 100, sms_count: 2 },
+    { id: "a", full_name: "אבי", description: "", guests_max_amount: 1, guests_amount_arriving: 0, guest_gift_amount: null, sms_count: 0 },
+  ]);
+
+  assert.equal(guests.map((guest) => guest.fullName).join(","), "אבי,דנה");
+  assert.equal(guests[1].giftAmount, 100);
+  assert.equal(guests[1].smsCount, 2);
+  assert.equal(guestInviteLink("abc"), "https://eyal-shaked-wedding.com/?id=abc");
+  assert.equal(guestInviteLink(""), "");
 });

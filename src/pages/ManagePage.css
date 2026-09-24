@@ -515,6 +515,41 @@
   width: min(calc(100% - 1rem), 760px);
 }
 
+.manage-dialog--guests {
+  width: min(calc(100% - 0.8rem), 1100px);
+}
+
+.manage-table--all {
+  min-width: 68rem;
+}
+
+.manage-text-input {
+  width: 100%;
+  min-width: 7rem;
+  padding: 0.35rem 0.45rem;
+  border: 1px solid #f0d5e2;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #111111;
+  font: inherit;
+  font-size: 0.88rem;
+}
+
+.manage-text-input:focus-visible {
+  outline: 3px solid #e91e73;
+  outline-offset: 2px;
+}
+
+.manage-guest-link {
+  display: inline-block;
+  max-width: 16rem;
+  color: #e91e73;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
 .manage-dialog::backdrop {
   background: rgba(17, 17, 17, 0.48);
 }
