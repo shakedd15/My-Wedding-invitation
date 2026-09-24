@@ -100,6 +100,7 @@ export default function ManagePage() {
       {list === "declined" ? (
         <GuestListDialog
           title="לא מגיעים"
+          note={`המספר בכרטיס (${stats?.notAttending ?? 0}) כולל גם אנשים מהזמנה שאישרה פחות ממה שהוזמנו. כאן (${declinedGuests.length} רשומות) מופיעות רק הזמנות שסומנו כולן כלא מגיעים. למשל, הוזמנו 4 ואישרו 2: שני הנעדרים נספרים בכרטיס, והרשומה לא מופיעה כאן.`}
           guests={declinedGuests}
           emptyText="אין אורחים שסירבו."
           onClose={() => setList(null)}
