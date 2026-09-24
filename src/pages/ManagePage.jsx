@@ -15,7 +15,19 @@ const ICONS = {
 };
 
 export default function ManagePage() {
-  const { stats, responded, pending, guests, loading, error, retry, updateArriving, updateGuest } = useGuestStats();
+  const {
+    stats,
+    responded,
+    pending,
+    guests,
+    loading,
+    error,
+    retry,
+    updateArriving,
+    updateGuest,
+    createGuest,
+    deleteGuest,
+  } = useGuestStats();
   const [list, setList] = useState(null);
   const arrivingGuests = responded.filter((guest) => guest.arriving > 0);
   const declinedGuests = responded.filter((guest) => guest.arriving < 0);
@@ -109,6 +121,8 @@ export default function ManagePage() {
         <AllGuestsDialog
           guests={guests}
           onSave={updateGuest}
+          onCreate={createGuest}
+          onDelete={deleteGuest}
           onClose={() => setList(null)}
         />
       ) : null}

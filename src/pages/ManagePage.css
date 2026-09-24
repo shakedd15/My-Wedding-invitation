@@ -393,7 +393,28 @@
   background: transparent;
 }
 
+.manage-delete-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.manage-delete-btn img {
+  width: 1.85rem;
+  height: 1.85rem;
+  object-fit: contain;
+  background: transparent;
+}
+
 .manage-edit-btn:focus-visible,
+.manage-delete-btn:focus-visible,
 .manage-save-btn:focus-visible,
 .manage-decline-btn:focus-visible,
 .manage-arriving-input:focus-visible {
@@ -520,7 +541,71 @@
 }
 
 .manage-table--all {
-  min-width: 68rem;
+  min-width: 74rem;
+}
+
+.manage-table--all .manage-table-action {
+  left: 3.6rem;
+}
+
+.manage-table--all .manage-table-delete {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  width: 3.6rem;
+  background: #ffffff;
+  box-shadow: 6px 0 10px rgba(17, 17, 17, 0.05);
+  text-align: center;
+}
+
+.manage-table--all thead .manage-table-delete {
+  z-index: 4;
+  background: #fff1f6;
+}
+
+.manage-table--all tbody tr:nth-child(even) .manage-table-delete {
+  background: #fffafc;
+}
+
+.manage-table-create td {
+  background: #fff7fb;
+}
+
+.manage-table--all .manage-table-create .manage-table-action,
+.manage-table--all .manage-table-create .manage-table-delete {
+  background: #fff7fb;
+}
+
+.manage-create-hint {
+  color: #8a8a8a;
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.manage-confirm-dialog {
+  width: min(calc(100% - 2rem), 380px);
+  padding: 1.25rem 1.15rem 1.05rem;
+  text-align: center;
+}
+
+.manage-confirm-title {
+  margin: 0;
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+
+.manage-confirm-text {
+  margin: 0.55rem 0 0;
+  color: #5c5c5c;
+  font-size: 0.92rem;
+  line-height: 1.4;
+}
+
+.manage-confirm-actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.55rem;
+  margin-top: 1rem;
 }
 
 .manage-text-input {

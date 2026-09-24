@@ -66,10 +66,40 @@ export function useGuestStats() {
     );
   }, []);
 
+  const createGuest = useCallback(async (fields) => {
+    const row = { id: crypto.randomUUID(), ...fields };
+    const { error: sbError } = await supabase.from("guests").insert(row);
+    if (sbError) throw sbError;
+    setRows((current) => [...(current ?? []), row]);
+    return row.id;
+  }, []);
+
+  const deleteGuest = useCallback(async (id) => {
+    const { error: sbError, count } = await supabase
+      .from("guests")
+      .delete({ count: "exact" })
+      .eq("id", id);
+    if (sbError) throw sbError;
+    if (!count) throw new Error("delete blocked");
+    setRows((current) => (current ?? []).filter((row) => row.id !== id));
+  }, []);
+
   const stats = rows ? computeGuestStats(rows) : null;
   const responded = rows ? selectRespondedGuests(rows) : [];
   const pending = rows ? selectPendingGuests(rows) : [];
   const guests = rows ? selectAllGuests(rows) : [];
 
-  return { stats, responded, pending, guests, loading, error, retry, updateArriving, updateGuest };
+  return {
+    stats,
+    responded,
+    pending,
+    guests,
+    loading,
+    error,
+    retry,
+    updateArriving,
+    updateGuest,
+    createGuest,
+    deleteGuest,
+  };
 }
