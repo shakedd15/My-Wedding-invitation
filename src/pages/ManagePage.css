@@ -193,6 +193,11 @@
   padding: 0.15rem 1rem 0.85rem;
 }
 
+.manage-table-header > div:first-child {
+  flex: 1;
+  min-width: 0;
+}
+
 .manage-table-title {
   margin: 0;
   color: #111111;
@@ -202,10 +207,10 @@
 }
 
 .manage-table-note {
-  margin: 0.15rem 0 0;
+  margin: -0.35rem 1rem 0.8rem;
   color: #6d6d6d;
   font-size: 0.82rem;
-  line-height: 1.4;
+  line-height: 1.45;
 }
 
 .manage-table-count {

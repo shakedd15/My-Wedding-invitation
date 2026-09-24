@@ -108,6 +108,7 @@ export default function ManagePage() {
       {list === "pending" ? (
         <GuestListDialog
           title="טרם השיבו/מתלבטים"
+          note={`המספר בכרטיס (${stats?.undecided ?? 0}) סופר אנשים שטרם השיבו. המספר כאן (${pending.length}) סופר רשומות, כי רשומה אחת יכולה לכלול כמה אנשים.`}
           guests={pending}
           showPhone
           showArriving

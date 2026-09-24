@@ -10,6 +10,7 @@ function arrivingClass(arriving) {
 
 export default function GuestListDialog({
   title,
+  note = "",
   guests = [],
   showArriving = false,
   showPhone = false,
@@ -115,6 +116,7 @@ export default function GuestListDialog({
             </button>
           </div>
         </header>
+        {note ? <p className="manage-table-note">{note}</p> : null}
 
         {guests.length === 0 ? (
           <p className="manage-table-empty">{emptyText}</p>
