@@ -1,7 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import GuestListDialog from "../components/manage/GuestListDialog.jsx";
 import MetricCard from "../components/manage/MetricCard.jsx";
 import ProgressCard from "../components/manage/ProgressCard.jsx";
-import RespondedGuestsTable from "../components/manage/RespondedGuestsTable.jsx";
 import { useGuestStats } from "../hooks/useGuestStats.js";
 import "./ManagePage.css";
 
@@ -15,6 +15,9 @@ const ICONS = {
 
 export default function ManagePage() {
   const { stats, responded, loading, error, retry } = useGuestStats();
+  const [list, setList] = useState(null);
+  const arrivingGuests = responded.filter((guest) => guest.arriving > 0);
+  const declinedGuests = responded.filter((guest) => guest.arriving < 0);
 
   useEffect(() => {
     document.title = "ניהול מוזמנים";
@@ -44,12 +47,14 @@ export default function ManagePage() {
               label="מגיעים"
               value={stats?.arriving ?? 0}
               loading={loading}
+              onClick={() => setList("arriving")}
             />
             <MetricCard
               iconSrc={ICONS.notAttending}
               label="לא מגיעים"
               value={stats?.notAttending ?? 0}
               loading={loading}
+              onClick={() => setList("declined")}
             />
             <MetricCard
               iconSrc={ICONS.undecided}
@@ -64,10 +69,26 @@ export default function ManagePage() {
               value={stats?.invalid ?? 0}
               loading={loading}
             />
-            <RespondedGuestsTable guests={responded} loading={loading} />
           </div>
         )}
       </div>
+      {list === "arriving" ? (
+        <GuestListDialog
+          title="מגיעים"
+          guests={arrivingGuests}
+          showArriving
+          emptyText="אין אורחים שאישרו הגעה."
+          onClose={() => setList(null)}
+        />
+      ) : null}
+      {list === "declined" ? (
+        <GuestListDialog
+          title="לא מגיעים"
+          guests={declinedGuests}
+          emptyText="אין אורחים שסירבו."
+          onClose={() => setList(null)}
+        />
+      ) : null}
     </main>
   );
 }
