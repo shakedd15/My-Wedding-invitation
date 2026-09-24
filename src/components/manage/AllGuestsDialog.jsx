@@ -3,6 +3,7 @@ import { guestInviteLink } from "../../utils/guestStats.js";
 
 const EDIT_ICON = "/images/manage/edit.png";
 const DELETE_ICON = "/images/manage/delete.svg";
+const ADD_ICON = "/images/manage/add.png";
 
 const EMPTY_CREATE = {
   fullName: "",
@@ -64,6 +65,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
   const [editingId, setEditingId] = useState(null);
   const [draft, setDraft] = useState(null);
   const [createDraft, setCreateDraft] = useState(EMPTY_CREATE);
+  const [creatingOpen, setCreatingOpen] = useState(false);
   const [saving, setSaving] = useState(false);
   const [creating, setCreating] = useState(false);
   const [deleting, setDeleting] = useState(false);
@@ -109,9 +111,16 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
 
   useEffect(() => {
     if (!editingId) return;
-    dialogRef.current
-      ?.querySelector(".manage-table-editor-cell")
-      ?.scrollIntoView({ inline: "nearest", block: "nearest" });
+    const scroller = dialogRef.current?.querySelector(".manage-dialog-body");
+    const row = scroller?.querySelector(`[data-guest-id="${CSS.escape(editingId)}"]`);
+    if (!scroller || !row) return;
+    const rowRect = row.getBoundingClientRect();
+    const scrollerRect = scroller.getBoundingClientRect();
+    if (rowRect.bottom > scrollerRect.bottom) {
+      scroller.scrollTop += rowRect.bottom - scrollerRect.bottom;
+    } else if (rowRect.top < scrollerRect.top) {
+      scroller.scrollTop -= scrollerRect.top - rowRect.top;
+    }
   }, [editingId]);
 
   const startEdit = (guest) => {
@@ -181,6 +190,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
         guests_amount_we_expect: values.maxAmount,
       });
       setCreateDraft(EMPTY_CREATE);
+      setCreatingOpen(false);
     } catch (err) {
       const blocked = String(err?.code || err?.message || "").includes("42501")
         || String(err?.message || "").includes("row-level security");
@@ -255,7 +265,9 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
             </thead>
             <tbody>
               <tr className="manage-table-create">
-                <td className="manage-table-editor-cell">
+                {creatingOpen ? (
+                  <>
+                <td>
                   <input
                     className="manage-text-input"
                     type="text"
@@ -347,12 +359,28 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                   </div>
                 </td>
                 <td className="manage-table-delete" />
+                  </>
+                ) : (
+                  <td className="manage-table-add-cell" colSpan={10}>
+                    <button
+                      type="button"
+                      className="manage-add-btn"
+                      aria-label="הוספת מוזמן"
+                      onClick={() => {
+                        setCreateError(null);
+                        setCreatingOpen(true);
+                      }}
+                    >
+                      <img src={ADD_ICON} alt="" />
+                    </button>
+                  </td>
+                )}
               </tr>
               {guests.map((guest) => {
                 const isEditing = editingId === guest.id && draft;
                 const link = guestInviteLink(guest.id);
                 return (
-                  <tr key={guest.id}>
+                  <tr key={guest.id} data-guest-id={guest.id}>
                     <td className={isEditing ? "manage-table-editor-cell" : "manage-table-name"}>
                       {isEditing ? (
                         <input
