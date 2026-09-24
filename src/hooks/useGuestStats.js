@@ -1,10 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "../lib/supabase.js";
-import { computeGuestStats, selectRespondedGuests } from "../utils/guestStats.js";
+import { computeGuestStats, selectPendingGuests, selectRespondedGuests } from "../utils/guestStats.js";
 
 export function useGuestStats() {
   const [stats, setStats] = useState(null);
   const [responded, setResponded] = useState([]);
+  const [pending, setPending] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [reloadToken, setReloadToken] = useState(0);
@@ -27,10 +28,12 @@ export function useGuestStats() {
           setError(`שגיאת חיבור: ${sbError.message}`);
           setStats(null);
           setResponded([]);
+          setPending([]);
         } else {
           const rows = data ?? [];
           setStats(computeGuestStats(rows));
           setResponded(selectRespondedGuests(rows));
+          setPending(selectPendingGuests(rows));
         }
         setLoading(false);
       })
@@ -39,6 +42,7 @@ export function useGuestStats() {
         setError(`שגיאת חיבור: ${err.message}`);
         setStats(null);
         setResponded([]);
+        setPending([]);
         setLoading(false);
       });
 
@@ -47,5 +51,5 @@ export function useGuestStats() {
     };
   }, [reloadToken]);
 
-  return { stats, responded, loading, error, retry };
+  return { stats, responded, pending, loading, error, retry };
 }

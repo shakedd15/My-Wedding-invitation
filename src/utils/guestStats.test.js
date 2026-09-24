@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { computeGuestStats, selectRespondedGuests } from "./guestStats.js";
+import { computeGuestStats, selectPendingGuests, selectRespondedGuests } from "./guestStats.js";
 
 test("aggregates guest dashboard metrics from invitation rows", () => {
   const stats = computeGuestStats([
@@ -67,5 +67,19 @@ test("lists only guests who confirmed or declined, highest arrival count first",
     { id: "f", fullName: "גלית", description: "משפחה", maxAmount: 2, arriving: 2 },
     { id: "e", fullName: "רות", description: "עבודה", maxAmount: 2, arriving: 2 },
     { id: "b", fullName: "דנה", description: "", maxAmount: 2, arriving: -1 },
+  ]);
+});
+
+test("lists guests who have not replied, sorted by name", () => {
+  const guests = selectPendingGuests([
+    { id: "c", full_name: "  גל  ", description: "חברים", guests_max_amount: 3, guests_amount_arriving: 0 },
+    { id: "b", full_name: "דנה", description: "משפחה", guests_max_amount: 2, guests_amount_arriving: -1 },
+    { id: "a", full_name: "אבי", description: "משפחה", guests_max_amount: 4, guests_amount_arriving: 3 },
+    { id: "d", full_name: "יוסי", description: null, guests_max_amount: 1, guests_amount_arriving: null },
+  ]);
+
+  assert.deepEqual(guests, [
+    { id: "c", fullName: "גל", description: "חברים", maxAmount: 3, arriving: 0 },
+    { id: "d", fullName: "יוסי", description: "", maxAmount: 1, arriving: 0 },
   ]);
 });

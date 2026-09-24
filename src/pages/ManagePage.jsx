@@ -14,7 +14,7 @@ const ICONS = {
 };
 
 export default function ManagePage() {
-  const { stats, responded, loading, error, retry } = useGuestStats();
+  const { stats, responded, pending, loading, error, retry } = useGuestStats();
   const [list, setList] = useState(null);
   const arrivingGuests = responded.filter((guest) => guest.arriving > 0);
   const declinedGuests = responded.filter((guest) => guest.arriving < 0);
@@ -61,6 +61,7 @@ export default function ManagePage() {
               label="טרם השיבו/מתלבטים"
               value={stats?.undecided ?? 0}
               loading={loading}
+              onClick={() => setList("pending")}
             />
             <ProgressCard percent={stats?.progressPercent ?? 0} loading={loading} />
             <MetricCard
@@ -86,6 +87,14 @@ export default function ManagePage() {
           title="לא מגיעים"
           guests={declinedGuests}
           emptyText="אין אורחים שסירבו."
+          onClose={() => setList(null)}
+        />
+      ) : null}
+      {list === "pending" ? (
+        <GuestListDialog
+          title="טרם השיבו/מתלבטים"
+          guests={pending}
+          emptyText="אין אורחים שממתינים לתשובה."
           onClose={() => setList(null)}
         />
       ) : null}
