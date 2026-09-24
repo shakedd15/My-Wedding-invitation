@@ -34,7 +34,7 @@ export default function App() {
   const { guestId, pathname } = useUrlParams();
 
   /* ── Supabase: fetch guest data for the personalized RSVP ── */
-  const { guest, loading: guestLoading, error: guestError } = useGuest(guestId);
+  const { guest } = useGuest(guestId);
 
   /* ── RSVP handlers — update the guests table ── */
   const handleAttend = useCallback(async (confirmedCount) => {
@@ -133,21 +133,21 @@ export default function App() {
           {/* ── Stage 4.5: Parents welcome ── */}
           <ParentsSection />
 
-          {/* ── Stage 5: RSVP ── */}
-          <RsvpSection
-            guestName={guest?.full_name ?? null}
-            gender={String(guest?.gender ?? "F").toUpperCase()}
-            maxGuests={guest?.guests_max_amount ?? 3}
-            defaultGuests={
-              guest?.guests_amount_arriving === -1
-                ? 0
-                : (guest?.guests_amount_arriving ?? 0)
-            }
-            guestLoading={guestLoading}
-            guestError={guestError}
-            onAttend={handleAttend}
-            onDecline={handleDecline}
-          />
+          {/* ── Stage 5: RSVP — only for a recognized ?id= ── */}
+          {guest ? (
+            <RsvpSection
+              guestName={guest.full_name ?? null}
+              gender={String(guest.gender ?? "F").toUpperCase()}
+              maxGuests={guest.guests_max_amount ?? 3}
+              defaultGuests={
+                guest.guests_amount_arriving === -1
+                  ? 0
+                  : (guest.guests_amount_arriving ?? 0)
+              }
+              onAttend={handleAttend}
+              onDecline={handleDecline}
+            />
+          ) : null}
 
           {/* ── Stage 6: Closing photo ── */}
           <ClosingSection />
