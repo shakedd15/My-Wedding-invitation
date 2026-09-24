@@ -63,23 +63,23 @@ test("lists only guests who confirmed or declined, highest arrival count first",
   ]);
 
   assert.deepEqual(guests, [
-    { id: "a", fullName: "אבי", description: "משפחה", maxAmount: 4, arriving: 3 },
-    { id: "f", fullName: "גלית", description: "משפחה", maxAmount: 2, arriving: 2 },
-    { id: "e", fullName: "רות", description: "עבודה", maxAmount: 2, arriving: 2 },
-    { id: "b", fullName: "דנה", description: "", maxAmount: 2, arriving: -1 },
+    { id: "a", fullName: "אבי", description: "משפחה", phone: "", maxAmount: 4, arriving: 3 },
+    { id: "f", fullName: "גלית", description: "משפחה", phone: "", maxAmount: 2, arriving: 2 },
+    { id: "e", fullName: "רות", description: "עבודה", phone: "", maxAmount: 2, arriving: 2 },
+    { id: "b", fullName: "דנה", description: "", phone: "", maxAmount: 2, arriving: -1 },
   ]);
 });
 
 test("lists guests who have not replied, sorted by name", () => {
   const guests = selectPendingGuests([
-    { id: "c", full_name: "  גל  ", description: "חברים", guests_max_amount: 3, guests_amount_arriving: 0 },
-    { id: "b", full_name: "דנה", description: "משפחה", guests_max_amount: 2, guests_amount_arriving: -1 },
+    { id: "c", full_name: "  גל  ", description: "חברים", phone_number: " 050-0000000 ", guests_max_amount: 3, guests_amount_arriving: 0 },
+    { id: "b", full_name: "דנה", description: "משפחה", phone_number: "050-1111111", guests_max_amount: 2, guests_amount_arriving: -1 },
     { id: "a", full_name: "אבי", description: "משפחה", guests_max_amount: 4, guests_amount_arriving: 3 },
-    { id: "d", full_name: "יוסי", description: null, guests_max_amount: 1, guests_amount_arriving: null },
+    { id: "d", full_name: "יוסי", description: null, phone_number: null, guests_max_amount: 1, guests_amount_arriving: null },
   ]);
 
   assert.deepEqual(guests, [
-    { id: "c", fullName: "גל", description: "חברים", maxAmount: 3, arriving: 0 },
-    { id: "d", fullName: "יוסי", description: "", maxAmount: 1, arriving: 0 },
+    { id: "c", fullName: "גל", description: "חברים", phone: "050-0000000", maxAmount: 3, arriving: 0 },
+    { id: "d", fullName: "יוסי", description: "", phone: "", maxAmount: 1, arriving: 0 },
   ]);
 });

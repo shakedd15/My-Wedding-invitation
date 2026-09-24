@@ -51,6 +51,9 @@ function toGuestListItem(row) {
     description: typeof row?.description === "string" && row.description.trim()
       ? row.description.trim()
       : "",
+    phone: typeof row?.phone_number === "string" && row.phone_number.trim()
+      ? row.phone_number.trim()
+      : "",
     maxAmount: toAmount(row?.guests_max_amount),
     arriving: Number.isFinite(arriving) ? arriving : 0,
   };

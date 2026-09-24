@@ -14,7 +14,7 @@ const ICONS = {
 };
 
 export default function ManagePage() {
-  const { stats, responded, pending, loading, error, retry } = useGuestStats();
+  const { stats, responded, pending, loading, error, retry, updateArriving } = useGuestStats();
   const [list, setList] = useState(null);
   const arrivingGuests = responded.filter((guest) => guest.arriving > 0);
   const declinedGuests = responded.filter((guest) => guest.arriving < 0);
@@ -78,6 +78,7 @@ export default function ManagePage() {
           title="מגיעים"
           guests={arrivingGuests}
           showArriving
+          arrivingSorted
           emptyText="אין אורחים שאישרו הגעה."
           onClose={() => setList(null)}
         />
@@ -94,6 +95,10 @@ export default function ManagePage() {
         <GuestListDialog
           title="טרם השיבו/מתלבטים"
           guests={pending}
+          showPhone
+          showArriving
+          editable
+          onSaveArriving={(guest, arriving) => updateArriving(guest.id, arriving)}
           emptyText="אין אורחים שממתינים לתשובה."
           onClose={() => setList(null)}
         />

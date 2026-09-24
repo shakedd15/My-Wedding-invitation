@@ -3,9 +3,7 @@ import { supabase } from "../lib/supabase.js";
 import { computeGuestStats, selectPendingGuests, selectRespondedGuests } from "../utils/guestStats.js";
 
 export function useGuestStats() {
-  const [stats, setStats] = useState(null);
-  const [responded, setResponded] = useState([]);
-  const [pending, setPending] = useState([]);
+  const [rows, setRows] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [reloadToken, setReloadToken] = useState(0);
@@ -21,28 +19,21 @@ export function useGuestStats() {
 
     supabase
       .from("guests")
-      .select("id, full_name, description, guests_max_amount, guests_amount_arriving, sms_count")
+      .select("id, full_name, description, phone_number, guests_max_amount, guests_amount_arriving, sms_count")
       .then(({ data, error: sbError }) => {
         if (cancelled) return;
         if (sbError) {
           setError(`שגיאת חיבור: ${sbError.message}`);
-          setStats(null);
-          setResponded([]);
-          setPending([]);
+          setRows(null);
         } else {
-          const rows = data ?? [];
-          setStats(computeGuestStats(rows));
-          setResponded(selectRespondedGuests(rows));
-          setPending(selectPendingGuests(rows));
+          setRows(data ?? []);
         }
         setLoading(false);
       })
       .catch((err) => {
         if (cancelled) return;
         setError(`שגיאת חיבור: ${err.message}`);
-        setStats(null);
-        setResponded([]);
-        setPending([]);
+        setRows(null);
         setLoading(false);
       });
 
@@ -51,5 +42,22 @@ export function useGuestStats() {
     };
   }, [reloadToken]);
 
-  return { stats, responded, pending, loading, error, retry };
+  const updateArriving = useCallback(async (id, arriving) => {
+    const { error: sbError } = await supabase
+      .from("guests")
+      .update({ guests_amount_arriving: arriving })
+      .eq("id", id);
+    if (sbError) throw sbError;
+    setRows((current) =>
+      (current ?? []).map((row) =>
+        row.id === id ? { ...row, guests_amount_arriving: arriving } : row,
+      ),
+    );
+  }, []);
+
+  const stats = rows ? computeGuestStats(rows) : null;
+  const responded = rows ? selectRespondedGuests(rows) : [];
+  const pending = rows ? selectPendingGuests(rows) : [];
+
+  return { stats, responded, pending, loading, error, retry, updateArriving };
 }
