@@ -148,6 +148,12 @@ body {
   background: rgb(246, 245, 240);
 }
 
+.page-wrapper.rsvp-only {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+}
+
 /* Full-height scroll section baseline. */
 .scroll-section {
   position: relative;

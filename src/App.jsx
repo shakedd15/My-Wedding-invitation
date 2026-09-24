@@ -14,7 +14,7 @@ import RsvpSection from "./components/RsvpSection.jsx";
 import ClosingSection from "./components/ClosingSection.jsx";
 import DetailsPage from "./pages/DetailsPage.jsx";
 import MenuPage from "./pages/MenuPage.jsx";
-import { isMenuPath } from "./routes.js";
+import { isMenuPath, isRsvpShortcut } from "./routes.js";
 import { useGuest } from "./hooks/useGuest.js";
 import { supabase } from "./lib/supabase.js";
 
@@ -25,16 +25,17 @@ function useUrlParams() {
     return {
       guestId: params.get("id"),
       pathname: pathname.toLowerCase(),
+      rsvpOnly: isRsvpShortcut(window.location.search),
     };
   }, []);
 }
 
 export default function App() {
   const { copy } = useLanguage("he");
-  const { guestId, pathname } = useUrlParams();
+  const { guestId, pathname, rsvpOnly } = useUrlParams();
 
   /* ── Supabase: fetch guest data for the personalized RSVP ── */
-  const { guest } = useGuest(guestId);
+  const { guest, loading: guestLoading } = useGuest(guestId);
 
   /* ── RSVP handlers — update the guests table ── */
   const handleAttend = useCallback(async (confirmedCount) => {
@@ -96,6 +97,23 @@ export default function App() {
 
   const showDetails = pathname === "/details";
   const showMenu = isMenuPath(pathname);
+  const showRsvp = rsvpOnly ? Boolean(guest || guestLoading) : Boolean(guest);
+  const rsvpSection = showRsvp ? (
+    <RsvpSection
+      immediate={rsvpOnly}
+      guestName={guest?.full_name ?? null}
+      gender={String(guest?.gender ?? "F").toUpperCase()}
+      maxGuests={guest?.guests_max_amount ?? 3}
+      defaultGuests={
+        guest?.guests_amount_arriving === -1
+          ? 0
+          : (guest?.guests_amount_arriving ?? 0)
+      }
+      guestLoading={rsvpOnly && guestLoading && !guest}
+      onAttend={handleAttend}
+      onDecline={handleDecline}
+    />
+  ) : null;
 
   return (
     <>
@@ -103,6 +121,10 @@ export default function App() {
         <DetailsPage />
       ) : showMenu ? (
         <MenuPage />
+      ) : rsvpOnly ? (
+        <main className="page-wrapper rsvp-only">
+          {rsvpSection}
+        </main>
       ) : (
         /* ── Landing page — shown for all visitors, including those with ?id= ── */
         <main className="page-wrapper">
@@ -134,20 +156,7 @@ export default function App() {
           <ParentsSection />
 
           {/* ── Stage 5: RSVP — only for a recognized ?id= ── */}
-          {guest ? (
-            <RsvpSection
-              guestName={guest.full_name ?? null}
-              gender={String(guest.gender ?? "F").toUpperCase()}
-              maxGuests={guest.guests_max_amount ?? 3}
-              defaultGuests={
-                guest.guests_amount_arriving === -1
-                  ? 0
-                  : (guest.guests_amount_arriving ?? 0)
-              }
-              onAttend={handleAttend}
-              onDecline={handleDecline}
-            />
-          ) : null}
+          {rsvpSection}
 
           {/* ── Stage 6: Closing photo ── */}
           <ClosingSection />

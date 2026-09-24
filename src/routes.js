@@ -9,3 +9,8 @@ export function isManagePath(pathname) {
 export function isMenuPath(pathname) {
   return isExactPath(pathname, "/menu");
 }
+
+export function isRsvpShortcut(search = "") {
+  const query = String(search).replace(/^\?/, "");
+  return new URLSearchParams(query).get("rsvp") === "1";
+}

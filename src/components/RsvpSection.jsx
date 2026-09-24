@@ -132,6 +132,7 @@ export default function RsvpSection({
   defaultGuests = 1,
   guestLoading  = false,
   guestError    = null,
+  immediate     = false,
   onAttend,
   onDecline,
 }) {
@@ -179,6 +180,7 @@ export default function RsvpSection({
 
   useGSAP(
     () => {
+      if (immediate) return;
       if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
       gsap.fromTo(
@@ -211,14 +213,15 @@ export default function RsvpSection({
         background: CREAM,
         direction: "rtl",
         position: "relative",
-        padding: "3rem 1.5rem 5rem",
+        width: "100%",
+        padding: immediate ? "1.5rem 1.25rem" : "3rem 1.5rem 5rem",
       }}
     >
       {/* ── RSVP Card ── */}
       <div
         ref={cardRef}
         style={{
-          opacity: 0,
+          opacity: immediate ? 1 : 0,
           maxWidth: "560px",
           margin: "0 auto",
           padding: "clamp(24px, 5vw, 40px)",
