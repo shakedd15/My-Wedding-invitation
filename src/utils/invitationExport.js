@@ -33,6 +33,13 @@ function amount(value) {
   return Number.isFinite(number) ? number : null;
 }
 
+export function selectArrivingGuests(guests = []) {
+  return guests.filter((guest) => {
+    const arriving = Number(guest?.arriving);
+    return Number.isFinite(arriving) && arriving > 0;
+  });
+}
+
 export function invitationCells(guest) {
   return [
     blank(guest?.fullName),
@@ -106,7 +113,7 @@ export async function buildInvitationsWorkbook(guests = []) {
   sheet.getRow(1).height = 16.6;
   sheet.getRow(2).height = 16.6;
 
-  guests.forEach((guest, index) => {
+  selectArrivingGuests(guests).forEach((guest, index) => {
     const rowNumber = index + 3;
     const row = sheet.getRow(rowNumber);
     row.height = 14.6;
