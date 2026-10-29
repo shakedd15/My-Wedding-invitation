@@ -26,6 +26,52 @@
   padding: 1.35rem 1.05rem 2rem;
 }
 
+.manage-export-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.35rem;
+  margin-bottom: 0.85rem;
+}
+
+.manage-export {
+  width: 3.5rem;
+  height: 3.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  background: transparent;
+  box-shadow: 0 8px 18px rgba(17, 17, 17, 0.16);
+  cursor: pointer;
+}
+
+.manage-export img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
+  object-fit: cover;
+}
+
+.manage-export:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 3px;
+}
+
+.manage-export:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.manage-export-error {
+  margin: 0;
+  color: #ffffff;
+  font-size: 0.82rem;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: left;
+}
+
 .manage-stack {
   display: flex;
   flex-direction: column;

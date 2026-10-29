@@ -4,6 +4,7 @@ import GuestListDialog from "../components/manage/GuestListDialog.jsx";
 import MetricCard from "../components/manage/MetricCard.jsx";
 import ProgressCard from "../components/manage/ProgressCard.jsx";
 import { useGuestStats } from "../hooks/useGuestStats.js";
+import { downloadInvitationsWorkbook } from "../utils/invitationExport.js";
 import "./ManagePage.css";
 
 const ICONS = {
@@ -29,6 +30,8 @@ export default function ManagePage() {
     deleteGuest,
   } = useGuestStats();
   const [list, setList] = useState(null);
+  const [exporting, setExporting] = useState(false);
+  const [exportError, setExportError] = useState(null);
   const arrivingGuests = responded.filter((guest) => guest.arriving > 0);
   const declinedGuests = responded.filter((guest) => guest.arriving < 0);
 
@@ -36,10 +39,36 @@ export default function ManagePage() {
     document.title = "ניהול מוזמנים";
   }, []);
 
+  async function handleExport() {
+    setExporting(true);
+    setExportError(null);
+    try {
+      await downloadInvitationsWorkbook(guests);
+    } catch {
+      setExportError("הייצוא לאקסל נכשל. נסי שוב.");
+    } finally {
+      setExporting(false);
+    }
+  }
+
   return (
     <main className="manage-page" dir="rtl">
       <div className="manage-page-glow" aria-hidden="true" />
       <div className="manage-page-inner">
+        <div className="manage-export-row">
+          <button
+            type="button"
+            className="manage-export"
+            onClick={handleExport}
+            disabled={loading || Boolean(error) || exporting}
+            aria-label="ייצוא לאקסל"
+            title="ייצוא לאקסל"
+            aria-busy={exporting}
+          >
+            <img src="/images/manage/export-excel.png" alt="" draggable="false" />
+          </button>
+          {exportError ? <p className="manage-export-error">{exportError}</p> : null}
+        </div>
         {error ? (
           <section className="manage-error" role="alert">
             <p>{error}</p>
