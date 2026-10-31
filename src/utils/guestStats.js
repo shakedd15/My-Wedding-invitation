@@ -44,6 +44,11 @@ export function computeGuestStats(rows = []) {
   return stats;
 }
 
+function toGender(value) {
+  const gender = String(value || "").trim().toUpperCase();
+  return gender === "M" || gender === "F" || gender === "X" ? gender : "";
+}
+
 function toGuestListItem(row) {
   const arriving = Number(row?.guests_amount_arriving);
   return {
@@ -56,6 +61,10 @@ function toGuestListItem(row) {
       : "",
     phone: typeof row?.phone_number === "string" && row.phone_number.trim()
       ? row.phone_number.trim()
+      : "",
+    gender: toGender(row?.gender),
+    details: typeof row?.guest_details === "string" && row.guest_details.trim()
+      ? row.guest_details.trim()
       : "",
     maxAmount: toAmount(row?.guests_max_amount),
     arriving: Number.isFinite(arriving) ? arriving : 0,

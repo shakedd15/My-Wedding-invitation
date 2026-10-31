@@ -77,7 +77,7 @@ function ActionBtn({ onClick, variant = "primary", disabled, children }) {
     border: isPrimary ? "none" : `1.5px solid ${disabled ? "rgba(122,170,200,0.3)" : DUSTY_BLUE}`,
     background: isPrimary
       ? disabled
-        ? "rgba(122,170,200,0.35)"
+        ? "#e6e6e6"
         : hovered
         ? DUSTY_BLUE_D
         : DUSTY_BLUE
@@ -85,7 +85,9 @@ function ActionBtn({ onClick, variant = "primary", disabled, children }) {
       ? "rgba(122,170,200,0.08)"
       : "transparent",
     color: isPrimary
-      ? "#fff"
+      ? disabled
+        ? "#9a9a9a"
+        : "#fff"
       : disabled
       ? "rgba(122,170,200,0.4)"
       : DUSTY_BLUE,
@@ -153,6 +155,7 @@ export default function RsvpSection({
   const increment = () => setGuestsCount((n) => Math.min(maxGuests, n + 1));
 
   const handleAttend = async () => {
+    if (guestsCount === 0) return;
     setIsSubmitting(true);
     setSubmitError(null);
     try {
@@ -360,7 +363,7 @@ export default function RsvpSection({
               <ActionBtn
                 variant="primary"
                 onClick={handleAttend}
-                disabled={isSubmitting}
+                disabled={isSubmitting || guestsCount === 0}
               >
                 {isSubmitting ? "שומרים…" : attendLabel}
               </ActionBtn>

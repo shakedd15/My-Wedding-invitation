@@ -5,15 +5,26 @@ const EDIT_ICON = "/images/manage/edit.png";
 const DELETE_ICON = "/images/manage/delete.svg";
 const ADD_ICON = "/images/manage/add.png";
 
+const GENDERS = [
+  { value: "M", label: "זכר" },
+  { value: "F", label: "נקבה" },
+  { value: "X", label: "רבים" },
+];
+
 const EMPTY_CREATE = {
   fullName: "",
   description: "",
+  gender: "",
   phone: "",
   maxAmount: "",
   arriving: "0",
   giftAmount: "0",
   smsCount: "0",
 };
+
+function genderLabel(value) {
+  return GENDERS.find((item) => item.value === value)?.label || "—";
+}
 
 function parseInteger(value) {
   if (String(value).trim() === "") return null;
@@ -176,8 +187,13 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
   const createGuest = async () => {
     const values = readDraft(createDraft);
     const error = draftError(values);
+    const gender = String(createDraft.gender || "").toUpperCase();
     if (error) {
       setCreateError(error);
+      return;
+    }
+    if (!GENDERS.some((item) => item.value === gender)) {
+      setCreateError("צריך לבחור מין.");
       return;
     }
 
@@ -186,7 +202,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
     try {
       await onCreate?.({
         ...toFields(values),
-        gender: "X",
+        gender,
         guests_amount_we_expect: values.maxAmount,
       });
       setCreateDraft(EMPTY_CREATE);
@@ -268,6 +284,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
               <tr>
                 <th scope="col">שם מלא</th>
                 <th scope="col">תיאור</th>
+                <th scope="col">מין</th>
                 <th scope="col">הוזמנו</th>
                 <th scope="col">אישרו הגעה</th>
                 <th scope="col">טלפון</th>
@@ -301,6 +318,19 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                     placeholder="תיאור"
                     onChange={(event) => setCreateField("description", event.target.value)}
                   />
+                </td>
+                <td>
+                  <select
+                    className="manage-select"
+                    value={createDraft.gender}
+                    aria-label="מין למוזמן חדש"
+                    onChange={(event) => setCreateField("gender", event.target.value)}
+                  >
+                    <option value="">מין</option>
+                    {GENDERS.map((item) => (
+                      <option key={item.value} value={item.value}>{item.label}</option>
+                    ))}
+                  </select>
                 </td>
                 <td className="manage-table-num" dir="ltr">
                   <input
@@ -376,7 +406,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                 <td className="manage-table-delete" />
                   </>
                 ) : (
-                  <td className="manage-table-add-cell" colSpan={10}>
+                  <td className="manage-table-add-cell" colSpan={11}>
                     <button
                       type="button"
                       className="manage-add-btn"
@@ -422,6 +452,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                         guest.description || "—"
                       )}
                     </td>
+                    <td>{genderLabel(guest.gender)}</td>
                     <td className="manage-table-num" dir="ltr">
                       {isEditing ? (
                         <input

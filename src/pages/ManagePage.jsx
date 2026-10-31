@@ -26,7 +26,6 @@ export default function ManagePage() {
     loading,
     error,
     retry,
-    updateArriving,
     updateGuest,
     createGuest,
     deleteGuest,
@@ -176,7 +175,11 @@ export default function ManagePage() {
           showPhone
           showArriving
           editable
-          onSaveArriving={(guest, arriving) => updateArriving(guest.id, arriving)}
+          showDetails
+          onSaveArriving={(guest, arriving, details) => updateGuest(guest.id, {
+            guests_amount_arriving: arriving,
+            guest_details: details,
+          })}
           emptyText="אין אורחים שממתינים לתשובה."
           onClose={() => setList(null)}
         />

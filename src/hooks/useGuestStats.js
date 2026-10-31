@@ -19,7 +19,7 @@ export function useGuestStats() {
 
     supabase
       .from("guests")
-      .select("id, full_name, description, phone_number, guests_max_amount, guests_amount_arriving, guest_gift_amount, sms_count")
+      .select("id, full_name, description, phone_number, gender, guests_max_amount, guests_amount_arriving, guest_gift_amount, guest_details, sms_count")
       .then(({ data, error: sbError }) => {
         if (cancelled) return;
         if (sbError) {

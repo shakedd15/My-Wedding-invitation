@@ -17,6 +17,7 @@ export default function GuestListDialog({
   showPhone = false,
   arrivingSorted = false,
   editable = false,
+  showDetails = false,
   emptyText,
   onSaveArriving,
   onClose,
@@ -26,6 +27,7 @@ export default function GuestListDialog({
   const titleId = useId();
   const [editingId, setEditingId] = useState(null);
   const [draft, setDraft] = useState("");
+  const [detailsDraft, setDetailsDraft] = useState("");
   const [query, setQuery] = useState("");
   const [saving, setSaving] = useState(false);
   const [rowError, setRowError] = useState(null);
@@ -60,6 +62,7 @@ export default function GuestListDialog({
   const tableClass = [
     "manage-table",
     editable ? "manage-table--editor" : "",
+    editable && showDetails ? "manage-table--notes" : "",
     !editable && showPhone && showArriving ? "manage-table--with-phone" : "",
     !editable && showPhone && !showArriving ? "manage-table--phone" : "",
     !editable && !showPhone && !showArriving ? "manage-table--details" : "",
@@ -68,13 +71,14 @@ export default function GuestListDialog({
   const startEdit = (guest) => {
     setEditingId(guest.id);
     setDraft("");
+    setDetailsDraft(guest.details || "");
     setRowError(null);
   };
 
   const saveCount = async (guest) => {
     const maxAmount = Math.max(guest.maxAmount, 0);
     if (draft.trim() === "") {
-      setRowError(`אפשר לרשום בין 0 ל-${maxAmount}.`);
+      await persist(guest, guest.arriving);
       return;
     }
     const count = Number(draft);
@@ -89,9 +93,10 @@ export default function GuestListDialog({
     setSaving(true);
     setRowError(null);
     try {
-      await onSaveArriving?.(guest, arriving);
+      await onSaveArriving?.(guest, arriving, showDetails ? detailsDraft.trim() : undefined);
       setEditingId(null);
       setDraft("");
+      setDetailsDraft("");
     } catch {
       setRowError("לא הצלחנו לשמור. נסו שוב.");
     } finally {
@@ -143,6 +148,7 @@ export default function GuestListDialog({
                   <th scope="col">תיאור</th>
                   {showPhone ? <th scope="col">טלפון</th> : null}
                   <th scope="col">הוזמנו</th>
+                  {showDetails ? <th scope="col">פירוט נוסף</th> : null}
                   {showArriving ? (
                     <th scope="col" {...(arrivingSorted ? { "aria-sort": "descending" } : {})}>
                       אישרו הגעה
@@ -162,6 +168,22 @@ export default function GuestListDialog({
                         <td className="manage-table-phone" dir="ltr">{guest.phone || "—"}</td>
                       ) : null}
                       <td className="manage-table-num" dir="ltr">{guest.maxAmount}</td>
+                      {showDetails ? (
+                        <td className={isEditing ? "manage-table-editor-cell" : "manage-table-description"}>
+                          {isEditing ? (
+                            <input
+                              className="manage-text-input manage-details-input"
+                              type="text"
+                              value={detailsDraft}
+                              aria-label={`פירוט נוסף עבור ${guest.fullName || "אורח"}`}
+                              placeholder="פירוט נוסף"
+                              onChange={(event) => setDetailsDraft(event.target.value)}
+                            />
+                          ) : (
+                            guest.details || "—"
+                          )}
+                        </td>
+                      ) : null}
                       {showArriving ? (
                         <td className={isEditing ? "manage-table-editor-cell" : arrivingClass(guest.arriving)} dir="ltr">
                           {isEditing ? (

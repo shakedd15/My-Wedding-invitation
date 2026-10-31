@@ -438,6 +438,14 @@
   table-layout: auto;
 }
 
+.manage-table.manage-table--editor.manage-table--notes {
+  min-width: 56rem;
+}
+
+.manage-details-input {
+  min-width: 12rem;
+}
+
 .manage-table.manage-table--editor th,
 .manage-table.manage-table--editor td {
   width: auto;
@@ -672,7 +680,7 @@
 }
 
 .manage-table--all {
-  min-width: 74rem;
+  min-width: 80rem;
 }
 
 .manage-table--all .manage-table-action {
@@ -751,9 +759,22 @@
   font-size: 0.88rem;
 }
 
-.manage-text-input:focus-visible {
+.manage-text-input:focus-visible,
+.manage-select:focus-visible {
   outline: 3px solid #e91e73;
   outline-offset: 2px;
+}
+
+.manage-select {
+  width: 100%;
+  min-width: 5.5rem;
+  padding: 0.35rem 0.45rem;
+  border: 1px solid #f0d5e2;
+  border-radius: 10px;
+  background: #ffffff;
+  color: #111111;
+  font: inherit;
+  font-size: 0.88rem;
 }
 
 .manage-guest-link {
