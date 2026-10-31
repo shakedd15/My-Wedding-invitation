@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { supabase } from "../lib/supabase.js";
-import { computeGuestStats, selectAllGuests, selectPendingGuests, selectRespondedGuests } from "../utils/guestStats.js";
+import { computeGuestStats, selectAllGuests, selectInvalidGuests, selectPendingGuests, selectRespondedGuests } from "../utils/guestStats.js";
 
 export function useGuestStats() {
   const [rows, setRows] = useState(null);
@@ -87,12 +87,14 @@ export function useGuestStats() {
   const stats = rows ? computeGuestStats(rows) : null;
   const responded = rows ? selectRespondedGuests(rows) : [];
   const pending = rows ? selectPendingGuests(rows) : [];
+  const invalidGuests = rows ? selectInvalidGuests(rows) : [];
   const guests = rows ? selectAllGuests(rows) : [];
 
   return {
     stats,
     responded,
     pending,
+    invalidGuests,
     guests,
     loading,
     error,

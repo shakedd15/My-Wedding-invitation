@@ -1,4 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
+import { guestMatchesQuery } from "../../utils/guestStats.js";
 
 const EDIT_ICON = "/images/manage/edit.png";
 
@@ -25,6 +26,7 @@ export default function GuestListDialog({
   const titleId = useId();
   const [editingId, setEditingId] = useState(null);
   const [draft, setDraft] = useState("");
+  const [query, setQuery] = useState("");
   const [saving, setSaving] = useState(false);
   const [rowError, setRowError] = useState(null);
 
@@ -54,10 +56,12 @@ export default function GuestListDialog({
     };
   }, []);
 
+  const visibleGuests = guests.filter((guest) => guestMatchesQuery(guest, query));
   const tableClass = [
     "manage-table",
     editable ? "manage-table--editor" : "",
-    !editable && showPhone ? "manage-table--phone" : "",
+    !editable && showPhone && showArriving ? "manage-table--with-phone" : "",
+    !editable && showPhone && !showArriving ? "manage-table--phone" : "",
     !editable && !showPhone && !showArriving ? "manage-table--details" : "",
   ].filter(Boolean).join(" ");
 
@@ -110,16 +114,26 @@ export default function GuestListDialog({
             <h2 id={titleId} className="manage-table-title">{title}</h2>
           </div>
           <div className="manage-dialog-actions">
-            <span className="manage-table-count">{guests.length}</span>
+            <span className="manage-table-count">{visibleGuests.length}</span>
             <button type="button" className="manage-dialog-close" onClick={onClose} aria-label="סגירה">
               ×
             </button>
           </div>
         </header>
+        <label className="manage-search">
+          <span className="manage-sr">חיפוש לפי שם או טלפון</span>
+          <input
+            className="manage-search-input"
+            type="search"
+            value={query}
+            placeholder="חיפוש לפי שם או טלפון"
+            onChange={(event) => setQuery(event.target.value)}
+          />
+        </label>
         {note ? <p className="manage-table-note">{note}</p> : null}
 
-        {guests.length === 0 ? (
-          <p className="manage-table-empty">{emptyText}</p>
+        {visibleGuests.length === 0 ? (
+          <p className="manage-table-empty">{query.trim() ? "לא נמצאו מוזמנים." : emptyText}</p>
         ) : (
           <div className="manage-table-scroll manage-dialog-body">
             <table className={tableClass}>
@@ -138,7 +152,7 @@ export default function GuestListDialog({
                 </tr>
               </thead>
               <tbody>
-                {guests.map((guest, index) => {
+                {visibleGuests.map((guest, index) => {
                   const isEditing = editable && editingId === guest.id;
                   return (
                     <tr key={guest.id ?? `${guest.fullName}-${index}`}>

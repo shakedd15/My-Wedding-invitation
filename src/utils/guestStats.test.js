@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { computeGuestStats, guestInviteLink, selectAllGuests, selectPendingGuests, selectRespondedGuests } from "./guestStats.js";
+import { arrivingAfterGuestEdit, computeGuestStats, guestInviteLink, guestMatchesQuery, selectAllGuests, selectInvalidGuests, selectPendingGuests, selectRespondedGuests } from "./guestStats.js";
 
 test("aggregates guest dashboard metrics from invitation rows", () => {
   const stats = computeGuestStats([
@@ -37,6 +37,7 @@ test("treats missing amounts as zero and empty tables as zeros", () => {
     notAttending: 0,
     undecided: 0,
     invalid: 0,
+    invalidContacts: 0,
     progressPercent: 0,
   });
 
@@ -60,6 +61,7 @@ test("lists only guests who confirmed or declined, highest arrival count first",
     { id: "a", full_name: "אבי", description: "משפחה", guests_max_amount: 4, guests_amount_arriving: "3" },
     { id: "f", full_name: "גלית", description: "משפחה", guests_max_amount: 2, guests_amount_arriving: 2 },
     { id: "d", full_name: "יוסי", description: null, guests_max_amount: 1, guests_amount_arriving: null },
+    { id: "g", full_name: "גורג", description: "חברים", phone_number: "052-672-7862", guests_max_amount: 1, guests_amount_arriving: -2 },
   ]);
 
   assert.deepEqual(guests, [
@@ -95,4 +97,47 @@ test("lists every guest and builds the personal invitation link", () => {
   assert.equal(guests[1].smsCount, 2);
   assert.equal(guestInviteLink("abc"), "https://eyal-shaked-wedding.com/?id=abc");
   assert.equal(guestInviteLink(""), "");
+});
+
+test("counts a failed send as an invalid contact and not as undecided", () => {
+  const stats = computeGuestStats([
+    { guests_max_amount: 2, guests_amount_arriving: -2, sms_count: 0 },
+    { guests_max_amount: 1, guests_amount_arriving: 1, sms_count: 1 },
+  ]);
+
+  assert.equal(stats.invited, 3);
+  assert.equal(stats.arriving, 1);
+  assert.equal(stats.notAttending, 0);
+  assert.equal(stats.undecided, 0);
+  assert.equal(stats.invalidContacts, 1);
+  assert.equal(stats.invalid, 2);
+});
+
+test("lists only guests whose send failed", () => {
+  const guests = selectInvalidGuests([
+    { id: "b", full_name: "דנה", guests_max_amount: 2, guests_amount_arriving: -1, phone_number: "050" },
+    { id: "g", full_name: "גורג", guests_max_amount: 1, guests_amount_arriving: -2, phone_number: "052-672-7862" },
+    { id: "a", full_name: "אבי", guests_max_amount: 1, guests_amount_arriving: 0 },
+  ]);
+
+  assert.deepEqual(guests.map((guest) => guest.fullName), ["גורג"]);
+  assert.equal(guests[0].arriving, -2);
+});
+
+test("resets arriving to zero only for invalid contacts", () => {
+  assert.equal(arrivingAfterGuestEdit(-2, -2), 0);
+  assert.equal(arrivingAfterGuestEdit(-2, 4), 0);
+  assert.equal(arrivingAfterGuestEdit(-1, -1), -1);
+  assert.equal(arrivingAfterGuestEdit(3, 3), 3);
+  assert.equal(arrivingAfterGuestEdit(0, 2), 2);
+});
+
+test("matches a guest by name or phone, ignoring separators", () => {
+  const guest = { fullName: "גורג רמלה", phone: "052-672-7862" };
+
+  assert.equal(guestMatchesQuery(guest, ""), true);
+  assert.equal(guestMatchesQuery(guest, "רמלה"), true);
+  assert.equal(guestMatchesQuery(guest, "0526727862"), true);
+  assert.equal(guestMatchesQuery(guest, "672-7862"), true);
+  assert.equal(guestMatchesQuery(guest, "דנה"), false);
 });

@@ -252,8 +252,33 @@
   line-height: 1.3;
 }
 
+.manage-search {
+  display: block;
+  padding: 0 1rem 0.75rem;
+}
+
+.manage-search-input {
+  width: 100%;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid #f0d5e2;
+  border-radius: 12px;
+  background: #fffafc;
+  color: #111111;
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.manage-search-input::placeholder {
+  color: #9a9a9a;
+}
+
+.manage-search-input:focus-visible {
+  outline: 3px solid #e91e73;
+  outline-offset: 2px;
+}
+
 .manage-table-note {
-  margin: -0.35rem 1rem 0.8rem;
+  margin: 0 1rem 0.8rem;
   color: #6d6d6d;
   font-size: 0.82rem;
   line-height: 1.45;
@@ -344,6 +369,31 @@
 
 .manage-table--phone th:nth-child(4),
 .manage-table--phone td:nth-child(4) {
+  width: 18%;
+}
+
+.manage-table.manage-table--with-phone th:nth-child(1),
+.manage-table.manage-table--with-phone td:nth-child(1) {
+  width: 22%;
+}
+
+.manage-table.manage-table--with-phone th:nth-child(2),
+.manage-table.manage-table--with-phone td:nth-child(2) {
+  width: 18%;
+}
+
+.manage-table.manage-table--with-phone th:nth-child(3),
+.manage-table.manage-table--with-phone td:nth-child(3) {
+  width: 26%;
+}
+
+.manage-table.manage-table--with-phone th:nth-child(4),
+.manage-table.manage-table--with-phone td:nth-child(4) {
+  width: 16%;
+}
+
+.manage-table.manage-table--with-phone th:nth-child(5),
+.manage-table.manage-table--with-phone td:nth-child(5) {
   width: 18%;
 }
 
@@ -540,6 +590,11 @@
   justify-content: center;
   flex-wrap: wrap;
   gap: 0.35rem;
+}
+
+.manage-arriving-input:disabled {
+  opacity: 0.72;
+  cursor: default;
 }
 
 .manage-arriving-input {

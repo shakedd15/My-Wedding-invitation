@@ -105,9 +105,9 @@ export default function App() {
       gender={String(guest?.gender ?? "F").toUpperCase()}
       maxGuests={guest?.guests_max_amount ?? 3}
       defaultGuests={
-        guest?.guests_amount_arriving === -1
-          ? 0
-          : (guest?.guests_amount_arriving ?? 0)
+        Number(guest?.guests_amount_arriving) > 0
+          ? Number(guest.guests_amount_arriving)
+          : 0
       }
       guestLoading={rsvpOnly && guestLoading && !guest}
       onAttend={handleAttend}

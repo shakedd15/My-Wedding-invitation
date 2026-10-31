@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { guestInviteLink } from "../../utils/guestStats.js";
+import { arrivingAfterGuestEdit, guestInviteLink, guestMatchesQuery } from "../../utils/guestStats.js";
 
 const EDIT_ICON = "/images/manage/edit.png";
 const DELETE_ICON = "/images/manage/delete.svg";
@@ -25,6 +25,7 @@ function readDraft(draft) {
   return {
     fullName: draft.fullName.trim(),
     description: draft.description.trim(),
+    phone: draft.phone.trim(),
     maxAmount: parseInteger(draft.maxAmount),
     arriving: parseInteger(draft.arriving),
     giftAmount: parseInteger(draft.giftAmount),
@@ -34,6 +35,7 @@ function readDraft(draft) {
 
 function draftError(values) {
   if (!values.fullName) return "צריך שם מלא.";
+  if (!values.phone) return "צריך מספר טלפון.";
   if (
     values.maxAmount === null || values.maxAmount < 0
     || values.giftAmount === null || values.giftAmount < 0
@@ -49,6 +51,7 @@ function toFields(values) {
   return {
     full_name: values.fullName,
     description: values.description,
+    phone_number: values.phone,
     guests_max_amount: values.maxAmount,
     guests_amount_arriving: values.arriving,
     guest_gift_amount: values.giftAmount,
@@ -69,6 +72,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
   const [saving, setSaving] = useState(false);
   const [creating, setCreating] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [query, setQuery] = useState("");
   const [rowError, setRowError] = useState(null);
   const [createError, setCreateError] = useState(null);
   const [deleteError, setDeleteError] = useState(null);
@@ -129,8 +133,9 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
     setDraft({
       fullName: guest.fullName,
       description: guest.description,
+      phone: guest.phone,
       maxAmount: String(guest.maxAmount),
-      arriving: String(guest.arriving),
+      arriving: guest.arriving === -2 ? "0" : String(guest.arriving),
       giftAmount: String(guest.giftAmount),
       smsCount: String(guest.smsCount),
     });
@@ -148,6 +153,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
 
   const save = async (guest) => {
     const values = readDraft(draft);
+    values.arriving = arrivingAfterGuestEdit(guest.arriving, values.arriving);
     const error = draftError(values);
     if (error) {
       setRowError(error);
@@ -170,13 +176,8 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
   const createGuest = async () => {
     const values = readDraft(createDraft);
     const error = draftError(values);
-    const phone = createDraft.phone.trim();
     if (error) {
       setCreateError(error);
-      return;
-    }
-    if (!phone) {
-      setCreateError("צריך מספר טלפון. אי אפשר לשנות אותו אחר כך.");
       return;
     }
 
@@ -185,7 +186,6 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
     try {
       await onCreate?.({
         ...toFields(values),
-        phone_number: phone,
         gender: "X",
         guests_amount_we_expect: values.maxAmount,
       });
@@ -225,6 +225,8 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
     }
   };
 
+  const visibleGuests = guests.filter((guest) => guestMatchesQuery(guest, query));
+
   return (
     <dialog
       ref={dialogRef}
@@ -240,12 +242,25 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
             <h2 id={titleId} className="manage-table-title">ניהול מוזמנים</h2>
           </div>
           <div className="manage-dialog-actions">
-            <span className="manage-table-count">{guests.length}</span>
+            <span className="manage-table-count">{visibleGuests.length}</span>
             <button type="button" className="manage-dialog-close" onClick={onClose} aria-label="סגירה">
               ×
             </button>
           </div>
         </header>
+        <label className="manage-search">
+          <span className="manage-sr">חיפוש לפי שם או טלפון</span>
+          <input
+            className="manage-search-input"
+            type="search"
+            value={query}
+            placeholder="חיפוש לפי שם או טלפון"
+            onChange={(event) => setQuery(event.target.value)}
+          />
+        </label>
+        {query.trim() && visibleGuests.length === 0 ? (
+          <p className="manage-table-empty">לא נמצאו מוזמנים.</p>
+        ) : null}
 
         <div className="manage-table-scroll manage-dialog-body">
           <table className="manage-table manage-table--editor manage-table--all">
@@ -376,7 +391,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                   </td>
                 )}
               </tr>
-              {guests.map((guest) => {
+              {visibleGuests.map((guest) => {
                 const isEditing = editingId === guest.id && draft;
                 const link = guestInviteLink(guest.id);
                 return (
@@ -432,13 +447,27 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                           step="1"
                           value={draft.arriving}
                           aria-label="אישרו הגעה"
+                          disabled={guest.arriving === -2}
+                          title={guest.arriving === -2 ? "המספר סומן כלא תקין, ולכן אישרו הגעה יחזור ל־0" : undefined}
                           onChange={(event) => setField("arriving", event.target.value)}
                         />
                       ) : (
                         guest.arriving
                       )}
                     </td>
-                    <td className="manage-table-phone" dir="ltr">{guest.phone || "—"}</td>
+                    <td className="manage-table-phone" dir="ltr">
+                      {isEditing ? (
+                        <input
+                          className="manage-text-input"
+                          type="tel"
+                          value={draft.phone}
+                          aria-label="טלפון"
+                          onChange={(event) => setField("phone", event.target.value)}
+                        />
+                      ) : (
+                        guest.phone || "—"
+                      )}
+                    </td>
                     <td className="manage-table-num" dir="ltr">
                       {isEditing ? (
                         <input

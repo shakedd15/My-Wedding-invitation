@@ -12,6 +12,7 @@ const ICONS = {
   arriving: "/images/manage/arriving.png",
   notAttending: "/images/manage/not-attending.png",
   undecided: "/images/manage/undecided.png",
+  invalid: "/images/manage/invalid.png",
   manage: "/images/manage/manage-guests.png",
 };
 
@@ -20,6 +21,7 @@ export default function ManagePage() {
     stats,
     responded,
     pending,
+    invalidGuests,
     guests,
     loading,
     error,
@@ -33,7 +35,7 @@ export default function ManagePage() {
   const [exporting, setExporting] = useState(false);
   const [exportError, setExportError] = useState(null);
   const arrivingGuests = responded.filter((guest) => guest.arriving > 0);
-  const declinedGuests = responded.filter((guest) => guest.arriving < 0);
+  const declinedGuests = responded.filter((guest) => guest.arriving === -1);
 
   useEffect(() => {
     document.title = "ניהול מוזמנים";
@@ -83,6 +85,7 @@ export default function ManagePage() {
               label="מוזמנים"
               value={stats?.invited ?? 0}
               loading={loading}
+              onClick={() => setList("invited")}
             />
             <MetricCard
               iconSrc={ICONS.arriving}
@@ -97,6 +100,13 @@ export default function ManagePage() {
               value={stats?.notAttending ?? 0}
               loading={loading}
               onClick={() => setList("declined")}
+            />
+            <MetricCard
+              iconSrc={ICONS.invalid}
+              label="לא תקין"
+              value={invalidGuests.length}
+              loading={loading}
+              onClick={() => setList("invalid")}
             />
             <MetricCard
               iconSrc={ICONS.undecided}
@@ -116,10 +126,21 @@ export default function ManagePage() {
           </div>
         )}
       </div>
+      {list === "invited" ? (
+        <GuestListDialog
+          title="מוזמנים"
+          note={`המספר בכרטיס (${stats?.invited ?? 0}) סופר אנשים. המספר כאן (${guests.length}) סופר רשומות, כי רשומה אחת יכולה לכלול כמה אנשים.`}
+          guests={guests}
+          showPhone
+          emptyText="אין מוזמנים."
+          onClose={() => setList(null)}
+        />
+      ) : null}
       {list === "arriving" ? (
         <GuestListDialog
           title="מגיעים"
           guests={arrivingGuests}
+          showPhone
           showArriving
           arrivingSorted
           emptyText="אין אורחים שאישרו הגעה."
@@ -131,7 +152,19 @@ export default function ManagePage() {
           title="לא מגיעים"
           note={`המספר בכרטיס (${stats?.notAttending ?? 0}) כולל גם אנשים מהזמנה שאישרה פחות ממה שהוזמנו. כאן (${declinedGuests.length} רשומות) מופיעות רק הזמנות שסומנו כולן כלא מגיעים. למשל, הוזמנו 4 ואישרו 2: שני הנעדרים נספרים בכרטיס, והרשומה לא מופיעה כאן.`}
           guests={declinedGuests}
+          showPhone
           emptyText="אין אורחים שסירבו."
+          onClose={() => setList(null)}
+        />
+      ) : null}
+      {list === "invalid" ? (
+        <GuestListDialog
+          title="לא תקין"
+          note="מוזמנים שהשליחה אליהם נכשלה. עריכה במסך ניהול מוזמנים מחזירה את אישרו הגעה ל־0."
+          guests={invalidGuests}
+          showPhone
+          showArriving
+          emptyText="אין מוזמנים עם מספר לא תקין."
           onClose={() => setList(null)}
         />
       ) : null}

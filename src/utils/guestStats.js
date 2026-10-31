@@ -10,6 +10,7 @@ export function computeGuestStats(rows = []) {
     notAttending: 0,
     undecided: 0,
     invalid: 0,
+    invalidContacts: 0,
     progressPercent: 0,
   };
 
@@ -25,6 +26,8 @@ export function computeGuestStats(rows = []) {
       stats.notAttending += Math.max(0, maxAmount - arriving);
     } else if (arriving === -1) {
       stats.notAttending += maxAmount;
+    } else if (arriving === -2) {
+      stats.invalidContacts += 1;
     } else {
       stats.undecided += maxAmount;
     }
@@ -68,8 +71,38 @@ function byHebrewName(a, b) {
 export function selectRespondedGuests(rows = []) {
   return rows
     .map(toGuestListItem)
-    .filter((guest) => guest.arriving !== 0)
+    .filter((guest) => guest.arriving > 0 || guest.arriving === -1)
     .sort((a, b) => b.arriving - a.arriving || byHebrewName(a, b));
+}
+
+export function selectInvalidGuests(rows = []) {
+  return rows
+    .map(toGuestListItem)
+    .filter((guest) => guest.arriving === -2)
+    .sort(byHebrewName);
+}
+
+export function arrivingAfterGuestEdit(currentArriving, nextArriving) {
+  if (currentArriving === -2) return 0;
+  return nextArriving;
+}
+
+function digitsOnly(value) {
+  return String(value || "").replace(/\D/g, "");
+}
+
+export function guestMatchesQuery(guest, query) {
+  const term = String(query || "").trim().toLowerCase();
+  if (!term) return true;
+
+  const name = String(guest?.fullName || "").toLowerCase();
+  if (name.includes(term)) return true;
+
+  const phone = String(guest?.phone || "").toLowerCase();
+  if (phone.includes(term)) return true;
+
+  const queryDigits = digitsOnly(term);
+  return Boolean(queryDigits) && digitsOnly(phone).includes(queryDigits);
 }
 
 export function selectPendingGuests(rows = []) {
