@@ -299,7 +299,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
               <tr className="manage-table-create">
                 {creatingOpen ? (
                   <>
-                <td>
+                <td data-label="שם מלא">
                   <input
                     className="manage-text-input"
                     type="text"
@@ -309,7 +309,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                     onChange={(event) => setCreateField("fullName", event.target.value)}
                   />
                 </td>
-                <td>
+                <td data-label="תיאור">
                   <input
                     className="manage-text-input"
                     type="text"
@@ -319,7 +319,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                     onChange={(event) => setCreateField("description", event.target.value)}
                   />
                 </td>
-                <td>
+                <td data-label="מין">
                   <select
                     className="manage-select"
                     value={createDraft.gender}
@@ -332,7 +332,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                     ))}
                   </select>
                 </td>
-                <td className="manage-table-num" dir="ltr">
+                <td className="manage-table-num" dir="ltr" data-label="הוזמנו">
                   <input
                     className="manage-arriving-input"
                     type="number"
@@ -344,7 +344,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                     onChange={(event) => setCreateField("maxAmount", event.target.value)}
                   />
                 </td>
-                <td className="manage-table-num" dir="ltr">
+                <td className="manage-table-num" dir="ltr" data-label="אישרו הגעה">
                   <input
                     className="manage-arriving-input"
                     type="number"
@@ -355,7 +355,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                     onChange={(event) => setCreateField("arriving", event.target.value)}
                   />
                 </td>
-                <td className="manage-table-phone" dir="ltr">
+                <td className="manage-table-phone" dir="ltr" data-label="טלפון">
                   <input
                     className="manage-text-input"
                     type="tel"
@@ -365,7 +365,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                     onChange={(event) => setCreateField("phone", event.target.value)}
                   />
                 </td>
-                <td className="manage-table-num" dir="ltr">
+                <td className="manage-table-num" dir="ltr" data-label="סכום מתנה">
                   <input
                     className="manage-arriving-input"
                     type="number"
@@ -377,7 +377,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                     onChange={(event) => setCreateField("giftAmount", event.target.value)}
                   />
                 </td>
-                <td className="manage-table-num" dir="ltr">
+                <td className="manage-table-num" dir="ltr" data-label="הודעות אסמס">
                   <input
                     className="manage-arriving-input"
                     type="number"
@@ -389,8 +389,8 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                     onChange={(event) => setCreateField("smsCount", event.target.value)}
                   />
                 </td>
-                <td className="manage-create-hint">יופיע אחרי השמירה</td>
-                <td className="manage-table-action">
+                <td className="manage-create-hint" data-label="לינק">יופיע אחרי השמירה</td>
+                <td className="manage-table-action" data-label="">
                   <div className="manage-arriving-editor">
                     <button
                       type="button"
@@ -403,10 +403,10 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                     {createError ? <p className="manage-row-error">{createError}</p> : null}
                   </div>
                 </td>
-                <td className="manage-table-delete" />
+                <td className="manage-table-delete" data-label="" />
                   </>
                 ) : (
-                  <td className="manage-table-add-cell" colSpan={11}>
+                  <td className="manage-table-add-cell" data-label="" colSpan={11}>
                     <button
                       type="button"
                       className="manage-add-btn"
@@ -426,7 +426,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                 const link = guestInviteLink(guest.id);
                 return (
                   <tr key={guest.id} data-guest-id={guest.id}>
-                    <td className={isEditing ? "manage-table-editor-cell" : "manage-table-name"}>
+                    <td className={isEditing ? "manage-table-editor-cell" : "manage-table-name"} data-label="שם מלא">
                       {isEditing ? (
                         <input
                           className="manage-text-input"
@@ -439,7 +439,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                         guest.fullName || "—"
                       )}
                     </td>
-                    <td>
+                    <td data-label="תיאור">
                       {isEditing ? (
                         <input
                           className="manage-text-input"
@@ -452,8 +452,8 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                         guest.description || "—"
                       )}
                     </td>
-                    <td>{genderLabel(guest.gender)}</td>
-                    <td className="manage-table-num" dir="ltr">
+                    <td data-label="מין">{genderLabel(guest.gender)}</td>
+                    <td className="manage-table-num" dir="ltr" data-label="הוזמנו">
                       {isEditing ? (
                         <input
                           className="manage-arriving-input"
@@ -469,7 +469,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                         guest.maxAmount
                       )}
                     </td>
-                    <td className="manage-table-num" dir="ltr">
+                    <td className="manage-table-num" dir="ltr" data-label="אישרו הגעה">
                       {isEditing ? (
                         <input
                           className="manage-arriving-input"
@@ -486,7 +486,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                         guest.arriving
                       )}
                     </td>
-                    <td className="manage-table-phone" dir="ltr">
+                    <td className="manage-table-phone" data-label="טלפון">
                       {isEditing ? (
                         <input
                           className="manage-text-input"
@@ -496,10 +496,10 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                           onChange={(event) => setField("phone", event.target.value)}
                         />
                       ) : (
-                        guest.phone || "—"
+                        <bdi dir="ltr">{guest.phone || "—"}</bdi>
                       )}
                     </td>
-                    <td className="manage-table-num" dir="ltr">
+                    <td className="manage-table-num" dir="ltr" data-label="סכום מתנה">
                       {isEditing ? (
                         <input
                           className="manage-arriving-input"
@@ -515,7 +515,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                         guest.giftAmount
                       )}
                     </td>
-                    <td className="manage-table-num" dir="ltr">
+                    <td className="manage-table-num" dir="ltr" data-label="הודעות אסמס">
                       {isEditing ? (
                         <input
                           className="manage-arriving-input"
@@ -531,7 +531,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                         guest.smsCount
                       )}
                     </td>
-                    <td>
+                    <td data-label="לינק">
                       {link ? (
                         <a className="manage-guest-link" href={link} target="_blank" rel="noreferrer">
                           {link}
@@ -540,7 +540,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                         "—"
                       )}
                     </td>
-                    <td className="manage-table-action">
+                    <td className="manage-table-action" data-label="">
                       {isEditing ? (
                         <div className="manage-arriving-editor">
                           <button
@@ -564,7 +564,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                         </button>
                       )}
                     </td>
-                    <td className="manage-table-delete">
+                    <td className="manage-table-delete" data-label="">
                       <button
                         type="button"
                         className="manage-delete-btn"

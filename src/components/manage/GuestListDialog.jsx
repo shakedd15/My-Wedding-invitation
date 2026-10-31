@@ -148,7 +148,7 @@ export default function GuestListDialog({
                   <th scope="col">תיאור</th>
                   {showPhone ? <th scope="col">טלפון</th> : null}
                   <th scope="col">הוזמנו</th>
-                  {showDetails ? <th scope="col">פירוט נוסף</th> : null}
+                  {showDetails ? <th scope="col" className="manage-table-details">פירוט נוסף</th> : null}
                   {showArriving ? (
                     <th scope="col" {...(arrivingSorted ? { "aria-sort": "descending" } : {})}>
                       אישרו הגעה
@@ -162,14 +162,14 @@ export default function GuestListDialog({
                   const isEditing = editable && editingId === guest.id;
                   return (
                     <tr key={guest.id ?? `${guest.fullName}-${index}`}>
-                      <td className="manage-table-name">{guest.fullName || "—"}</td>
-                      <td className="manage-table-description">{guest.description || "—"}</td>
+                      <td className="manage-table-name" data-label="שם מלא">{guest.fullName || "—"}</td>
+                      <td className="manage-table-description" data-label="תיאור">{guest.description || "—"}</td>
                       {showPhone ? (
-                        <td className="manage-table-phone" dir="ltr">{guest.phone || "—"}</td>
+                        <td className="manage-table-phone" data-label="טלפון"><bdi dir="ltr">{guest.phone || "—"}</bdi></td>
                       ) : null}
-                      <td className="manage-table-num" dir="ltr">{guest.maxAmount}</td>
+                      <td className="manage-table-num" dir="ltr" data-label="הוזמנו">{guest.maxAmount}</td>
                       {showDetails ? (
-                        <td className={isEditing ? "manage-table-editor-cell" : "manage-table-description"}>
+                        <td className={isEditing ? "manage-table-editor-cell manage-table-details" : "manage-table-description manage-table-details"} data-label="פירוט נוסף">
                           {isEditing ? (
                             <input
                               className="manage-text-input manage-details-input"
@@ -185,7 +185,7 @@ export default function GuestListDialog({
                         </td>
                       ) : null}
                       {showArriving ? (
-                        <td className={isEditing ? "manage-table-editor-cell" : arrivingClass(guest.arriving)} dir="ltr">
+                        <td className={isEditing ? "manage-table-editor-cell" : arrivingClass(guest.arriving)} dir="ltr" data-label="אישרו הגעה">
                           {isEditing ? (
                             <div className="manage-arriving-editor">
                               <input
@@ -217,7 +217,7 @@ export default function GuestListDialog({
                         </td>
                       ) : null}
                       {editable ? (
-                        <td className="manage-table-action">
+                        <td className="manage-table-action" data-label="">
                           {isEditing ? (
                             <button
                               type="button"
