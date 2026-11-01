@@ -126,12 +126,12 @@ export default function GuestListDialog({
           </div>
         </header>
         <label className="manage-search">
-          <span className="manage-sr">חיפוש לפי שם או טלפון</span>
+          <span className="manage-sr">חיפוש לפי שם, תיאור או טלפון</span>
           <input
             className="manage-search-input"
             type="search"
             value={query}
-            placeholder="חיפוש לפי שם או טלפון"
+            placeholder="חיפוש לפי שם, תיאור או טלפון"
             onChange={(event) => setQuery(event.target.value)}
           />
         </label>

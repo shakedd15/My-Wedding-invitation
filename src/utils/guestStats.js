@@ -107,6 +107,9 @@ export function guestMatchesQuery(guest, query) {
   const name = String(guest?.fullName || "").toLowerCase();
   if (name.includes(term)) return true;
 
+  const description = String(guest?.description || "").toLowerCase();
+  if (description.includes(term)) return true;
+
   const phone = String(guest?.phone || "").toLowerCase();
   if (phone.includes(term)) return true;
 

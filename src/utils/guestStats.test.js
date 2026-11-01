@@ -133,11 +133,12 @@ test("resets arriving to zero only for invalid contacts", () => {
   assert.equal(arrivingAfterGuestEdit(0, 2), 2);
 });
 
-test("matches a guest by name or phone, ignoring separators", () => {
-  const guest = { fullName: "גורג רמלה", phone: "052-672-7862" };
+test("matches a guest by name, description, or phone, ignoring separators", () => {
+  const guest = { fullName: "גורג רמלה", description: "חברים מהעבודה", phone: "052-672-7862" };
 
   assert.equal(guestMatchesQuery(guest, ""), true);
   assert.equal(guestMatchesQuery(guest, "רמלה"), true);
+  assert.equal(guestMatchesQuery(guest, "עבודה"), true);
   assert.equal(guestMatchesQuery(guest, "0526727862"), true);
   assert.equal(guestMatchesQuery(guest, "672-7862"), true);
   assert.equal(guestMatchesQuery(guest, "דנה"), false);
