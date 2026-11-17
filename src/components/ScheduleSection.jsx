@@ -2,6 +2,7 @@ import { useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { prefersReducedMotion, revealWithoutMotion } from "../utils/motion.js";
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
@@ -20,7 +21,7 @@ export default function ScheduleSection() {
 
   useGSAP(
     () => {
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (prefersReducedMotion()) return revealWithoutMotion(sectionRef.current);
 
       gsap.fromTo(
         ".sch-title",

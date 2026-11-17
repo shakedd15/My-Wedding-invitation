@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
+import { prefersReducedMotion, revealWithoutMotion } from "../utils/motion.js";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -182,7 +183,7 @@ export default function RsvpSection({
   useGSAP(
     () => {
       if (immediate) return;
-      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+      if (prefersReducedMotion()) return revealWithoutMotion(sectionRef.current);
 
       gsap.fromTo(
         cardRef.current,
