@@ -197,8 +197,7 @@ export default function RsvpSection({
     { scope: sectionRef }
   );
 
-  // Everyone is addressed in the plural, so no per-guest gender is needed.
-  const greeting = guestName ? "משפחה וחברים יקרים," : null;
+  // The welcome letter above already greets the guests, so the card skips it.
   const subText  = "נשמח לדעת אם תגיעו לחגוג איתנו";
   const attendLabel = "מאשרים הגעה";
 
@@ -242,20 +241,6 @@ export default function RsvpSection({
           <>
             {/* ── Greeting ── */}
             <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-              {greeting && (
-                <p
-                  className="font-body"
-                  style={{
-                    fontSize: "clamp(1.25rem, 5vw, 1.55rem)",
-                    fontStyle: "italic",
-                    fontWeight: 400,
-                    color: "var(--color-ink)",
-                    margin: "0 0 0.5rem",
-                  }}
-                >
-                  {greeting}
-                </p>
-              )}
               <p
                 style={{
                   fontSize: "clamp(0.92rem, 3.8vw, 1.05rem)",

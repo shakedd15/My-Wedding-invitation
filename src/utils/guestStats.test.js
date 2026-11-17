@@ -1,6 +1,25 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { arrivingAfterGuestEdit, computeGuestStats, guestInviteLink, guestMatchesQuery, paymentMethodLabel, selectAllGuests, selectInvalidGuests, selectPendingGuests, selectRespondedGuests } from "./guestStats.js";
+import { arrivingAfterGuestEdit, computeGuestStats, defaultSortDirection, guestInviteLink, guestMatchesQuery, paymentMethodLabel, selectAllGuests, selectInvalidGuests, selectPendingGuests, selectRespondedGuests, sortGuests } from "./guestStats.js";
+
+test("sorts the guest table by any column, keeping blanks last", () => {
+  const guests = [
+    { fullName: "בני", description: "עבודה", phone: "052", giftAmount: 300, paymentMethod: "bit", smsCount: 1 },
+    { fullName: "אבי", description: "", phone: "050", giftAmount: 500, paymentMethod: "", smsCount: 2 },
+    { fullName: "גל", description: "משפחה", phone: "", giftAmount: 300, paymentMethod: "cash", smsCount: 0 },
+  ];
+  const names = (list) => list.map((guest) => guest.fullName).join(",");
+
+  assert.equal(defaultSortDirection("giftAmount"), "desc");
+  assert.equal(defaultSortDirection("description"), "asc");
+  assert.equal(names(sortGuests(guests, { key: "giftAmount", direction: "desc" })), "אבי,בני,גל");
+  assert.equal(names(sortGuests(guests, { key: "giftAmount", direction: "asc" })), "בני,גל,אבי");
+  assert.equal(names(sortGuests(guests, { key: "paymentMethod", direction: "asc" })), "בני,גל,אבי");
+  assert.equal(names(sortGuests(guests, { key: "paymentMethod", direction: "desc" })), "גל,בני,אבי");
+  assert.equal(names(sortGuests(guests, { key: "description", direction: "asc" })), "גל,בני,אבי");
+  assert.equal(names(sortGuests(guests, { key: "phone", direction: "asc" })), "אבי,בני,גל");
+  assert.equal(names(sortGuests(guests, null)), "בני,אבי,גל");
+});
 
 test("aggregates guest dashboard metrics from invitation rows", () => {
   const stats = computeGuestStats([

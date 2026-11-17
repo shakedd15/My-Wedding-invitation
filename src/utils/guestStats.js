@@ -140,6 +140,50 @@ export function selectAllGuests(rows = []) {
   return rows.map(toGuestListItem).sort(byHebrewName);
 }
 
+const NUMBER_SORT_KEYS = ["maxAmount", "arriving", "giftAmount", "smsCount"];
+const TEXT_SORT_VALUES = {
+  fullName: (guest) => guest.fullName,
+  description: (guest) => guest.description,
+  phone: (guest) => guest.phone,
+  paymentMethod: (guest) => paymentMethodLabel(guest.paymentMethod),
+};
+const textCollator = new Intl.Collator("he", { numeric: true, sensitivity: "base" });
+
+export function isSortableGuestColumn(key) {
+  return NUMBER_SORT_KEYS.includes(key) || key in TEXT_SORT_VALUES;
+}
+
+// Numbers start largest first, text starts from א.
+export function defaultSortDirection(key) {
+  return NUMBER_SORT_KEYS.includes(key) ? "desc" : "asc";
+}
+
+// Sorts table rows by one column. Empty text always goes to the bottom,
+// and ties fall back to the guest's name.
+export function sortGuests(guests, sort) {
+  if (!sort || !isSortableGuestColumn(sort.key)) return guests;
+  const sign = sort.direction === "desc" ? -1 : 1;
+  const isNumber = NUMBER_SORT_KEYS.includes(sort.key);
+  const readText = TEXT_SORT_VALUES[sort.key];
+
+  return [...guests].sort((a, b) => {
+    let result;
+    if (isNumber) {
+      result = (Number(a[sort.key]) || 0) - (Number(b[sort.key]) || 0);
+    } else {
+      const left = String(readText(a) || "").trim();
+      const right = String(readText(b) || "").trim();
+      if (!left || !right) {
+        if (left || right) return left ? -1 : 1;
+        result = 0;
+      } else {
+        result = textCollator.compare(left, right);
+      }
+    }
+    return sign * result || byHebrewName(a, b);
+  });
+}
+
 export function guestInviteLink(id) {
   return id ? `https://eyal-shaked-wedding.com/?id=${id}` : "";
 }

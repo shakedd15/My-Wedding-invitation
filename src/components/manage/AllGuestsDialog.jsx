@@ -1,5 +1,16 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { PAYMENT_METHODS, arrivingAfterGuestEdit, guestInviteLink, guestMatchesQuery, paymentMethodLabel, toPaymentMethod } from "../../utils/guestStats.js";
+import { PAYMENT_METHODS, arrivingAfterGuestEdit, defaultSortDirection, guestInviteLink, guestMatchesQuery, paymentMethodLabel, sortGuests, toPaymentMethod } from "../../utils/guestStats.js";
+
+const SORT_COLUMNS = [
+  ["fullName", "שם מלא"],
+  ["description", "תיאור"],
+  ["maxAmount", "הוזמנו"],
+  ["arriving", "אישרו הגעה"],
+  ["phone", "טלפון"],
+  ["giftAmount", "סכום מתנה"],
+  ["paymentMethod", "אמצעי תשלום"],
+  ["smsCount", "הודעות אסמס"],
+];
 
 const EDIT_ICON = "/images/manage/edit.png";
 const DELETE_ICON = "/images/manage/delete.svg";
@@ -91,6 +102,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
   const [creating, setCreating] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [query, setQuery] = useState("");
+  const [sort, setSort] = useState(null);
   const [rowError, setRowError] = useState(null);
   const [createError, setCreateError] = useState(null);
   const [deleteError, setDeleteError] = useState(null);
@@ -250,7 +262,17 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
     }
   };
 
-  const visibleGuests = guests.filter((guest) => guestMatchesQuery(guest, query));
+  // Click once to sort, again to flip the order, a third time to go back to A-Z by name.
+  const toggleSort = (key) => {
+    setSort((current) => {
+      const first = defaultSortDirection(key);
+      if (current?.key !== key) return { key, direction: first };
+      if (current.direction === first) return { key, direction: first === "asc" ? "desc" : "asc" };
+      return null;
+    });
+  };
+
+  const visibleGuests = sortGuests(guests.filter((guest) => guestMatchesQuery(guest, query)), sort);
 
   return (
     <dialog
@@ -291,14 +313,28 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
           <table className="manage-table manage-table--editor manage-table--all">
             <thead>
               <tr>
-                <th scope="col">שם מלא</th>
-                <th scope="col">תיאור</th>
-                <th scope="col">הוזמנו</th>
-                <th scope="col">אישרו הגעה</th>
-                <th scope="col">טלפון</th>
-                <th scope="col">סכום מתנה</th>
-                <th scope="col">אמצעי תשלום</th>
-                <th scope="col">הודעות אסמס</th>
+                {SORT_COLUMNS.map(([key, label]) => {
+                  const active = sort?.key === key;
+                  return (
+                    <th
+                      key={key}
+                      scope="col"
+                      aria-sort={active ? (sort.direction === "asc" ? "ascending" : "descending") : undefined}
+                    >
+                      <button
+                        type="button"
+                        className={`manage-sort-btn${active ? " manage-sort-btn--active" : ""}`}
+                        title="מיון לפי העמודה"
+                        onClick={() => toggleSort(key)}
+                      >
+                        {label}
+                        <span className="manage-sort-icon" aria-hidden="true">
+                          {active ? (sort.direction === "asc" ? "▲" : "▼") : "↕"}
+                        </span>
+                      </button>
+                    </th>
+                  );
+                })}
                 <th scope="col">לינק</th>
                 <th scope="col" className="manage-table-action"><span className="manage-sr">עריכה</span></th>
                 <th scope="col" className="manage-table-delete"><span className="manage-sr">מחיקה</span></th>
