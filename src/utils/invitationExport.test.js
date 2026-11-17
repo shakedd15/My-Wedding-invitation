@@ -2,58 +2,68 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { buildInvitationsWorkbook, invitationCells } from "./invitationExport.js";
 
-test("maps guest fields onto the invitation columns", () => {
+test("maps guest fields onto the manage-table columns", () => {
   assert.deepEqual(
     invitationCells({
+      id: "abc",
       fullName: "אבי כהן",
-      arriving: 2,
       description: "חברים",
+      maxAmount: 3,
+      arriving: 2,
       phone: "050-1234567",
       giftAmount: 1000,
+      paymentMethod: "bit",
+      smsCount: 4,
     }),
-    ["אבי כהן", 2, null, "חברים", "050-1234567", null, null, null, null, null, null, 1000],
+    ["אבי כהן", "חברים", 3, 2, "050-1234567", 1000, "ביט", 4, "https://eyal-shaked-wedding.com/?id=abc"],
   );
 });
 
-test("keeps unmapped columns empty and preserves a declined count", () => {
+test("leaves missing text and unknown payment methods empty", () => {
   assert.deepEqual(
     invitationCells({
       fullName: "  דנה  ",
-      arriving: -1,
       description: "   ",
+      maxAmount: 2,
+      arriving: -1,
       phone: "",
       giftAmount: 0,
+      paymentMethod: "",
+      smsCount: 0,
     }),
-    ["דנה", -1, null, null, null, null, null, null, null, null, null, 0],
+    ["דנה", null, 2, -1, null, 0, null, 0, null],
   );
 });
 
-test("builds a right-to-left invitations sheet like the template", async () => {
+test("builds a right-to-left sheet whose headers match the manage table", async () => {
   const workbook = await buildInvitationsWorkbook([
     {
+      id: "abc",
       fullName: "אבי כהן",
-      arriving: 2,
       description: "חברים",
+      maxAmount: 3,
+      arriving: 2,
       phone: "050-1234567",
       giftAmount: 1000,
+      paymentMethod: "check",
+      smsCount: 4,
     },
   ]);
   const sheet = workbook.getWorksheet("הזמנות");
 
   assert.equal(sheet.views[0].rightToLeft, true);
-  assert.equal(sheet.getCell("C1").value, "שיוך");
-  assert.equal(sheet.getCell("E1").value, "פרטי התקשרות");
-  assert.equal(sheet.getCell("H1").value, "כתובת");
-  assert.equal(sheet.getCell("A2").value, "הזמנה לכבוד");
-  assert.equal(sheet.getCell("B2").value, "מס' אורחים שהוזמנו");
-  assert.equal(sheet.getCell("L2").value, "צ'ק צפוי");
-  assert.equal(sheet.getCell("A3").value, "אבי כהן");
-  assert.equal(sheet.getCell("B3").value, 2);
-  assert.equal(sheet.getCell("C3").value, null);
-  assert.equal(sheet.getCell("D3").value, "חברים");
-  assert.equal(sheet.getCell("E3").value, "050-1234567");
-  assert.equal(sheet.getCell("F3").value, null);
-  assert.equal(sheet.getCell("L3").value, 1000);
-  assert.equal(sheet.getCell("A2").fill.fgColor.argb, "FF333399");
-  assert.ok(sheet.getCell("C1").isMerged);
+  assert.deepEqual(
+    sheet.getRow(1).values.slice(1),
+    ["שם מלא", "תיאור", "הוזמנו", "אישרו הגעה", "טלפון", "סכום מתנה", "אמצעי תשלום", "הודעות אסמס", "לינק"],
+  );
+  assert.equal(sheet.getCell("A2").value, "אבי כהן");
+  assert.equal(sheet.getCell("B2").value, "חברים");
+  assert.equal(sheet.getCell("C2").value, 3);
+  assert.equal(sheet.getCell("D2").value, 2);
+  assert.equal(sheet.getCell("E2").value, "050-1234567");
+  assert.equal(sheet.getCell("F2").value, 1000);
+  assert.equal(sheet.getCell("G2").value, "צ'ק");
+  assert.equal(sheet.getCell("H2").value, 4);
+  assert.equal(sheet.getCell("I2").value.hyperlink, "https://eyal-shaked-wedding.com/?id=abc");
+  assert.equal(sheet.getCell("A1").fill.fgColor.argb, "FF333399");
 });

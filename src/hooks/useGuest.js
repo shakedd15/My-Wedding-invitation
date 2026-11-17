@@ -13,7 +13,6 @@ const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12
  * Actual table schema (fetched columns only):
  *   id                     uuid     – primary key (?id= URL param)
  *   full_name              varchar  – display name
- *   gender                 varchar  – 'F' (אישה) | 'M' (גבר) | 'X' (משפחה)
  *   guests_max_amount      int8     – max seats allowed (default 3)
  *   guests_amount_arriving int8     – RSVP count; -1 = declined, 0+ = attending count
  *
@@ -43,7 +42,7 @@ export function useGuest(guestId) {
 
     supabase
       .from("guests")
-      .select("id, full_name, gender, guests_max_amount, guests_amount_arriving")
+      .select("id, full_name, guests_max_amount, guests_amount_arriving")
       .eq("id", guestId)
       .maybeSingle()
       .then(({ data, error: sbError }) => {
@@ -55,10 +54,7 @@ export function useGuest(guestId) {
           setError("האורח לא נמצא. בדקו שהקישור נכון.");
           setGuest(null);
         } else {
-          setGuest({
-            ...data,
-            gender: data.gender ? String(data.gender).toUpperCase() : "F",
-          });
+          setGuest(data);
         }
         setLoading(false);
       });

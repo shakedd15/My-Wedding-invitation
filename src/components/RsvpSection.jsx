@@ -119,7 +119,6 @@ function ActionBtn({ onClick, variant = "primary", disabled, children }) {
    RsvpSection
    Props:
      guestName     : string|null – full_name from DB; null = no ?id= in URL
-     gender        : string      – 'F' (אישה) | 'M' (גבר) | 'X' (משפחה)
      maxGuests     : number      – guests_max_amount from DB (default 3)
      defaultGuests : number      – guests_amount_arriving from DB (-1 mapped to 0 for display)
      guestLoading  : boolean     – true while guest data is being fetched
@@ -129,7 +128,6 @@ function ActionBtn({ onClick, variant = "primary", disabled, children }) {
 ──────────────────────────────────────────────────────────── */
 export default function RsvpSection({
   guestName     = null,
-  gender        = "F",
   maxGuests     = 3,
   defaultGuests = 1,
   guestLoading  = false,
@@ -198,16 +196,10 @@ export default function RsvpSection({
     { scope: sectionRef }
   );
 
-  const normalizedGender = String(gender ?? "F").toUpperCase();
-
-  const suffix = normalizedGender === "M" ? "היקר" : normalizedGender === "X" ? "היקרים" : "היקרה";
-  const greeting = guestName ? `${guestName} ${suffix},` : null;
-  const subText  = normalizedGender === "M" ? "נשמח לדעת אם תגיע לחגוג איתנו"
-                 : normalizedGender === "X" ? "נשמח לדעת אם תגיעו לחגוג איתנו"
-                 :                  "נשמח לדעת אם תגיעי לחגוג איתנו";
-  const attendLabel = normalizedGender === "M" ? "מאשר הגעה"
-                    : normalizedGender === "X" ? "מאשרים הגעה"
-                    :                  "מאשרת הגעה";
+  // Everyone is addressed in the plural, so no per-guest gender is needed.
+  const greeting = guestName ? "משפחה וחברים יקרים," : null;
+  const subText  = "נשמח לדעת אם תגיעו לחגוג איתנו";
+  const attendLabel = "מאשרים הגעה";
 
   return (
     <section
@@ -244,7 +236,7 @@ export default function RsvpSection({
           <ErrorMessage message={guestError} />
         ) : submitted !== null ? (
           /* ── Already submitted (or just submitted) ── */
-          <ConfirmationMessage variant={submitted} guestName={guestName} gender={normalizedGender} />
+          <ConfirmationMessage variant={submitted} guestName={guestName} />
         ) : (
           <>
             {/* ── Greeting ── */}
@@ -441,16 +433,12 @@ function ErrorMessage({ message }) {
 }
 
 /* ── Post-submit confirmation ── */
-function ConfirmationMessage({ variant, guestName, gender }) {
-  const normalizedGender = String(gender ?? "F").toUpperCase();
+function ConfirmationMessage({ variant, guestName }) {
   const isAttending = variant === "attending";
 
   const thankYou = guestName ? `תודה רבה, ${guestName}!` : "תודה רבה!";
-  const seeYou   = normalizedGender === "X" ? "נתראה בשמחה! מחכים לכם בלב פתוח ✦"
-                 : normalizedGender === "M" ? "נתראה בשמחה! מחכים לך בלב פתוח ✦"
-                 :                  "נתראה בשמחה! מחכים לך בלב פתוח ✦";
-  const decline  = normalizedGender === "X" ? "נשמח לחגוג איתכם בהזדמנות אחרת"
-                 :                  "נשמח לחגוג איתך בהזדמנות אחרת";
+  const seeYou   = "נתראה בשמחה! מחכים לכם בלב פתוח ✦";
+  const decline  = "נשמח לחגוג איתכם בהזדמנות אחרת";
 
   return (
     <div style={{ textAlign: "center", padding: "1rem 0" }}>

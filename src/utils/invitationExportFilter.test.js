@@ -22,9 +22,9 @@ test("writes only arriving guests into the workbook", async () => {
   ]);
   const sheet = workbook.getWorksheet("הזמנות");
 
-  assert.equal(sheet.getCell("A3").value, "מגיע");
-  assert.equal(sheet.getCell("B3").value, 3);
-  assert.equal(sheet.getCell("D3").value, "חברים");
-  assert.equal(sheet.getCell("L3").value, 200);
-  assert.equal(sheet.getCell("A4").value, null);
+  assert.equal(sheet.getCell("A2").value, "מגיע");
+  assert.equal(sheet.getCell("B2").value, "חברים");
+  assert.equal(sheet.getCell("D2").value, 3);
+  assert.equal(sheet.getCell("F2").value, 200);
+  assert.equal(sheet.getCell("A3").value, null);
 });

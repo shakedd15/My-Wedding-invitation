@@ -44,9 +44,21 @@ export function computeGuestStats(rows = []) {
   return stats;
 }
 
-function toGender(value) {
-  const gender = String(value || "").trim().toUpperCase();
-  return gender === "M" || gender === "F" || gender === "X" ? gender : "";
+export const PAYMENT_METHODS = [
+  { value: "cash", label: "מזומן" },
+  { value: "check", label: "צ'ק" },
+  { value: "credit", label: "אשראי" },
+  { value: "bit", label: "ביט" },
+  { value: "paybox", label: "פייבוקס" },
+];
+
+export function toPaymentMethod(value) {
+  const method = String(value || "").trim().toLowerCase();
+  return PAYMENT_METHODS.some((item) => item.value === method) ? method : "";
+}
+
+export function paymentMethodLabel(value) {
+  return PAYMENT_METHODS.find((item) => item.value === value)?.label || "";
 }
 
 function toGuestListItem(row) {
@@ -62,13 +74,13 @@ function toGuestListItem(row) {
     phone: typeof row?.phone_number === "string" && row.phone_number.trim()
       ? row.phone_number.trim()
       : "",
-    gender: toGender(row?.gender),
     details: typeof row?.guest_details === "string" && row.guest_details.trim()
       ? row.guest_details.trim()
       : "",
     maxAmount: toAmount(row?.guests_max_amount),
     arriving: Number.isFinite(arriving) ? arriving : 0,
     giftAmount: toAmount(row?.guest_gift_amount),
+    paymentMethod: toPaymentMethod(row?.payment_method),
     smsCount: toAmount(row?.sms_count),
   };
 }

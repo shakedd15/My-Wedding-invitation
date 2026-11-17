@@ -1,29 +1,35 @@
 import { useEffect, useId, useRef, useState } from "react";
-import { arrivingAfterGuestEdit, guestInviteLink, guestMatchesQuery } from "../../utils/guestStats.js";
+import { PAYMENT_METHODS, arrivingAfterGuestEdit, guestInviteLink, guestMatchesQuery, paymentMethodLabel, toPaymentMethod } from "../../utils/guestStats.js";
 
 const EDIT_ICON = "/images/manage/edit.png";
 const DELETE_ICON = "/images/manage/delete.svg";
 const ADD_ICON = "/images/manage/add.png";
 
-const GENDERS = [
-  { value: "M", label: "זכר" },
-  { value: "F", label: "נקבה" },
-  { value: "X", label: "רבים" },
-];
-
 const EMPTY_CREATE = {
   fullName: "",
   description: "",
-  gender: "",
   phone: "",
   maxAmount: "",
   arriving: "0",
   giftAmount: "0",
+  paymentMethod: "",
   smsCount: "0",
 };
 
-function genderLabel(value) {
-  return GENDERS.find((item) => item.value === value)?.label || "—";
+function PaymentMethodSelect({ value, label, onChange }) {
+  return (
+    <select
+      className="manage-select"
+      value={value}
+      aria-label={label}
+      onChange={(event) => onChange(event.target.value)}
+    >
+      <option value="">—</option>
+      {PAYMENT_METHODS.map((item) => (
+        <option key={item.value} value={item.value}>{item.label}</option>
+      ))}
+    </select>
+  );
 }
 
 function parseInteger(value) {
@@ -40,6 +46,7 @@ function readDraft(draft) {
     maxAmount: parseInteger(draft.maxAmount),
     arriving: parseInteger(draft.arriving),
     giftAmount: parseInteger(draft.giftAmount),
+    paymentMethod: toPaymentMethod(draft.paymentMethod),
     smsCount: parseInteger(draft.smsCount),
   };
 }
@@ -148,6 +155,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
       maxAmount: String(guest.maxAmount),
       arriving: guest.arriving === -2 ? "0" : String(guest.arriving),
       giftAmount: String(guest.giftAmount),
+      paymentMethod: guest.paymentMethod || "",
       smsCount: String(guest.smsCount),
     });
   };
@@ -174,7 +182,13 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
     setSaving(true);
     setRowError(null);
     try {
-      await onSave?.(guest.id, toFields(values));
+      const fields = toFields(values);
+      // Only send payment_method when it changed, so saves keep working on a
+      // table that does not have the column yet.
+      if (values.paymentMethod !== (guest.paymentMethod || "")) {
+        fields.payment_method = values.paymentMethod || null;
+      }
+      await onSave?.(guest.id, fields);
       setEditingId(null);
       setDraft(null);
     } catch {
@@ -187,13 +201,8 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
   const createGuest = async () => {
     const values = readDraft(createDraft);
     const error = draftError(values);
-    const gender = String(createDraft.gender || "").toUpperCase();
     if (error) {
       setCreateError(error);
-      return;
-    }
-    if (!GENDERS.some((item) => item.value === gender)) {
-      setCreateError("צריך לבחור מין.");
       return;
     }
 
@@ -202,7 +211,7 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
     try {
       await onCreate?.({
         ...toFields(values),
-        gender,
+        ...(values.paymentMethod ? { payment_method: values.paymentMethod } : {}),
         guests_amount_we_expect: values.maxAmount,
       });
       setCreateDraft(EMPTY_CREATE);
@@ -284,11 +293,11 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
               <tr>
                 <th scope="col">שם מלא</th>
                 <th scope="col">תיאור</th>
-                <th scope="col">מין</th>
                 <th scope="col">הוזמנו</th>
                 <th scope="col">אישרו הגעה</th>
                 <th scope="col">טלפון</th>
                 <th scope="col">סכום מתנה</th>
+                <th scope="col">אמצעי תשלום</th>
                 <th scope="col">הודעות אסמס</th>
                 <th scope="col">לינק</th>
                 <th scope="col" className="manage-table-action"><span className="manage-sr">עריכה</span></th>
@@ -318,19 +327,6 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                     placeholder="תיאור"
                     onChange={(event) => setCreateField("description", event.target.value)}
                   />
-                </td>
-                <td data-label="מין">
-                  <select
-                    className="manage-select"
-                    value={createDraft.gender}
-                    aria-label="מין למוזמן חדש"
-                    onChange={(event) => setCreateField("gender", event.target.value)}
-                  >
-                    <option value="">מין</option>
-                    {GENDERS.map((item) => (
-                      <option key={item.value} value={item.value}>{item.label}</option>
-                    ))}
-                  </select>
                 </td>
                 <td className="manage-table-num" dir="ltr" data-label="הוזמנו">
                   <input
@@ -375,6 +371,13 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                     value={createDraft.giftAmount}
                     aria-label="סכום מתנה למוזמן חדש"
                     onChange={(event) => setCreateField("giftAmount", event.target.value)}
+                  />
+                </td>
+                <td data-label="אמצעי תשלום">
+                  <PaymentMethodSelect
+                    value={createDraft.paymentMethod}
+                    label="אמצעי תשלום למוזמן חדש"
+                    onChange={(value) => setCreateField("paymentMethod", value)}
                   />
                 </td>
                 <td className="manage-table-num" dir="ltr" data-label="הודעות אסמס">
@@ -452,7 +455,6 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                         guest.description || "—"
                       )}
                     </td>
-                    <td data-label="מין">{genderLabel(guest.gender)}</td>
                     <td className="manage-table-num" dir="ltr" data-label="הוזמנו">
                       {isEditing ? (
                         <input
@@ -513,6 +515,17 @@ export default function AllGuestsDialog({ guests = [], onSave, onCreate, onDelet
                         />
                       ) : (
                         guest.giftAmount
+                      )}
+                    </td>
+                    <td data-label="אמצעי תשלום">
+                      {isEditing ? (
+                        <PaymentMethodSelect
+                          value={draft.paymentMethod}
+                          label="אמצעי תשלום"
+                          onChange={(value) => setField("paymentMethod", value)}
+                        />
+                      ) : (
+                        paymentMethodLabel(guest.paymentMethod) || "—"
                       )}
                     </td>
                     <td className="manage-table-num" dir="ltr" data-label="הודעות אסמס">

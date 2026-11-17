@@ -102,7 +102,6 @@ export default function App() {
     <RsvpSection
       immediate={rsvpOnly}
       guestName={guest?.full_name ?? null}
-      gender={String(guest?.gender ?? "F").toUpperCase()}
       maxGuests={guest?.guests_max_amount ?? 3}
       defaultGuests={
         Number(guest?.guests_amount_arriving) > 0
